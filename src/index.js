@@ -1,7 +1,6 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 
-import { createSchemas } from './config/postgres';
+import { createTables } from './config/postgres';
 import middlewaresConfig from './config/middleware';;
 import ApiRoutes from './controllers';
 
@@ -23,7 +22,7 @@ app.use('/api', ApiRoutes);
  */
 
 (async () => {
-    await createSchemas();
+    await createTables();
 })();
 
 

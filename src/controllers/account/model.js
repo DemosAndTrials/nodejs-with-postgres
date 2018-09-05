@@ -3,23 +3,23 @@ import { getConnection } from '../../utils/postgresUtils';
 class AccountModel {
 
     constructor() {
-        this.SCHEMA_NAME = 'account';
+        this.TABLE_NAME = 'account';
     }
 
-    async createSchema() {
+    async createTable() {
 
         const client = await getConnection();
 
-        const query = `CREATE TABLE ${this.SCHEMA_NAME}(
+        const query = `CREATE TABLE ${this.TABLE_NAME}(
             id SERIAL PRIMARY KEY,
             name VARCHAR(50) NOT NULL)`;
 
         try {
             const result = await client.query(query);
-            console.log(`table ${this.SCHEMA_NAME} created`);
+            console.log(`table ${this.TABLE_NAME} created`);
         }
         catch (e) {
-            console.log(`error while creating table ${this.SCHEMA_NAME} :: ${e}`);
+            console.log(`error while creating table ${this.TABLE_NAME} : ${e}`);
         }
 
         await client.end();
@@ -29,7 +29,7 @@ class AccountModel {
 
         const client = await getConnection();
 
-        const query = `INSERT INTO ${this.SCHEMA_NAME}(name)
+        const query = `INSERT INTO ${this.TABLE_NAME}(name)
             VALUES ('${args.name}') RETURNING id;`;
 
         const { rows } = await client.query(query);
@@ -42,7 +42,7 @@ class AccountModel {
 
         const client = getConnection();
 
-        const { rows } = await client.query(`SELECT * FROM ${this.SCHEMA_NAME}`);
+        const { rows } = await client.query(`SELECT * FROM ${this.TABLE_NAME}`);
         await client.end();
 
         return rows;
