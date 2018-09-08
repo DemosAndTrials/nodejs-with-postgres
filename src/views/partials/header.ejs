@@ -75,10 +75,10 @@
                         <footer class="slds-popover__footer">
                             <p>
                                 <span sec:authorize="hasAuthority('ADMIN')">
-                                    <a id="userFooterAdmin" th:href="/admin" class="slds-m-right_small">Admin</a>
+                                    <a id="userFooterAdmin" href="/admin" class="slds-m-right_small">Admin</a>
                                 </span>
-                                <a id="userFooterSettings" th:href="/user/settings" class="slds-m-right_small">Settings</a>
-                                <a id="userFooterLogout" th:href="/user/logout">Logout</a>
+                                <a id="userFooterSettings" href="/user/profile" class="slds-m-right_small">Settings</a>
+                                <a id="userFooterLogout" href="/user/logout">Logout</a>
                             </p>
                         </footer>
                     </section>

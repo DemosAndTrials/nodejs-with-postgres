@@ -1,35 +1,44 @@
 import UserModel from './model';
 
+const loginPage = async (req, res) => {
+    console.log(req.method);
 
-const loginPage = (req, res) => {
-    console.log(req);
-    res.render('pages/user/login');
-}
-
-const signupPage = (req, res) => {
-    var errors = [];
-    var user = { name:"", lastname:"", email:"", password:""};
-    console.log(user);
-    res.render('pages/user/signup', {user, errors});
-}
-
-const createUser = async (req, res) => {
-    // do some validation here
-    const body = req.body;
-    console.log(body);
-    const userExists = await UserModel.getUser(body.email);
-    //console.log(userExists);
-    if (userExists !== undefined) {
-        // email already registered
-        // error
-        var user = { name:body.name, lastname:body.lastname, email:body.email, password:body.password};
-        var errors = [];
-        console.log(user);
-        res.render('pages/user/signup', { user, errors });
-    } else { // create new user
-        const user = await UserModel.createUser(body);
-        console.log(user);
+    if (req.method === 'GET') {
         res.render('pages/user/login');
+    } else { // post
+
+    }
+}
+
+const logoutPage = (req, res) => {
+    // logout logic goes here
+    res.render('pages/home');
+}
+
+const signupPage = async (req, res) => {
+
+    if (req.method === 'GET') {
+        var errors = [];
+        var user = { name: "", lastname: "", email: "", password: "" };
+        res.render('pages/user/signup', { user, errors });
+    } else { // post
+        // do some validation here
+        const body = req.body;
+        console.log(body);
+        const userExists = await UserModel.getUser(body.email);
+        //console.log(userExists);
+        if (userExists !== undefined) {
+            // email already registered
+            // error
+            var user = { name: body.name, lastname: body.lastname, email: body.email, password: body.password };
+            var errors = [];
+            console.log(user);
+            res.render('pages/user/signup', { user, errors });
+        } else { // create new user
+            const user = await UserModel.createUser(body);
+            console.log(user);
+            res.render('pages/user/login');
+        }
     }
 }
 
@@ -37,7 +46,6 @@ const profilePage = (req, res) => {
     console.log(req);
     res.render('pages/user/profile');
 }
-
 
 const createUser2 = async (req, res) => {
 
@@ -74,8 +82,8 @@ const getUsers = async (req, res) => {
 
 export {
     loginPage,
+    logoutPage,
     signupPage,
     profilePage,
-    createUser,
     getUsers
 }
