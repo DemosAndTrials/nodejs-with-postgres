@@ -1,9 +1,11 @@
 import { isTableExists } from '../utils/postgresUtils';
+import { UsertModel } from '../controllers/user';
 import { AccountModel } from '../controllers/account';
 
 const createTables = async () => {
 
     var models = [
+        UsertModel,
         AccountModel
     ];
 

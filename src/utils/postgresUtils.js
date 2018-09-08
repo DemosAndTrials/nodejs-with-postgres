@@ -14,18 +14,17 @@ const getConnection = () => {
     return client;
 }
 
-const isTableExists = async (schemaName) => {
+const isTableExists = async (tableName) => {
 
     const client = getConnection();
     const query = await client.query(
         `SELECT EXISTS (
             SELECT 1
             FROM   information_schema.tables
-            WHERE  table_name = '[${SCHEMA}].${schemaName}'
+            WHERE  table_schema = '${SCHEMA}' AND table_name = '${tableName}'
             );`);
 
     await client.end();
-
     return query.rows[0].exists;
 }
 

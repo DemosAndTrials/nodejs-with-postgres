@@ -1,10 +1,7 @@
 
 const homePage = (req, res) => {
     console.log(req);
-    //res.render('pages/home');
-    res.render('pages/home', {
-        url: req.url
-    })
+    res.render('pages/home');
 }
 
 const aboutPage = (req, res) => {
