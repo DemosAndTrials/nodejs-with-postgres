@@ -26,23 +26,32 @@
                         <div class="slds-form-element">
                             <label class="slds-form-element__label" for="email">Username</label>
                             <div class="slds-form-element__control">
-                                <input type="text" id="email" name="email" class="slds-input" th:placeholder="Username"/>
+                                <input type="text" id="email" name="email" class="slds-input" value="<%= user.email %>"/>
                             </div>
                         </div>
                         <div class="slds-form-element">
                             <label class="slds-form-element__label" for="password">Password</label>
                             <div class="slds-form-element__control">
-                                <input type="password" id="password" name="password" class="slds-input" th:placeholder="Password"/>
+                                <input type="password" id="password" name="password" class="slds-input" value="<%= user.password %>"/>
                             </div>
                         </div>
         
-                        <div align="center" th:if="${param.error}">
-                            <p style="color: #FF1C19;">Email or Password invalid, please verify</p>
-                        </div>
                         <div class="slds-form-element">
                             <button class="slds-button slds-button_brand" type="Submit">Login</button>
                         </div>
                         <hr class="slds-m-around_x-small">
+                        <% if(errors.length > 0){ %>
+                            <ul>
+                                <% errors.forEach(function( err){ %>
+                                <li class="slds-text-color_error">
+                                    <label>
+                                        * <%= err.msg %>
+                                    </label>
+                                </li>
+                                <% }) %>
+                            </ul>
+                            <hr class="slds-m-around_x-small">
+                        <%}%>
                         <a href="/user/signup">Registration</a>
                     </form>
                 </div>

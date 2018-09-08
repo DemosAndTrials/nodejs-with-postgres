@@ -20,37 +20,30 @@
         <div class="slds-form slds-form_stacked slds-grid slds-grid_align-center slds-m-top_medium">
             <div class="slds-card slds-col slds-size_2-of-6">
 
-                <form autocomplete="off" action="#" action="user/signup" method="post"
-                    class="slds-m-around_small" role="form">
+                <form autocomplete="off" action="#" action="user/signup" method="post" class="slds-m-around_small" role="form">
                     <div class="slds-form-element">
                         <label class="slds-form-element__label" for="name">First name</label>
                         <div class="slds-form-element__control">
-                            <% if(errors){ %>
-                            <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="validation-message"></label>
-                            <%}%> 
-                            <input type="text" id="name" name="name" placeholder="Name" class="slds-input" value="<%= user.name %>"/>
+                            <input type="text" id="name" name="name" placeholder="Name" class="slds-input" value="<%= user.name %>">
                         </div>
                     </div>
 
                     <div class="slds-form-element">
                         <label class="slds-form-element__label" for="lastname">Last name</label>
                         <div class="slds-form-element__control">
-                            <label th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="validation-message"></label>
                             <input type="text" id="lastname" name="lastname" placeholder="Last Name" class="slds-input" value="<%= user.lastname %>"/>
                         </div>
                     </div>
                     <div class="slds-form-element">
                         <label class="slds-form-element__label" for="email">Email</label>
                         <div class="slds-form-element__control">
-                            <input type="text" id="email" name="email" placeholder="Email" class="slds-input" />
-                            <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="validation-message"></label>
+                            <input type="text" id="email" name="email" placeholder="Email" class="slds-input" value="<%= user.email %>"/>
                         </div>
                     </div>
                     <div class="slds-form-element">
                         <label class="slds-form-element__label" for="password">Password</label>
                         <div class="slds-form-element__control">
-                            <input type="password" id="password" name="password" placeholder="Password" class="slds-input" />
-                            <label th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="validation-message"></label>
+                            <input type="password" id="password" name="password" placeholder="Password" class="slds-input" value="<%= user.password %>"/>
                         </div>
                     </div>
 
@@ -60,6 +53,18 @@
 
                     <!--<span th:utext="${successMessage}"></span>-->
                     <hr class="slds-m-around_x-small">
+                    <% if(errors.length > 0){ %>
+                    <ul>
+                        <% errors.forEach(function( err){ %>
+                        <li class="slds-text-color_error">
+                            <label>
+                                * <%= err.msg %>
+                            </label>
+                        </li>
+                        <% }) %>
+                    </ul>
+                    <hr class="slds-m-around_x-small">
+                    <%}%>
                     <a href="/user/login">Login</a>
 
                 </form>
