@@ -6,8 +6,19 @@ import middlewaresConfig from './config/middleware';;
 import ApiRoutes from './controllers';
 import  HomeRoutes from './controllers';
 
-const app = express();
+var passport = require('passport');
+var flash    = require('connect-flash');
+var cookieParser = require('cookie-parser');
+var session      = require('express-session');
+require('./config/passport')(passport); // pass passport for configuration
 
+const app = express();
+app.use(cookieParser()); // read cookies (needed for auth)
+// required for passport
+app.use(session({ secret: 'sfmc-examples' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
 /**
  * MIDDLEWARES
  */

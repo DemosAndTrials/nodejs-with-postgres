@@ -60,7 +60,7 @@ class UserModel {
         const client = await getConnection();
 
         const query = `INSERT INTO "${this.TABLE_NAME}"(active, email, name, last_name, password)
-            VALUES (1, '${args.email}', '${args.name}', '${args.lastName}', '${args.password}') RETURNING id;`;
+            VALUES (1, '${args.email}', '${args.name}', '${args.lastname}', '${args.password}') RETURNING id;`;
             console.log(query);
         const { rows } = await client.query(query);
         await client.end();

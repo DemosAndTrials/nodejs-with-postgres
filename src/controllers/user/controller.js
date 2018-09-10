@@ -1,8 +1,12 @@
 import UserModel from './model';
+import passport from 'passport';
+import bcrypt from 'bcrypt';
 
 const loginPage = async (req, res) => {
-
-    if (req.method === 'GET') {
+    if (req.isAuthenticated()) { // user already logged in, send to profile
+        console.log(req.user);
+        res.redirect('/user/profile', { userData: req.user });
+    } else if (req.method === 'GET') {
         var errors = [];
         var user = {
             email: '',
@@ -30,17 +34,44 @@ const loginPage = async (req, res) => {
                 user,
                 errors
             });
-        } else {  // normal processing here
+        } else { // normal processing here
             console.log('OK');
             res.render('pages/home');
-
         }
     }
 }
 
-const logoutPage = (req, res) => {
-    // logout logic goes here
+/**
+ * Authenticate
+ */
+const authenticate = passport.authenticate('local-signup', {
+    successRedirect: '/home',
+    failureRedirect: '/user/login',
+    failureFlash: true
+})
+
+const finalizeLogin = (req, res) => {
+    console.log('finalizeLogin');
+    if (req.body.remember) {
+        req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // Cookie expires after 30 days
+    } else {
+        req.session.cookie.expires = false; // Cookie expires at end of session
+    }
+    //res.redirect('/');
     res.render('pages/home');
+}
+
+/**
+ * Logout request
+ * @param {*} req 
+ * @param {*} res 
+ */
+const logoutPage = (req, res) => {
+    console.log('isAuthenticated ' + req.isAuthenticated());
+    req.logout();
+    console.log('isAuthenticated ' + req.isAuthenticated());
+    //req.flash('success', "Logged out. See you soon!");
+    res.redirect('/');
 }
 
 const signupPage = async (req, res) => {
@@ -68,7 +99,9 @@ const signupPage = async (req, res) => {
         //req.checkBody("lastname", "First Name must be at least 2 characters").isLength({ min: 2 });
         req.checkBody("email", "Enter a valid email address.").isEmail();
         req.checkBody("password", "Password is required").notEmpty();
-        req.checkBody("password", "Password must be at least 6 characters").isLength({ min: 6 });
+        req.checkBody("password", "Password must be at least 6 characters").isLength({
+            min: 6
+        });
 
         var errors = req.validationErrors();
         console.log(errors);
@@ -87,7 +120,7 @@ const signupPage = async (req, res) => {
             });
             console.log('Error');
             return;
-        } else {  // normal processing here
+        } else { // normal processing here
             console.log('OK');
 
             const userExists = await UserModel.getUser(body.email);
@@ -108,9 +141,18 @@ const signupPage = async (req, res) => {
                     errors
                 });
             } else { // create new user
+                body.password = await bcrypt.hash(body.password, 5);
                 const user = await UserModel.createUser(body);
                 console.log(user);
-                res.render('pages/user/login');
+                var errors = [];
+                var user = {
+                    email: '',
+                    password: ''
+                };
+                res.render('pages/user/login', {
+                    user,
+                    errors
+                });
             }
         }
     }
@@ -156,6 +198,8 @@ const getUsers = async (req, res) => {
 
 export {
     loginPage,
+    authenticate,
+    finalizeLogin,
     logoutPage,
     signupPage,
     profilePage,
