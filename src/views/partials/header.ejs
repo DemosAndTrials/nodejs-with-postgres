@@ -32,19 +32,21 @@
                         <span class="slds-truncate" title="Menu Item">About</span>
                     </a>
                 </li>
-
+                <!-- MENU ITEM -->
             </ul>
         </nav>
 
         <ul class="slds-global-header__item slds-grid slds-grid_vertical-align-center">
 
             <li class="slds-dropdown-trigger slds-dropdown-trigger_click slds-m-left_x-small">
-                <div sec:authorize="!isAuthenticated()">
+                <% if(!userData){ %>
+                <div>
                     <a href="/user/login">Sign in</a>
                 </div>
+                <% } %>
             </li>
             <li class="slds-dropdown-trigger slds-dropdown-trigger_click slds-m-left_x-small">
-
+                <% if(userData){ %>
                 <div id="userIcon" sec:authorize="isAuthenticated()">
                     <button id="userButton" class="slds-button" title="person name" aria-haspopup="true">
                         <span class="slds-avatar slds-avatar_circle slds-avatar_medium">
@@ -63,10 +65,10 @@
                                 </div>
                                 <div class="slds-media__body">
                                     <h2 class="slds-text -title_caps slds-m-bottom_x-small" role="presentation">
-                                        <span sec:authentication="name" />
+                                        <%= userData.name %>
                                     </h2>
                                     <p class="slds-m-bottom_x-small">
-                                        <span sec:authentication="name" />
+                                        <%= userData.email %>
                                     </p>
                                 </div>
                             </div>
@@ -84,6 +86,7 @@
                     </section>
 
                 </div>
+                <% } %>
             </li>
         </ul>
 

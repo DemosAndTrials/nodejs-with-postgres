@@ -16,16 +16,11 @@ module.exports = function (passport) {
 
     // used to serialize the user for the session
     passport.serializeUser(function (user, done) {
-        console.log('serializeUser');
         done(null, user);
     });
 
     // used to deserialize the user
     passport.deserializeUser(function (user, done) {
-        console.log('deserializeUser');
-        //User.findById(id, function(err, user) {
-        //done(err, user);
-        //});
         done(null, user);
     });
 
@@ -44,6 +39,7 @@ module.exports = function (passport) {
             async function loginAttempt() {
                 try {
                     const user = await UserModel.getUser(username);
+                    // TODO get role
                     if (user !== undefined) {
                         bcrypt.compare(password, user.password, function (err, check) {
                             if (err) {
@@ -51,10 +47,10 @@ module.exports = function (passport) {
                                 return done();
                             } else if (check) {
                                 console.log('check: ' + JSON.stringify(user));
-                                return done(null, [{
+                                return done(null, {
                                     email: user.email,
                                     name: user.name
-                                }]);
+                                });
                             } else {
                                 console.log('Incorrect login details.');
                                 req.flash('danger', "Oops. Incorrect login details.");
@@ -71,5 +67,4 @@ module.exports = function (passport) {
             };
         }
     ))
-
 };

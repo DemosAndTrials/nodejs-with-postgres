@@ -1,28 +1,15 @@
 import express from 'express';
 import path from 'path';
-
 import { createTables } from './config/postgres';
 import middlewaresConfig from './config/middleware';;
 import ApiRoutes from './controllers';
-import  HomeRoutes from './controllers';
-
-var passport = require('passport');
-var flash    = require('connect-flash');
-var cookieParser = require('cookie-parser');
-var session      = require('express-session');
-require('./config/passport')(passport); // pass passport for configuration
+import HomeRoutes from './controllers';
 
 const app = express();
-app.use(cookieParser()); // read cookies (needed for auth)
-// required for passport
-app.use(session({ secret: 'sfmc-examples' })); // session secret
-app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
-app.use(flash()); // use connect-flash for flash messages stored in session
+
 /**
  * MIDDLEWARES
  */
-
 middlewaresConfig(app);
 
 /**
@@ -49,7 +36,8 @@ app.use(function (req, res, next) {
     res.format({
         html: function () {
             res.render('pages/404', {
-                url: req.url
+                url: req.url,
+                userData : req.user
             })
         },
         json: function () {
@@ -66,7 +54,6 @@ app.use(function (req, res, next) {
 /**
  * POSTGRES
  */
-
 (async () => {
     await createTables();
 })();

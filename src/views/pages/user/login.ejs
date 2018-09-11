@@ -19,43 +19,54 @@
         </div>
         <!-- body -->
         <div class="slds-form slds-form_stacked slds-grid slds-grid_align-center slds-m-top_medium">
-                <div class="slds-card slds-col slds-size_2-of-6">
-        
-                    <form th:action="/user/login" method="POST" class="slds-m-around_small">
-        
-                        <div class="slds-form-element">
-                            <label class="slds-form-element__label" for="email">Username</label>
-                            <div class="slds-form-element__control">
-                                <input type="text" id="email" name="email" class="slds-input" value="<%= user.email %>"/>
+            <div class="slds-card slds-col slds-size_2-of-6">
+
+                <form th:action="/user/login" method="POST" class="slds-m-around_small">
+
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="email">Username</label>
+                        <div class="slds-form-element__control">
+                            <input type="text" id="email" name="email" class="slds-input" value="<%= user.email %>" />
+                        </div>
+                    </div>
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="password">Password</label>
+                        <div class="slds-form-element__control">
+                            <input type="password" id="password" name="password" class="slds-input" value="<%= user.password %>" />
+                        </div>
+                    </div>
+                    <div class="slds-form-element">
+                        <div class="slds-form-element__control">
+                            <div class="slds-checkbox">
+                                <input type="checkbox" name="remember" id="remember-me"/>
+                                <label class="slds-checkbox__label" for="remember-me">
+                                    <span class="slds-checkbox_faux"></span>
+                                    <span class="slds-form-element__label">Remember me</span>
+                                </label>
                             </div>
                         </div>
-                        <div class="slds-form-element">
-                            <label class="slds-form-element__label" for="password">Password</label>
-                            <div class="slds-form-element__control">
-                                <input type="password" id="password" name="password" class="slds-input" value="<%= user.password %>"/>
-                            </div>
-                        </div>
-        
-                        <div class="slds-form-element">
-                            <button class="slds-button slds-button_brand" type="Submit">Login</button>
-                        </div>
-                        <hr class="slds-m-around_x-small">
-                        <% if(errors.length > 0){ %>
-                            <ul>
-                                <% errors.forEach(function( err){ %>
-                                <li class="slds-text-color_error">
-                                    <label>
-                                        * <%= err.msg %>
-                                    </label>
-                                </li>
-                                <% }) %>
-                            </ul>
-                            <hr class="slds-m-around_x-small">
-                        <%}%>
-                        <a href="/user/signup">Registration</a>
-                    </form>
-                </div>
+                    </div>
+                    <div class="slds-form-element">
+                        <button class="slds-button slds-button_brand" type="Submit">Login</button>
+                    </div>
+                    <hr class="slds-m-around_x-small">
+                    <% if(errors.length > 0){ %>
+                    <ul>
+                        <% errors.forEach(function( err){ %>
+                        <li class="slds-text-color_error">
+                            <label>
+                                *
+                                <%= err.msg %>
+                            </label>
+                        </li>
+                        <% }) %>
+                    </ul>
+                    <hr class="slds-m-around_x-small">
+                    <%}%>
+                    <a href="/user/signup">Registration</a>
+                </form>
             </div>
+        </div>
         <!-- footer -->
         <footer>
             <% include ../../partials/footer %>

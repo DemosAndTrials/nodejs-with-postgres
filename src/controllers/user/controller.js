@@ -2,54 +2,65 @@ import UserModel from './model';
 import passport from 'passport';
 import bcrypt from 'bcrypt';
 
+/**
+ * Navigate to login page
+ */
 const loginPage = async (req, res) => {
     if (req.isAuthenticated()) { // user already logged in, send to profile
         console.log(req.user);
-        res.redirect('/user/profile', { userData: req.user });
-    } else if (req.method === 'GET') {
+        res.redirect('/user/profile', {
+            userData: req.user
+        });
+    } else {
         var errors = [];
         var user = {
             email: '',
             password: ''
-        };
+        }; // set all null??
         res.render('pages/user/login', {
             user,
-            errors
+            errors,
+            userData: null
         });
-    } else { // post
-        const body = req.body;
-        console.log(body);
-        // validation here
-        req.checkBody("email", "Enter a valid email address.").isEmail();
-        req.checkBody("password", "Password is required").notEmpty();
-
-        var errors = req.validationErrors();
-        console.log(errors);
-        if (errors) {
-            var user = {
-                email: body.email,
-                password: body.password
-            };
-            res.render('pages/user/login', {
-                user,
-                errors
-            });
-        } else { // normal processing here
-            console.log('OK');
-            res.render('pages/home');
-        }
-    }
+    } 
 }
 
 /**
  * Authenticate
+ * wrap passport.authenticate call in a middleware function
  */
-const authenticate = passport.authenticate('local-signup', {
-    successRedirect: '/home',
-    failureRedirect: '/user/login',
-    failureFlash: true
-})
+const login = (req, res, next) => {
+    const body = req.body;
+    console.log(body);
+    // validation here
+    req.checkBody("email", "Enter a valid email address.").isEmail();
+    req.checkBody("password", "Password is required").notEmpty();
 
+    var errors = req.validationErrors();
+    console.log(errors);
+    if (errors) {
+        var user = {
+            email: body.email,
+            password: body.password
+        };
+        res.render('pages/user/login', {
+            user,
+            errors,
+            userData : null
+        });
+    } else {
+        // call passport authentication passing the "local" strategy name and a callback function
+        passport.authenticate('local-signup', {
+            //successRedirect: '/home',
+            //failureRedirect: '/user/login',
+            failureFlash: true
+        })(req, res, next);
+    }
+}
+
+/**
+ * Authentication callback, finalize login
+ */
 const finalizeLogin = (req, res) => {
     console.log('finalizeLogin');
     if (req.body.remember) {
@@ -57,14 +68,11 @@ const finalizeLogin = (req, res) => {
     } else {
         req.session.cookie.expires = false; // Cookie expires at end of session
     }
-    //res.redirect('/');
-    res.render('pages/home');
+    res.redirect('/');
 }
 
 /**
  * Logout request
- * @param {*} req 
- * @param {*} res 
  */
 const logoutPage = (req, res) => {
     console.log('isAuthenticated ' + req.isAuthenticated());
@@ -74,6 +82,9 @@ const logoutPage = (req, res) => {
     res.redirect('/');
 }
 
+/**
+ * Navigate to signup page
+ */
 const signupPage = async (req, res) => {
 
     if (req.method === 'GET') {
@@ -86,7 +97,8 @@ const signupPage = async (req, res) => {
         };
         res.render('pages/user/signup', {
             user,
-            errors
+            errors,
+            userData : req.user
         });
     } else { // post
         const body = req.body;
@@ -116,7 +128,8 @@ const signupPage = async (req, res) => {
             console.log(user);
             res.render('pages/user/signup', {
                 user,
-                errors
+                errors,
+                userData : null
             });
             console.log('Error');
             return;
@@ -138,7 +151,8 @@ const signupPage = async (req, res) => {
                 console.log(user);
                 res.render('pages/user/signup', {
                     user,
-                    errors
+                    errors,
+                    userData : null
                 });
             } else { // create new user
                 body.password = await bcrypt.hash(body.password, 5);
@@ -151,16 +165,21 @@ const signupPage = async (req, res) => {
                 };
                 res.render('pages/user/login', {
                     user,
-                    errors
+                    errors,
+                    userData : null
                 });
             }
         }
     }
 }
 
+/**
+ * Profile
+ */
 const profilePage = (req, res) => {
-    //console.log(req);
-    res.render('pages/user/profile');
+    res.render('pages/user/profile', {
+        userData: req.user
+    });
 }
 
 const createUser2 = async (req, res) => {
@@ -198,10 +217,10 @@ const getUsers = async (req, res) => {
 
 export {
     loginPage,
-    authenticate,
+    login,
     finalizeLogin,
     logoutPage,
     signupPage,
     profilePage,
-    getUsers
+    getUsers,
 }
