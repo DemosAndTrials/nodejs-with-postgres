@@ -1,0 +1,41 @@
+<html>
+
+<head>
+    <title>home page</title>
+    <% include ../partials/head %>
+</head>
+
+<body>
+    <header>
+        <% include ../partials/header %>
+    </header>
+
+    <div class="slds-shrink-none">
+        <div class="slds-page-header">
+            <h2 class="slds-text-heading--medium">
+                Oops something wrong...
+            </h2>
+        </div>
+    </div>
+
+    <div class="slds-scoped-notification slds-media slds-media_center slds-m-vertical_large" role="status">
+            <div class="slds-media__figure">
+              <span class="slds-icon_container slds-icon-utility-info" title="information">
+                <svg class="slds-icon slds-icon_small slds-icon-text-default" aria-hidden="true">
+                  <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#info" />
+                </svg>
+                <span class="slds-assistive-text">Error</span>
+              </span>
+            </div>
+            <div class="slds-media__body">
+              <p>Cannot find <a href="javascript:void(0);"><%= url %></a></p>
+            </div>
+          </div>
+
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
+
+</body>
+
+</html>
