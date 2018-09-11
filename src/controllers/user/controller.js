@@ -62,7 +62,7 @@ const login = (req, res, next) => {
  * Authentication callback, finalize login
  */
 const finalizeLogin = (req, res) => {
-    console.log('finalizeLogin');
+    console.log('user logged in');
     if (req.body.remember) {
         req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // Cookie expires after 30 days
     } else {

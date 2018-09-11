@@ -1,12 +1,11 @@
 // load all the things we need
 var LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcrypt');
-
+import bcrypt from 'bcrypt';
 // load up the user model
 import UserModel from '../controllers/user/model';
 
 // expose this function to our app using module.exports
-module.exports = function (passport) {
+const config = (passport) => {
 
     // =========================================================================
     // passport session setup ==================================================
@@ -46,7 +45,6 @@ module.exports = function (passport) {
                                 console.log('Error while checking password: ' + err);
                                 return done();
                             } else if (check) {
-                                console.log('check: ' + JSON.stringify(user));
                                 return done(null, {
                                     email: user.email,
                                     name: user.name
@@ -68,3 +66,54 @@ module.exports = function (passport) {
         }
     ))
 };
+
+/**
+ * 
+ */
+const isAuthenticated = (req, res, next) => {
+    // do any checks you want to in here
+    console.log('isAuthenticated: ' + JSON.stringify(req.user));
+    console.log('request originalUrl: ' + req.originalUrl);
+    //console.log('request baseUrl: ' + req.baseUrl);
+    //console.log('request url: ' + req.url);
+    //user: { email: 'm01@mail.com', name: 'Ros01' }
+
+    if (req.isAuthenticated()) {
+        if (notForAuthRoutes.includes(req.originalUrl)) {
+            console.log('notForAuthRoutes: ' + req.url);
+            return res.redirect('/user/profile');
+        }
+    } else {
+        if (authRoutes.includes(req.originalUrl)) {
+            // only authenticated users can access this url
+            console.log('authRoutes: ' + req.url);
+            return res.redirect('/user/login'); // TODO pass url?
+        }
+    }
+    return next();
+}
+
+/**
+ * Routes allowed for authenticated users only
+ */
+const authRoutes = [
+    '/user/profile',
+    '/admin',
+    '_name_3',
+    '_name_4'
+]
+
+/**
+ * Routes restricted for authenticated users
+ */
+const notForAuthRoutes = [
+    '/user/signup',
+    '/user/login',
+    '_name_3',
+    '_name_4'
+]
+
+export {
+    config,
+    isAuthenticated
+}

@@ -1,8 +1,5 @@
 const homePage = (req, res) => {
-    console.log(req.isAuthenticated());
-    if (req.isAuthenticated())
-        console.log(req.user);
-    res.render('pages/home' , { userData: req.user, name:'test50' });
+    res.render('pages/home' , { userData: req.user });
 }
 
 const aboutPage = (req, res) => {
