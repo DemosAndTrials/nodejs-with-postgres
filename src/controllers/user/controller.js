@@ -1,6 +1,6 @@
 import UserModel from './model';
 import passport from 'passport';
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 
 /**
  * Navigate to login page
@@ -52,7 +52,7 @@ const login = (req, res, next) => {
         // call passport authentication passing the "local" strategy name and a callback function
         passport.authenticate('local-signup', {
             //successRedirect: '/home',
-            //failureRedirect: '/user/login',
+            failureRedirect: '/user/login',
             failureFlash: true
         })(req, res, next);
     }
@@ -155,7 +155,7 @@ const signupPage = async (req, res) => {
                     userData : null
                 });
             } else { // create new user
-                body.password = await bcrypt.hash(body.password, 5);
+                body.password = await bcryptjs.hash(body.password, 5);
                 const user = await UserModel.createUser(body);
                 console.log(user);
                 var errors = [];

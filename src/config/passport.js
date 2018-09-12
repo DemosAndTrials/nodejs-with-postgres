@@ -1,6 +1,6 @@
 // load all the things we need
 var LocalStrategy = require('passport-local').Strategy;
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 // load up the user model
 import UserModel from '../controllers/user/model';
 
@@ -40,7 +40,7 @@ const config = (passport) => {
                     const user = await UserModel.getUser(username);
                     // TODO get role
                     if (user !== undefined) {
-                        bcrypt.compare(password, user.password, function (err, check) {
+                        bcryptjs.compare(password, user.password, function (err, check) {
                             if (err) {
                                 console.log('Error while checking password: ' + err);
                                 return done();
