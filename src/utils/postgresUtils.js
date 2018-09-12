@@ -1,3 +1,4 @@
+import 'regenerator-runtime/runtime';
 import pg from 'pg';
 
 const SCHEMA = 'public';
