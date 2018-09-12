@@ -8,18 +8,15 @@ import bcryptjs from 'bcryptjs';
 const loginPage = async (req, res) => {
     if (req.isAuthenticated()) { // user already logged in, send to profile
         console.log(req.user);
-        res.redirect('/user/profile', {
-            userData: req.user
-        });
+        res.redirect('/user/profile');
     } else {
-        var errors = [];
         var user = {
             email: '',
             password: ''
-        }; // set all null??
+        };
         res.render('pages/user/login', {
             user,
-            errors,
+            errors: [],
             userData: null
         });
     } 
@@ -88,7 +85,6 @@ const logoutPage = (req, res) => {
 const signupPage = async (req, res) => {
 
     if (req.method === 'GET') {
-        var errors = [];
         var user = {
             name: '',
             lastname: '',
@@ -97,7 +93,7 @@ const signupPage = async (req, res) => {
         };
         res.render('pages/user/signup', {
             user,
-            errors,
+            errors : [],
             userData : req.user
         });
     } else { // post
@@ -111,9 +107,7 @@ const signupPage = async (req, res) => {
         //req.checkBody("lastname", "First Name must be at least 2 characters").isLength({ min: 2 });
         req.checkBody("email", "Enter a valid email address.").isEmail();
         req.checkBody("password", "Password is required").notEmpty();
-        req.checkBody("password", "Password must be at least 6 characters").isLength({
-            min: 6
-        });
+        req.checkBody("password", "Password must be at least 6 characters").isLength({ min: 6 });
 
         var errors = req.validationErrors();
         console.log(errors);
@@ -135,9 +129,8 @@ const signupPage = async (req, res) => {
             return;
         } else { // normal processing here
             console.log('OK');
-
             const userExists = await UserModel.getUser(body.email);
-            //console.log(userExists);
+            console.log('userExists:' + userExists);
             if (userExists !== undefined) {
                 // email already registered
                 // error
@@ -148,26 +141,18 @@ const signupPage = async (req, res) => {
                     password: body.password
                 };
                 var errors = [];
+                errors.push({param: "inputEmail", msg: "Email address already registered", value: req.body.email});
                 console.log(user);
                 res.render('pages/user/signup', {
                     user,
-                    errors,
+                    errors : errors,
                     userData : null
                 });
             } else { // create new user
                 body.password = await bcryptjs.hash(body.password, 5);
                 const user = await UserModel.createUser(body);
                 console.log(user);
-                var errors = [];
-                var user = {
-                    email: '',
-                    password: ''
-                };
-                res.render('pages/user/login', {
-                    user,
-                    errors,
-                    userData : null
-                });
+                res.redirect('/user/login');
             }
         }
     }
