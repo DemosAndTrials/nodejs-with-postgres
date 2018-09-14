@@ -7,8 +7,10 @@ import { isAuthenticated } from '../config/passport';
 
 const routes = new Router();
 
-routes.use('/user', UserRoutes);
+// limited access
+routes.use('/user', isAuthenticated, UserRoutes);
 routes.use('/admin', isAuthenticated, AdminRoutes);
+// public access
 routes.use('/account', AccountRoutes);
 routes.use('/', HomeRoutes);
 
