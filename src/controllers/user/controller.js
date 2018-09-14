@@ -1,4 +1,4 @@
-import UserModel from './model';
+import UserModel from '../../models/user';
 import passport from 'passport';
 import bcryptjs from 'bcryptjs';
 

@@ -2,7 +2,7 @@
 var LocalStrategy = require('passport-local').Strategy;
 import bcryptjs from 'bcryptjs';
 // load up the user model
-import UserModel from '../controllers/user/model';
+import UserModel from '../models/user';
 
 // expose this function to our app using module.exports
 const config = (passport) => {

@@ -1,13 +1,12 @@
-import { getConnection } from '../../utils/postgresUtils';
+import { getConnection } from '../utils/postgresUtils';
 
-class AdminModel {
+class AccountModel {
 
     constructor() {
         this.TABLE_NAME = 'account';
     }
 
     async createTable() {
-
         const client = await getConnection();
 
         const query = `CREATE TABLE ${this.TABLE_NAME}(
@@ -26,7 +25,6 @@ class AdminModel {
     }
 
     async createAccount(args) {
-
         const client = await getConnection();
 
         const query = `INSERT INTO ${this.TABLE_NAME}(name)
@@ -38,29 +36,14 @@ class AdminModel {
         return rows[0];
     }
 
-    async getUsers() {
-
-        const client = getConnection();
-        // use join with role
-        const query = `SELECT u.id, u.active, u.email, u.name, u.last_name, ur.role_id, r.role
-                       FROM "user" u
-                       INNER JOIN user_role ur ON u.id = ur.user_id
-                       INNER JOIN "role" r ON ur.role_id = r.id`
-        const { rows } = await client.query(query);// `SELECT * FROM "user"`
-        await client.end();
-console.log(rows);
-        return rows;
-    }
-
-    async getRoles() {
-
+    async getAccounts() {
         const client = getConnection();
 
-        const { rows } = await client.query(`SELECT * FROM "role"`);
+        const { rows } = await client.query(`SELECT * FROM ${this.TABLE_NAME}`);
         await client.end();
 
         return rows;
     }
 }
 
-export default new AdminModel();
+export default new AccountModel();
