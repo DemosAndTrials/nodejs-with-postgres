@@ -1,0 +1,78 @@
+<html>
+
+<head>
+    <title>Roles page</title>
+    <% include ../../partials/head %>
+</head>
+
+<body>
+    <header>
+        <% include ../../partials/header %>
+    </header>
+
+    <div class="slds-shrink-none">
+        <div class="slds-page-header">
+            <h2 class="slds-text-heading--medium">Roles</h2>
+        </div>
+    </div>
+
+    <div class="slds-m-horizontal_small">
+        <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal">
+            <thead>
+                <tr class="slds-line-height_reset">
+                    <th class="slds-text-title_caps" scope="col">
+                        <div class="slds-truncate" title="ID">ID</div>
+                    </th>
+                    <th class="slds-text-title_caps" scope="col">
+                        <div class="slds-truncate" title="First Name">Role Name</div>
+                    </th>
+                    <th class="slds-text-title_caps" scope="col">
+                        <div class="slds-truncate" title="Contact">Actions</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <% roles.forEach(function(role) { %>
+                <tr class="slds-hint-parent">
+                    <th data-label="ID" scope="row">
+                        <div class="slds-truncate" title="id">
+                            <%= role.id %>
+                        </div>
+                    </th>
+                    <td data-label="First name">
+                        <div class="slds-truncate" title="name">
+                            <%= role.role %>
+                        </div>
+                    </td>
+                    <td class="slds-cell-shrink" data-label="Select Row">
+                        <div class="slds-checkbox">
+                            <input type="checkbox" name="options" id="checkbox-<%= role.id %>" aria-labelledby="check-button-label-02 check-group-header"
+                                value="checkbox-<%= role.id %>" />
+                            <label class="slds-checkbox__label" for="checkbox-<%= role.id %>" id="check-button-label-<%= role.id %>">
+                                <span class="slds-checkbox_faux"></span>
+                                <span class="slds-form-element__label slds-assistive-text">Select item 2</span>
+                            </label>
+                        </div>
+                        <button id="deleteBtn_<%= role.id %>" th:name="<%= role.id %>" class="slds-button slds-button_icon slds-button_icon-error"
+                            aria-pressed="false" title="Delete">
+                            <svg class="slds-button__icon" aria-hidden="true">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/slds/icons/utility-sprite/svg/symbols.svg#delete"></use>
+                            </svg>
+                            <span class="slds-assistive-text">Delete</span>
+                        </button>
+                    </td>
+                </tr>
+                <% }); %>
+
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        <% include ../../partials/footer %>
+    </footer>
+
+</body>
+
+</html>

@@ -74,6 +74,7 @@ class UserModel {
     async getUser(email) {
         console.log(email);
         const client = getConnection();
+        // use join with role
         const { rows } = await client.query(`SELECT * FROM "${this.TABLE_NAME}" WHERE email = '${email}'`);
         await client.end();
 
@@ -83,7 +84,7 @@ class UserModel {
     async getUsers() {
 
         const client = getConnection();
-
+        // use join with role
         const { rows } = await client.query(`SELECT * FROM "${this.TABLE_NAME}"`);
         await client.end();
 

@@ -98,7 +98,7 @@ const isAuthenticated = (req, res, next) => {
  */
 const authRoutes = [
     '/user/profile',
-    '/admin',
+    '/admin/',
     '_name_3',
     '_name_4'
 ]

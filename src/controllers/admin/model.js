@@ -38,11 +38,25 @@ class AdminModel {
         return rows[0];
     }
 
-    async getAccounts() {
+    async getUsers() {
+
+        const client = getConnection();
+        // use join with role
+        const query = `SELECT u.id, u.active, u.email, u.name, u.last_name, ur.role_id, r.role
+                       FROM "user" u
+                       INNER JOIN user_role ur ON u.id = ur.user_id
+                       INNER JOIN "role" r ON ur.role_id = r.id`
+        const { rows } = await client.query(query);// `SELECT * FROM "user"`
+        await client.end();
+console.log(rows);
+        return rows;
+    }
+
+    async getRoles() {
 
         const client = getConnection();
 
-        const { rows } = await client.query(`SELECT * FROM ${this.TABLE_NAME}`);
+        const { rows } = await client.query(`SELECT * FROM "role"`);
         await client.end();
 
         return rows;
