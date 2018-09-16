@@ -1,4 +1,4 @@
-import { getConnection } from '../../utils/postgresUtils';
+import { getConnection } from '../utils/postgresUtils';
 
 class AccountModel {
 
@@ -7,7 +7,6 @@ class AccountModel {
     }
 
     async createTable() {
-
         const client = await getConnection();
 
         const query = `CREATE TABLE ${this.TABLE_NAME}(
@@ -26,7 +25,6 @@ class AccountModel {
     }
 
     async createAccount(args) {
-
         const client = await getConnection();
 
         const query = `INSERT INTO ${this.TABLE_NAME}(name)
@@ -39,7 +37,6 @@ class AccountModel {
     }
 
     async getAccounts() {
-
         const client = getConnection();
 
         const { rows } = await client.query(`SELECT * FROM ${this.TABLE_NAME}`);

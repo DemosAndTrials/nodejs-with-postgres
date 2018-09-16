@@ -1,4 +1,4 @@
-import UserModel from './model';
+import UserModel from '../../models/user';
 import passport from 'passport';
 import bcryptjs from 'bcryptjs';
 
@@ -6,6 +6,7 @@ import bcryptjs from 'bcryptjs';
  * Navigate to login page
  */
 const loginPage = async (req, res) => {
+    console.log(req.param('err'));
     if (req.isAuthenticated()) { // user already logged in, send to profile
         console.log(req.user);
         res.redirect('/user/profile');
@@ -29,17 +30,14 @@ const loginPage = async (req, res) => {
 const login = (req, res, next) => {
     const body = req.body;
     console.log(body);
+    var user = body.user;
     // validation here
-    req.checkBody("email", "Enter a valid email address.").isEmail();
-    req.checkBody("password", "Password is required").notEmpty();
+    req.checkBody("user.email", "Enter a valid email address.").isEmail();
+    req.checkBody("user.password", "Password is required").notEmpty();
 
     var errors = req.validationErrors();
     console.log(errors);
     if (errors) {
-        var user = {
-            email: body.email,
-            password: body.password
-        };
         res.render('pages/user/login', {
             user,
             errors,
@@ -49,7 +47,7 @@ const login = (req, res, next) => {
         // call passport authentication passing the "local" strategy name and a callback function
         passport.authenticate('local-signup', {
             //successRedirect: '/home',
-            failureRedirect: '/user/login',
+            failureRedirect: '/user/login?err=notfound',
             failureFlash: true
         })(req, res, next);
     }
@@ -97,28 +95,21 @@ const signupPage = async (req, res) => {
             userData : req.user
         });
     } else { // post
-        const body = req.body;
-        console.log(body);
+        const user = req.body.user;
+        console.log(user);
 
         // validation here
-        req.checkBody("name", "First Name is required").notEmpty();
-        //req.checkBody("name", "First Name must be at least 2 characters").isLength({ min: 2 });
-        req.checkBody("lastname", "Last Name is required").notEmpty();
-        //req.checkBody("lastname", "First Name must be at least 2 characters").isLength({ min: 2 });
-        req.checkBody("email", "Enter a valid email address.").isEmail();
-        req.checkBody("password", "Password is required").notEmpty();
-        req.checkBody("password", "Password must be at least 6 characters").isLength({ min: 6 });
+        req.checkBody("user.name", "First Name is required").notEmpty();
+        //req.checkBody("user.name", "First Name must be at least 2 characters").isLength({ min: 2 });
+        req.checkBody("user.lastname", "Last Name is required").notEmpty();
+        //req.checkBody("user.lastname", "First Name must be at least 2 characters").isLength({ min: 2 });
+        req.checkBody("user.email", "Enter a valid email address.").isEmail();
+        req.checkBody("user.password", "Password is required").notEmpty();
+        req.checkBody("user.password", "Password must be at least 6 characters").isLength({ min: 6 });
 
         var errors = req.validationErrors();
         console.log(errors);
-        if (errors) {
-            //res.send(errors);
-            var user = {
-                name: body.name,
-                lastname: body.lastname,
-                email: body.email,
-                password: body.password
-            };
+        if (errors) {;
             console.log(user);
             res.render('pages/user/signup', {
                 user,
@@ -129,19 +120,13 @@ const signupPage = async (req, res) => {
             return;
         } else { // normal processing here
             console.log('OK');
-            const userExists = await UserModel.getUser(body.email);
+            const userExists = await UserModel.getUser(user.email);
             console.log('userExists:' + userExists);
             if (userExists !== undefined) {
                 // email already registered
-                // error
-                var user = {
-                    name: body.name,
-                    lastname: body.lastname,
-                    email: body.email,
-                    password: body.password
-                };
+                // error;
                 var errors = [];
-                errors.push({param: "inputEmail", msg: "Email address already registered", value: req.body.email});
+                errors.push({param: "inputEmail", msg: "Email address already registered", value: user.email});
                 console.log(user);
                 res.render('pages/user/signup', {
                     user,
@@ -149,9 +134,9 @@ const signupPage = async (req, res) => {
                     userData : null
                 });
             } else { // create new user
-                body.password = await bcryptjs.hash(body.password, 5);
-                const user = await UserModel.createUser(body);
-                console.log(user);
+                user.password = await bcryptjs.hash(user.password, 5);
+                const savedUser = await UserModel.createUser(user);
+                console.log(savedUser);
                 res.redirect('/user/login');
             }
         }

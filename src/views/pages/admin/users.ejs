@@ -1,0 +1,102 @@
+<html>
+
+<head>
+    <title>Users page</title>
+    <% include ../../partials/head %>
+</head>
+
+<body>
+    <header>
+        <% include ../../partials/header %>
+    </header>
+    <!-- Title -->
+    <div class="slds-shrink-none">
+        <div class="slds-page-header">
+            <h2 class="slds-text-heading--medium">Users</h2>
+        </div>
+    </div>
+
+    <div class="slds-m-horizontal_small">
+        <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal">
+            <thead>
+                <tr class="slds-line-height_reset">
+                    <th class="slds-text-title_caps" scope="col">
+                        <div class="slds-truncate" title="ID">ID</div>
+                    </th>
+                    <th class="slds-text-title_caps" scope="col">
+                        <div class="slds-truncate" title="First Name">First Name</div>
+                    </th>
+                    <th class="slds-text-title_caps" scope="col">
+                        <div class="slds-truncate" title="Last Date">Last Date</div>
+                    </th>
+                    <th class="slds-text-title_caps" scope="col">
+                        <div class="slds-truncate" title="E-mail">E-mail</div>
+                    </th>
+                    <th class="slds-text-title_caps" scope="col">
+                        <div class="slds-truncate" title="Active">Active</div>
+                    </th>
+                    <th class="slds-text-title_caps" scope="col">
+                        <div class="slds-truncate" title="Roles">Roles</div>
+                    </th>
+                    <th class="slds-text-title_caps" scope="col">
+                        <div class="slds-truncate" title="Actions">Actions</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <% users.forEach(function(user) { %>
+                <tr class="slds-hint-parent">
+                    <th data-label="ID" scope="row">
+                        <div class="slds-truncate" title="id">
+                            <%= user.id %>
+                        </div>
+                    </th>
+                    <td data-label="First name">
+                        <div class="slds-truncate" title="name">
+                            <%= user.name %>
+                        </div>
+                    </td>
+                    <td data-label="Last name">
+                        <div class="slds-truncate" title="Last name">
+                            <%= user.last_name %>
+                        </div>
+                    </td>
+                    <td data-label="Email">
+                        <div class="slds-truncate" title="Email">
+                            <%= user.email %>
+                        </div>
+                    </td>
+                    <td data-label="Active">
+                        <div class="slds-truncate" title="Active">
+                            <%= user.active %>
+                        </div>
+                    </td>
+                    <td data-label="Role">
+                        <div class="slds-truncate" title="Role">
+                            <%= user.role %>
+                        </div>
+                    </td>
+                    <td class="slds-cell-shrink" data-label="Actions">
+                        <button id="deleteBtn_<%= user.id %>" th:name="<%= user.id %>" class="slds-button slds-button_icon slds-button_icon-error"
+                            aria-pressed="false" title="Delete">
+                            <svg class="slds-button__icon" aria-hidden="true">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/slds/icons/utility-sprite/svg/symbols.svg#delete"></use>
+                            </svg>
+                            <span class="slds-assistive-text">Delete</span>
+                        </button>
+                    </td>
+                </tr>
+                <% }); %>
+
+            </tbody>
+        </table>
+    </div>
+    <!-- Footer -->
+    <footer>
+        <% include ../../partials/footer %>
+    </footer>
+
+</body>
+
+</html>

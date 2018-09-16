@@ -2,7 +2,7 @@
 var LocalStrategy = require('passport-local').Strategy;
 import bcryptjs from 'bcryptjs';
 // load up the user model
-import UserModel from '../controllers/user/model';
+import UserModel from '../models/user';
 
 // expose this function to our app using module.exports
 const config = (passport) => {
@@ -29,8 +29,8 @@ const config = (passport) => {
     // we are using named strategies since we have one for login and one for signup
     // by default, if there was no name, it would just be called 'local'
     passport.use('local-signup', new LocalStrategy({
-            usernameField: 'email',
-            passwordField: 'password',
+            usernameField: 'user[email]',
+            passwordField: 'user[password]',
             passReqToCallback: true
         },
         (req, username, password, done) => {
@@ -47,7 +47,8 @@ const config = (passport) => {
                             } else if (check) {
                                 return done(null, {
                                     email: user.email,
-                                    name: user.name
+                                    name: user.name,
+                                    role: user.role
                                 });
                             } else {
                                 console.log('Incorrect login details.');
@@ -68,7 +69,10 @@ const config = (passport) => {
 };
 
 /**
- * 
+ * =========================================================================
+ * LIMIT ACCESS ============================================================
+ * =========================================================================
+ * Some pages can be accessed by authenticated users only 
  */
 const isAuthenticated = (req, res, next) => {
     // do any checks you want to in here
@@ -79,38 +83,41 @@ const isAuthenticated = (req, res, next) => {
     //user: { email: 'm01@mail.com', name: 'Ros01' }
 
     if (req.isAuthenticated()) {
+        // disable access
         if (notForAuthRoutes.includes(req.originalUrl)) {
             console.log('notForAuthRoutes: ' + req.url);
             return res.redirect('/user/profile');
         }
-    } else {
-        if (authRoutes.includes(req.originalUrl)) {
-            // only authenticated users can access this url
-            console.log('authRoutes: ' + req.url);
-            return res.redirect('/user/login'); // TODO pass url?
+        if (adminRoutes.includes(req.originalUrl) && req.user.role !== 'admin') {
+            console.log('adminRoutes: ' + req.url);
+            return res.redirect('/');
         }
+    } else {
+        // allow access 
+        if (notForAuthRoutes.includes(req.originalUrl)) {
+            return next();
+        }
+        // only authenticated users can access this url
+        console.log('authRoutes: ' + req.url);
+        return res.redirect('/user/login'); // TODO pass url?
     }
     return next();
 }
 
 /**
- * Routes allowed for authenticated users only
- */
-const authRoutes = [
-    '/user/profile',
-    '/admin',
-    '_name_3',
-    '_name_4'
-]
-
-/**
  * Routes restricted for authenticated users
  */
 const notForAuthRoutes = [
-    '/user/signup',
-    '/user/login',
-    '_name_3',
-    '_name_4'
+    '/user/signup', '/user/signup/',
+    '/user/login', '/user/login/'
+]
+
+/**
+ * Routes for admins only
+ */
+const adminRoutes = [
+    '/admin', '/admin/',
+    '/admin/index', '/admin/users'
 ]
 
 export {
