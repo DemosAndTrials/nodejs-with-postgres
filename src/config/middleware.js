@@ -8,7 +8,7 @@ require('../config/passport').config(passport); // pass passport for configurati
 
 export default app => {
     app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.urlencoded({ extended: true }));
     app.use(validator());
 
     app.use(cookieParser()); // read cookies (needed for auth)

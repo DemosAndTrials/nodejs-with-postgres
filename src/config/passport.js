@@ -29,8 +29,8 @@ const config = (passport) => {
     // we are using named strategies since we have one for login and one for signup
     // by default, if there was no name, it would just be called 'local'
     passport.use('local-signup', new LocalStrategy({
-            usernameField: 'email',
-            passwordField: 'password',
+            usernameField: 'user[email]',
+            passwordField: 'user[password]',
             passReqToCallback: true
         },
         (req, username, password, done) => {
@@ -47,7 +47,8 @@ const config = (passport) => {
                             } else if (check) {
                                 return done(null, {
                                     email: user.email,
-                                    name: user.name
+                                    name: user.name,
+                                    role: user.role
                                 });
                             } else {
                                 console.log('Incorrect login details.');
@@ -87,6 +88,10 @@ const isAuthenticated = (req, res, next) => {
             console.log('notForAuthRoutes: ' + req.url);
             return res.redirect('/user/profile');
         }
+        if (adminRoutes.includes(req.originalUrl) && req.user.role !== 'admin') {
+            console.log('adminRoutes: ' + req.url);
+            return res.redirect('/');
+        }
     } else {
         // allow access 
         if (notForAuthRoutes.includes(req.originalUrl)) {
@@ -105,6 +110,14 @@ const isAuthenticated = (req, res, next) => {
 const notForAuthRoutes = [
     '/user/signup', '/user/signup/',
     '/user/login', '/user/login/'
+]
+
+/**
+ * Routes for admins only
+ */
+const adminRoutes = [
+    '/admin', '/admin/',
+    '/admin/index', '/admin/users'
 ]
 
 export {
