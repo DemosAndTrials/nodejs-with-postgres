@@ -4,6 +4,7 @@ import { AdminRoutes } from './admin';
 import { AccountRoutes } from './account';
 import { HomeRoutes } from './home';
 import { isAuthenticated } from '../config/passport';
+import { CustomActivityRoutes } from './custom-activity';
 
 const routes = new Router();
 
@@ -13,5 +14,6 @@ routes.use('/admin', isAuthenticated, AdminRoutes);
 // public access
 routes.use('/account', AccountRoutes);
 routes.use('/', HomeRoutes);
+routes.use('/ca', CustomActivityRoutes);
 
 export default routes;
