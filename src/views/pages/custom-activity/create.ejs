@@ -42,36 +42,45 @@
                                 <div class="slds-form-element slds-size_1-of-1">
                                     <label class="slds-form-element__label" for="input-10">Key - Must match your
                                         activity key as defined when created in App Center.</label>
-                                    <input type="text" id="input-10" name="key" class="slds-input" maxlength="100" value="<%= config.key %>">
-                                    <% if(errors.length > 0 && errors.find(o => o.param === 'key')){ %>
-                                    <div class="slds-text-color_error" th:errors="*{Key}">
-                                        <%= errors.find(o => o.param === 'key').msg %>
+                                    <input type="text" id="input-10" name="config[key]" class="slds-input" maxlength="100"
+                                        value="<%= config.key %>">
+                                    <% if(errors.find(o => o.param === 'config.key')){ %>
+                                    <div class="slds-text-color_error">
+                                        <%= errors.find(o => o.param === 'config.key').msg %>
                                     </div>
                                     <%}%>
                                 </div>
                             </div>
-                            <input type="hidden" name="endpointUrl">
+                            <input type="hidden" name="config[endpoint_url]" value="<%= config.endpointUrl %>">
+                            <% if(!config.id){ %>
                             <div class="slds-form-element__row" th:if="${config.Id != null}">
                                 <div class="slds-form-element slds-size_1-of-1">
                                     <label class="slds-form-element__label" for="input-11">EndpointUrl - Endpoint used
                                         to execute the journey. (Populated automatically)</label>
-                                    <input type="text" disabled="" id="input-11" name="endpointUrl" class="slds-input"
+                                    <input type="text" disabled="" id="input-11" name="config[endpoint_url]" class="slds-input"
                                         placeholder="https://" value="<%= config.endpointUrl %>">
-                                        <% if(errors.length > 0 && errors.find(o => o.param === 'endpointUrl')){ %>
-                                    <div class="slds-text-color_error" th:errors="*{EndpointUrl}">Name Error
+                                    <% if(errors.find(o => o.param === 'config.endpointUrl')){ %>
+                                    <div class="slds-text-color_error">
+                                        <%= errors.find(o => o.param === 'config.endpointUrl').msg %>
                                     </div>
                                     <%}%>
                                 </div>
                             </div>
+                            <%}%>
                             <div class="slds-form-element__row">
                                 <div class="slds-form-element slds-size_1-of-1">
                                     <label class="slds-form-element__label" for="typeSelect">Type - String property
                                         representing the type of activity. This value must include one of the Marketing
                                         Cloud-provided types.</label>
                                     <div class="slds-select_container">
-                                        <select class="slds-select" id="typeSelect" name="type">
-                                            <option value="REST" <%= (config.typeSelect == 'REST')?' selected':'' %>>REST</option>
-                                            <option value="RESTDECISION" <%= (config.typeSelect == 'RESTDECISION')?' selected':'' %>>RESTDECISION</option>
+                                        <select class="slds-select" id="typeSelect" name="config[type]">
+                                            <option value="REST" <%=(config.type=='REST' )?' selected':'' %>>
+                                                REST
+                                            </option>
+                                            <option value="RESTDECISION" <%=(config.type=='RESTDECISION'
+                                                )?'selected':'' %>>
+                                                RESTDECISION
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -81,9 +90,13 @@
                                     <label class="slds-form-element__label" for="typeSelect">Encode Custom Activities
                                         Using a JWT</label>
                                     <div class="slds-select_container">
-                                        <select class="slds-select" id="useJwtSelect" name="useJwt">
-                                            <option value="false">FALSE</option>
-                                            <option value="true">TRUE</option>
+                                        <select class="slds-select" id="useJwtSelect" name="config[use_jwt]">
+                                            <option value="false" <%=(config.useJwtSelect=='false' )?' selected':'' %>>
+                                                FALSE
+                                            </option>
+                                            <option value="true" <%=(config.useJwtSelect=='true' )?' selected':'' %>>
+                                                TRUE
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -100,17 +113,20 @@
                                         (i.e.
                                         'Send Email', 'SMS', 'Create Salesforce Lead'), as shown in the activity
                                         list.</label>
-                                    <input type="text" id="input-21" name="name" class="slds-input" maxlength="100" value="<%= config.name %>">
-                                    <div class="slds-text-color_error" th:if="${#fields.hasErrors('EndpointUrl')}"
-                                        th:errors="*{Name}">Name Error
+                                    <input type="text" id="input-21" name="config[name]" class="slds-input" maxlength="100"
+                                        value="<%= config.name %>">
+                                    <% if(errors.find(o => o.param === 'config.name')){ %>
+                                    <div class="slds-text-color_error">
+                                        <%= errors.find(o => o.param === 'config.name').msg %>
                                     </div>
+                                    <%}%>
                                 </div>
                             </div>
                             <div class="slds-form-element__row">
                                 <div class="slds-form-element slds-size_1-of-1">
                                     <label class="slds-form-element__label" for="input-22">Description - Description of
                                         what the activity does and what purpose it fulfills.</label>
-                                    <input type="text" id="input-22" name="description" class="slds-input"
+                                    <input type="text" id="input-22" name="config[description]" class="slds-input"
                                         maxlength="255" value="<%= config.description %>">
                                 </div>
                             </div>
@@ -118,7 +134,7 @@
                                 <div class="slds-form-element slds-size_1-of-1">
                                     <label class="slds-form-element__label" for="input-23">Small Icon(15px) - String
                                         representing the small display icon for this activity.</label>
-                                    <input type="text" id="input-23" name="smallImageUrl" class="slds-input"
+                                    <input type="text" id="input-23" name="config[small_image_url]" class="slds-input"
                                         maxlength="255" placeholder="https://" value="<%= config.smallImageUrl %>">
                                 </div>
                             </div>
@@ -126,7 +142,7 @@
                                 <div class="slds-form-element slds-size_1-of-1">
                                     <label class="slds-form-element__label" for="input-24">Icon(40px) - String
                                         representing the icon for this activity.</label>
-                                    <input type="text" id="input-24" name="bigImageUrl" class="slds-input"
+                                    <input type="text" id="input-24" name="config[big_image_url]" class="slds-input"
                                         maxlength="255" placeholder="https://" value="<%= config.bigImageUrl %>">
                                 </div>
                             </div>
@@ -137,9 +153,13 @@
                                         activity is marked as configured when it is dropped on the canvas (required for
                                         activation)</label>
                                     <div class="slds-select_container">
-                                        <select class="slds-select" id="isConfigured" name="configured">
-                                            <option value="false">FALSE</option>
-                                            <option value="true">TRUE</option>
+                                        <select class="slds-select" id="isConfigured" name="config[is_configured]">
+                                            <option value="false" <%=(config.isConfigured=='false' )?' selected':'' %>>
+                                                FALSE
+                                            </option>
+                                            <option value="true" <%=(config.isConfigured=='true' )?' selected':'' %>>
+                                                TRUE
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -150,9 +170,13 @@
                                         the
                                         activity configuration opens when the activity is dropped on the canvas.</label>
                                     <div class="slds-select_container">
-                                        <select class="slds-select" id="configOnDrop" name="configOnDrop}">
-                                            <option value="false">FALSE</option>
-                                            <option value="true">TRUE</option>
+                                        <select class="slds-select" id="configOnDrop" name="config[config_on_drop]">
+                                            <option value="false" <%=(config.configOnDrop=='false' )?' selected':'' %>>
+                                                FALSE
+                                            </option>
+                                            <option value="true" <%=(config.configOnDrop=='true' )?' selected':'' %>>
+                                                TRUE
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -176,20 +200,24 @@
                                         of activity outcome</label>
                                 </div>
                             </div>
+                            <% for (var i = 0 ; i < config.splits.length ; i++) { %>
                             <div th:each="split,status : ${config.splits}" class="slds-form-element__row">
                                 <div class="slds-form-element slds-size_1-of-2">
-                                    <input type="text" th:field="*{splits[__${status.index}__].label}" th:value="${split.label}"
+                                    <input type="text" name="config[splits][<%= i %>][label]" value="<%= config.splits[i].label %>"
                                         class="slds-input" maxlength="50" placeholder="label">
                                 </div>
                                 <div class="slds-form-element slds-size_1-of-2">
-                                    <input type="text" th:field="*{splits[__${status.index}__].value}" th:value="${split.value}"
+                                    <input type="text" name="config[splits][<%= i %>][value]" value="<%= config.splits[i].value %>"
                                         class="slds-input" maxlength="50" placeholder="value">
                                 </div>
                             </div>
-                            <span id="splitPlaceholder" />
-                            <div class="slds-text-color_error" th:if="${#fields.hasErrors('splits')}" th:errors="*{splits}">Name
-                                Error
+                            <%}%>
+                            <span id="splitPlaceholder"></span>
+                            <% if(errors.find(o => o.param === 'config.splits')){ %>
+                            <div class="slds-text-color_error">
+                                <%= errors.find(o => o.param === 'config.splits').msg %>
                             </div>
+                            <%}%>
                             <a class="slds-button slds-button_stateful slds-button_neutral slds-not-selected slds-m-bottom_medium"
                                 aria-live="assertive" id="addSplitBtn">
                                 <span class="slds-text-not-selected">
@@ -215,16 +243,17 @@
                                     <label class="slds-form-element__label" for="input-41">EditUrl - Endpoint for the
                                         UI
                                         displayed to marketers while configuring this activity.</label>
-                                    <input type="text" id="input-41" name="editUrl" class="slds-input" maxlength="255"
-                                        placeholder="https://" value="<%= config.editUrl %>">
-                                    <div class="slds-text-color_error" th:if="${#fields.hasErrors('EditUrl')}"
-                                        th:errors="*{EditUrl}">Name Error
+                                    <input type="text" id="input-41" name="config[edit_url]" class="slds-input"
+                                        maxlength="255" placeholder="https://" value="<%= config.editUrl %>">
+                                    <% if(errors.find(o => o.param === 'config.editUrl')){ %>
+                                    <div class="slds-text-color_error">
+                                        <%= errors.find(o => o.param === 'config.editUrl').msg %>
                                     </div>
+                                    <%}%>
                                 </div>
                             </div>
 
                             <div id="stepsGroup" class="slds-form-element__group">
-
                                 <div class="slds-form-element__row slds-m-bottom_none slds-p-around_none">
                                     <div class="slds-form-element slds-size_1-of-2">
                                         <label class="slds-form-element__label">Label - the text displayed in the steps
@@ -235,20 +264,26 @@
                                             step</label>
                                     </div>
                                 </div>
+
+                                <% for (var i = 0 ; i < config.steps.length ; i++) { %>
                                 <div th:each="step,status : ${config.steps}" class="slds-form-element__row">
                                     <div class="slds-form-element slds-size_1-of-2">
-                                        <input type="text" th:field="*{steps[__${status.index}__].label}" th:value="${step.label}"
+                                        <input type="text" name="config[steps][<%= i %>][label]" value="<%= config.steps[i].label %>"
                                             class="slds-input" maxlength="50" placeholder="label">
                                     </div>
                                     <div class="slds-form-element slds-size_1-of-2">
-                                        <input type="text" th:field="*{steps[__${status.index}__].key}" th:value="${step.key}"
+                                        <input type="text" name="config[steps][<%= i %>][key]" value="<%= config.steps[i].key %>"
                                             class="slds-input" maxlength="50" placeholder="value">
                                     </div>
                                 </div>
-                                <span id="stepPlaceholder" />
-                                <div class="slds-text-color_error" th:if="${#fields.hasErrors('steps')}" th:errors="*{steps}">Name
-                                    Error
+                                <%}%>
+
+                                <span id="stepPlaceholder"></span>
+                                <% if(errors.find(o => o.param === 'config.steps')){ %>
+                                <div class="slds-text-color_error">
+                                    <%= errors.find(o => o.param === 'config.steps').msg %>
                                 </div>
+                                <%}%>
                                 <a class="slds-button slds-button_stateful slds-button_neutral slds-not-selected slds-m-bottom_medium"
                                     aria-live="assertive" id="addStepBtn">
                                     <span class="slds-text-not-selected">
@@ -269,21 +304,25 @@
                                 <div class="slds-form-element slds-size_1-of-2">
                                     <label class="slds-form-element__label" for="input-43">Height - Property that
                                         defines the height of the iframe containing the configuration UI.</label>
-                                    <input type="text" id="input-43" name="editHeight" class="slds-input"
+                                    <input type="text" id="input-43" name="config[edit_height]" class="slds-input"
                                         maxlength="5" value="<%= config.editHeight %>">
-                                    <div class="slds-text-color_error" th:if="${#fields.hasErrors('EditHeight')}"
-                                        th:errors="*{EditHeight}">Name Error
+                                    <% if(errors.find(o => o.param === 'config.editHeight')){ %>
+                                    <div class="slds-text-color_error">
+                                        <%= errors.find(o => o.param === 'config.editHeight').msg %>
                                     </div>
+                                    <%}%>
                                 </div>
                                 <div class="slds-form-element slds-size_1-of-2">
                                     <label class="slds-form-element__label" for="input-44">Width - Property that
                                         defines
                                         the width of the iframe containing the configuration UI.</label>
-                                    <input type="text" id="input-44" name="editWidth" class="slds-input"
+                                    <input type="text" id="input-44" name="config[edit_width]" class="slds-input"
                                         maxlength="5" value="<%= config.editWidth %>">
-                                    <div class="slds-text-color_error" th:if="${#fields.hasErrors('EditWidth')}"
-                                        th:errors="*{EditWidth}">Name Error
+                                    <% if(errors.find(o => o.param === 'config.editWidth')){ %>
+                                    <div class="slds-text-color_error">
+                                        <%= errors.find(o => o.param === 'config.editWidth').msg %>
                                     </div>
+                                    <%}%>
                                 </div>
                             </div>
                         </div>
@@ -299,13 +338,13 @@
                                     the top level of the config.json file and specifies schema information about in and
                                     out arguments.</label>
                             </div>
-
-                            <div th:each="arg,status : ${config.schemaArgs}">
+                            <% for (var i = 0 ; i < config.schemaArgs.length ; i++) { %>
+                            <div name="config[schemaArgs]">
 
                                 <div class="slds-form-element__row slds-border_top">
                                     <div class="slds-size_1-of-2">
                                         <label class="slds-form-element__label">Name</label>
-                                        <input type="text" th:field="*{schemaArgs[__${status.index}__].name}" th:value="${arg.name}"
+                                        <input type="text" name="config[schemaArgs][<%= i %>][name]" value="<%= config.schemaArgs[i].name %>"
                                             class="slds-input" maxlength="50" placeholder="value">
                                     </div>
                                 </div>
@@ -314,7 +353,7 @@
                                         <label class="slds-form-element__label">DataType</label>
                                         <div class="slds-form-element__control">
                                             <div class="slds-select_container">
-                                                <select class="slds-select" id="dataTypeSelect" th:field="*{schemaArgs[__${status.index}__].dataType}">
+                                                <select class="slds-select" id="dataTypeSelect" name="config[schemaArgs][<%= i %>][dataType]">
                                                     <option value="Text">Text</option>
                                                     <option value="Number">Number</option>
                                                     <option value="Date">Date</option>
@@ -328,7 +367,7 @@
                                         <label class="slds-form-element__label">IsNullable</label>
                                         <div class="slds-form-element__control">
                                             <div class="slds-select_container">
-                                                <select class="slds-select" id="isNullableSelect" th:field="*{schemaArgs[__${status.index}__].isNullable}">
+                                                <select class="slds-select" id="isNullableSelect" name="config[schemaArgs][<%= i %>][dataType][isNullable]">
                                                     <option value="false">false</option>
                                                     <option value="true">true</option>
                                                 </select>
@@ -342,7 +381,7 @@
                                         <label class="slds-form-element__label">Direction</label>
                                         <div class="slds-form-element__control">
                                             <div class="slds-select_container">
-                                                <select class="slds-select" id="directionSelect" th:field="*{schemaArgs[__${status.index}__].direction}">
+                                                <select class="slds-select" id="directionSelect" name="config[schemaArgs][<%= i %>][dataType][direction]">
                                                     <option value="in">in</option>
                                                     <option value="out">out</option>
                                                 </select>
@@ -353,7 +392,7 @@
                                         <label class="slds-form-element__label">Access</label>
                                         <div class="slds-form-element__control">
                                             <div class="slds-select_container">
-                                                <select class="slds-select" id="accessSelect" th:field="*{schemaArgs[__${status.index}__].access}">
+                                                <select class="slds-select" id="accessSelect" name="config[schemaArgs][<%= i %>][access]">
                                                     <option value="visible">visible</option>
                                                     <option value="hidden">hidden</option>
                                                 </select>
@@ -363,11 +402,14 @@
                                 </div>
 
                             </div>
+                            <%}%>
 
-                            <span id="schemaArgsPlaceholder" />
-                            <div class="slds-text-color_error" th:if="${#fields.hasErrors('schemaArgs')}" th:errors="*{schemaArgs}">Name
-                                Error
+                            <span id="schemaArgsPlaceholder"></span>
+                            <% if(errors.find(o => o.param === 'config.schemaArgs')){ %>
+                            <div class="slds-text-color_error">
+                                <%= errors.find(o => o.param === 'config.schemaArgs').msg %>
                             </div>
+                            <%}%>
                             <a class="slds-button slds-button_stateful slds-button_neutral slds-not-selected slds-m-bottom_medium"
                                 aria-live="assertive" id="addSchemaArgBtn">
                                 <span class="slds-text-not-selected">
@@ -389,9 +431,9 @@
                 <div class="slds-form-element">
                     <br>
                     <div class="slds-button-group" role="group">
-                        <button id="saveBtn" class="slds-button slds-button_brand" name="action" value="save">Submit
+                        <button id="saveBtn" class="slds-button slds-button_brand" value="save">Submit
                         </button>
-                        <button class="slds-button slds-button_destructive" name="action" value="cancel">Cancel</button>
+                        <button class="slds-button slds-button_destructive" value="cancel">Cancel</button>
                     </div>
                 </div>
 
@@ -421,10 +463,10 @@
     <div id="templateInputsRow" style="display: none">
         <div id="tempRow" class="slds-form-element__row">
             <div class="slds-form-element slds-size_1-of-2">
-                <input class="slds-input" placeholder="label" type="text" id="tempLabel" maxlength="50" name="splits[1].label">
+                <input class="slds-input" placeholder="label" type="text" id="tempLabel" maxlength="50" name="config[splits][1][label]">
             </div>
             <div class="slds-form-element slds-size_1-of-2">
-                <input class="slds-input" placeholder="value" type="text" id="tempValue" maxlength="50" name="splits[1].value">
+                <input class="slds-input" placeholder="value" type="text" id="tempValue" maxlength="50" name="config[splits][1][value]">
             </div>
         </div>
     </div>
@@ -495,9 +537,9 @@
         </div>
     </div>
 
-    <input type="hidden" id="numOfSplits" name="numOfSplits" value="1"/>
-    <input type="hidden" id="numOfSteps" name="numOfSteps" value="1"/>
-    <input type="hidden" id="numOfSchemaArgs" name="numOfSchemaArgs" value="1"/>
+    <input type="hidden" id="numOfSplits" name="numOfSplits" value="<%= config.splits.length %>" />
+    <input type="hidden" id="numOfSteps" name="numOfSteps" value="<%= config.steps.length %>" />
+    <input type="hidden" id="numOfSchemaArgs" name="numOfSchemaArgs" value="<%= config.schemaArgs.length %>" />
 
     <!-- <script src="/webjars/jquery/1.9.1/jquery.min.js"></script> -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="

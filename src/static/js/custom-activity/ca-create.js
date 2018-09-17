@@ -2,9 +2,9 @@ j$ = jQuery.noConflict();
 
 j$(document).ready(function () {
 
-    numOfSplits = j$('#numOfSplits').val();
-    numOfSteps = j$('#numOfSteps').val();
-    numOfSchemaArgs = j$('#numOfSchemaArgs').val();
+    numOfSplits = Number(j$('#numOfSplits').val());
+    numOfSteps = Number(j$('#numOfSteps').val());
+    numOfSchemaArgs = Number(j$('#numOfSchemaArgs').val());
 
 
     handleType(j$("#typeSelect").val());
@@ -175,11 +175,11 @@ function createSplitTemplate() {
     var temp = j$("#templateInputsRow div.slds-form-element__row").clone();
     var lbl = temp.find('#tempLabel');
     lbl.attr("id", "splits" + numOfSplits + ".label");
-    lbl.attr("name", "splits[" + numOfSplits + "].label");
+    lbl.attr("name", "config[splits][" + numOfSplits + "][label]");
     lbl.val("label path " + (numOfSplits + 1));
     var val = temp.find('#tempValue');
     val.attr("id", "splits" + numOfSplits + ".value");
-    val.attr("name", "splits[" + numOfSplits + "].value");
+    val.attr("name", "config[splits][" + numOfSplits + "][value]");
     val.val("key_path_" + (numOfSplits + 1));
     numOfSplits++;
     console.log(numOfSplits);
@@ -189,16 +189,17 @@ function createSplitTemplate() {
 
 /**
  * Add step template
+ * config[step][1][value]
  */
 function createStepTemplate() {
     var temp = j$("#templateInputsRow div.slds-form-element__row").clone();
     var lbl = temp.find('#tempLabel');
     lbl.attr("id", "steps" + numOfSteps + ".label");
-    lbl.attr("name", "steps[" + numOfSteps + "].label");
+    lbl.attr("name", "config[steps][" + numOfSteps + "][label]");
     lbl.val("Step " + (numOfSteps + 1));
     var val = temp.find('#tempValue');
     val.attr("id", "steps" + numOfSteps + ".key");
-    val.attr("name", "steps[" + numOfSteps + "].key");
+    val.attr("name", "config[steps][" + numOfSteps + "][key]");
     val.val("step_" + (numOfSteps + 1));
     numOfSteps++;
     console.log(numOfSteps);
@@ -213,24 +214,24 @@ function createSchemaArgTemplate() {
     var temp = j$("#templateSchemaArgs div.template").clone();
     var argName = temp.find('#tempArgName');
     //argName.attr("id", "schemaArgs" + numOfSchemaArgs + ".name");
-    argName.attr("name", "schemaArgs[" + numOfSchemaArgs + "].name");
+    argName.attr("name", "config[schemaArgs][" + numOfSchemaArgs + "][name]");
     argName.val("Argument_" + (numOfSchemaArgs + 1));
 
     var argDataType = temp.find('#tempArgDataType');
     //argDataType.attr("id", "schemaArgs" + numOfSchemaArgs + ".dataType");
-    argDataType.attr("name", "schemaArgs[" + numOfSchemaArgs + "].dataType");
+    argDataType.attr("name", "config[schemaArgs][" + numOfSchemaArgs + "][dataType]");
 
     var argIsNullable = temp.find('#tempArgIsNullable');
     //argIsNullable.attr("id", "schemaArgs" + numOfSchemaArgs + ".isNullable");
-    argIsNullable.attr("name", "schemaArgs[" + numOfSchemaArgs + "].isNullable");
+    argIsNullable.attr("name", "config[schemaArgs][" + numOfSchemaArgs + "][isNullable]");
 
     var argDirection = temp.find('#tempArgDirection');
     //argIsNullable.attr("id", "schemaArgs" + numOfSchemaArgs + ".direction");
-    argDirection.attr("name", "schemaArgs[" + numOfSchemaArgs + "].direction");
+    argDirection.attr("name", "config[schemaArgs][" + numOfSchemaArgs + "][direction]");
 
     var argAccess = temp.find('#tempArgAccess');
     //argIsNullable.attr("id", "schemaArgs" + numOfSchemaArgs + ".access");
-    argAccess.attr("name", "schemaArgs[" + numOfSchemaArgs + "].access");
+    argAccess.attr("name", "config[schemaArgs][" + numOfSchemaArgs + "][access]");
 
     numOfSchemaArgs++;
     console.log(numOfSchemaArgs);

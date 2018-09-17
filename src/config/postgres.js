@@ -1,11 +1,13 @@
 import { isTableExists } from '../utils/postgresUtils';
 import UserModel from '../models/user';
 import AccountModel from '../models/account';
+import customActivityModel from '../models/custom-activity/customActivityModel';
 
 const createTables = async () => {
     var models = [
         UserModel,
-        AccountModel
+        AccountModel,
+        customActivityModel
     ];
 
     for (let model of models) {
