@@ -7,9 +7,10 @@ routes.get('/', CustomActivityController.indexPage);
 routes.get('/index', CustomActivityController.indexPage);
 routes.get('/setup', CustomActivityController.setupPage);
 routes.get('/create', CustomActivityController.createPage);
+routes.get('/create/:id', CustomActivityController.editPage);
 routes.post('/create', CustomActivityController.createConfig);
+routes.post('/delete/:id', CustomActivityController.deleteConfig);
 routes.get('/list', CustomActivityController.listPage);
-
-routes.get('/get', CustomActivityController.getAccounts);
+routes.post('/:id/config.json', CustomActivityController.getJson);
 
 export default routes;

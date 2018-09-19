@@ -1,0 +1,238 @@
+<html>
+
+<head>
+    <title>List config</title>
+    <% include ../../partials/head %>
+</head>
+
+<body>
+    <header>
+        <% include ../../partials/header %>
+    </header>
+    <span id="alertPlaceholder"></span>
+    <!-- Title -->
+    <div class="slds-shrink-none">
+        <div class="slds-page-header">
+            <div class="slds-grid slds-grid_vertical-align-center slds-grid_align-spread">
+                <div class="slds-col">
+                    <h2 class="slds-text-heading--medium">List of saved configs</h2>
+                </div>
+                <div class="slds-col">
+                    <a href="/ca/create" class="slds-button slds-button_brand">
+                        <span class="slds-text-not-selected">
+                            <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/slds/icons/utility-sprite/svg/symbols.svg#add"></use>
+                            </svg>Add</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Body -->
+    <div class="slds-m-around_small slds-m-top_medium">
+
+        <table class="slds-table slds-table_bordered slds-table_striped">
+            <thead>
+                <tr class="slds-text-title_caps">
+                    <th scope="col" class="">
+                        <div class="slds-truncate" title="Id">Id</div>
+                    </th>
+                    <th scope="col" class="">
+                        <div class="slds-truncate" title="Id">Icon</div>
+                    </th>
+                    <th scope="col" class="">
+                        <div class="slds-truncate" title="Name">Name</div>
+                    </th>
+                    <th scope="col" class="">
+                        <div class="slds-truncate" title="Description">Description</div>
+                    </th>
+                    <th scope="col" class="">
+                        <div class="slds-truncate" title="Description">Type</div>
+                    </th>
+                    <th scope="col" class="">
+                        <div class="slds-truncate" title="Number of steps">Number of steps</div>
+                    </th>
+                    <th scope="col" class="">
+                        <div class="slds-truncate" title="EditUrl">Edit Url</div>
+                    </th>
+                    <th scope="col" class="">
+                        <div class="slds-truncate" title="Key">Key</div>
+                    </th>
+                    <th scope="col" class="">
+                        <div class="slds-truncate" title="EndpointUrl">Endpoint Url</div>
+                    </th>
+                    <th scope="col" class="">
+                        <div class="slds-truncate" title="EditUrl">json</div>
+                    </th>
+                    <th scope="col" class="">
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (var i = 0 ; i < configs.length ; i++) { var config = configs[i] %>
+                <tr id="config_<%= config.id %>">
+                    <th scope="row" data-label="Id" class="">
+                        <div class="slds-truncate" title="Id">
+                            <a href="/ca/create/<%= config.id %>">
+                                <%= config.id %></a></div>
+                    </th>
+                    <td data-label="Icon">
+                        <div class="slds-truncate" title="Icon">
+                            <span class="slds-icon_container slds-icon-custom-custom9" title="Description of icon">
+                                <img src="<%= config.big_image_url %>" />
+                                <span class="slds-assistive-text">Description of icon</span>
+                            </span>
+                        </div>
+                    </td>
+                    <td data-label="Name">
+                        <div class="slds-truncate" title="Name">
+                            <a href="/ca/create/<%= config.id %>">
+                                <%= config.name %>
+                            </a>
+                        </div>
+                    </td>
+                    <td data-label="Description">
+                        <div class="slds-truncate">
+                            <%= config.description %>
+                        </div>
+                    </td>
+                    <td data-label="Type">
+                        <div class="slds-truncate">
+                            <%= config.type %>
+                        </div>
+                    </td>
+                    <td data-label="NumSteps">
+                        <div class="slds-truncate">
+                            <%= config.steps %>
+                        </div>
+                    </td>
+                    <td data-label="EditUrl">
+                        <div class="slds-truncate" title="EditUrl">
+                            <a href="<%= config.edit_url %>" target="_blank">Open</a>
+                        </div>
+                    </td>
+                    <td data-label="Key">
+                        <div class="slds-truncate" title="Key">
+                            <a id="copyToClipboardKey_<%= config.id %>" data="<%= config.key %>"
+                                target="_blank"><%= config.key %></a>
+                        </div>
+
+                    </td>
+                    <td data-label="EndpointUrl">
+                        <div class="slds-truncate" title="EndpointUrl">
+                            <a id="copyToClipboardUrl_<%= config.id %>" data="<%= config.endpoint_url %>" target="_blank">Copy</a>
+                        </div>
+                    </td>
+                    <td data-label="Json">
+                        <div class="slds-truncate" title="Json">
+                            <a id="jsonBtn_<%= config.id %>" href="#" name="<%= config.id %>">View</a>
+                        </div>
+                    </td>
+                    <td data-label="Delete">
+                        <!--  <form action="#" th:action="@{'/ca/delete/' + ${config.Id}}" th:object="${config}" method="post">-->
+                        <button id="deleteBtn_<%= config.id %>" name="<%= config.id %>" class="slds-button slds-button_icon slds-button_icon-border slds-button_icon-error"
+                            aria-pressed="false" title="Delete">
+                            <svg class="slds-button__icon" aria-hidden="true">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/slds/icons/utility-sprite/svg/symbols.svg#delete"></use>
+                            </svg>
+                            <span class="slds-assistive-text">Delete</span>
+                        </button>
+                        <!--  </form>-->
+                    </td>
+                </tr>
+                <%}%>
+            </tbody>
+        </table>
+
+    </div>
+    <!-- Footer -->
+    <footer>
+        <% include ../../partials/footer %>
+    </footer>
+
+    <div name="delete-modal">
+        <section id="modalDelete" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-describedby="modal-content-id-1"
+            class="slds-modal">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close"
+                        onclick="closeModal()">
+                        <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/slds/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Confirmation</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <p>Are you sure?</p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick="closeModal()">Cancel</button>
+                    <button id="deleteBtnConfirm" class="slds-button slds-button_destructive">Delete</button>
+                </footer>
+            </div>
+        </section>
+        <div id="backdropDelete" class="slds-backdrop"></div>
+    </div>
+
+    <div class="json-modal">
+        <section id="modalJson" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper"
+            class="slds-modal slds-modal_prompt slds-modal_large">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header slds-theme_info slds-theme_alert-texture">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close"
+                        onclick="closeModal()">
+                        <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/slds/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium" id="prompt-heading-id">json.config preview</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <pre>
+                            <code id="modalContentJson" class="json">
+        
+                            </code>
+                        </pre>
+                </div>
+                <footer class="slds-modal__footer slds-theme_default">
+                    <button class="slds-button slds-button_neutral" onclick="closeModal()">Okay</button>
+                </footer>
+            </div>
+        </section>
+        <div id="backdropJson" class="slds-backdrop"></div>
+    </div>
+
+    <div id="templateAlert" style="display: none">
+        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_info" role="alert">
+            <span class="slds-assistive-text">info</span>
+            <span class="slds-icon_container slds-icon-utility-user slds-m-right_x-small" title="Description of icon when needed">
+                <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/slds/icons/utility-sprite/svg/symbols.svg#info_alt"></use>
+                </svg>
+            </span>
+            <h2 id="alertTempLabel">Key copied to clipboard</h2>
+            <button id="closeAlert" class="slds-button slds-button_icon slds-notify__close slds-button_icon-inverse"
+                title="Close" onclick="closeAlert()">
+                <svg class="slds-button__icon" aria-hidden="true">
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/slds/icons/utility-sprite/svg/symbols.svg#close"></use>
+                </svg>
+                <span class="slds-assistive-text">Close</span>
+            </button>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@1/dist/clipboard.min.js"></script>
+    <script src="/js/custom-activity/ca-list.js"></script>
+    <script type="text/javascript">
+
+    </script>
+</body>
+
+</html>
