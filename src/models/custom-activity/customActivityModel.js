@@ -28,7 +28,7 @@ class CustomActivityModel {
         endpoint_url VARCHAR(255) NOT NULL           
     )`;
 
-        const query2 = `CREATE TABLE "custom_activity_step"(
+        const creatStepQuery = `CREATE TABLE "custom_activity_step"(
         config_id integer NOT NULL,
         label VARCHAR(100) NOT NULL,
         key VARCHAR(100) NOT NULL,
@@ -38,11 +38,23 @@ class CustomActivityModel {
         ON DELETE CASCADE
     )`;
 
+        const creatSplitQuery = `CREATE TABLE "custom_activity_split"(
+        config_id integer NOT NULL,
+        label VARCHAR(100) NOT NULL,
+        value VARCHAR(100) NOT NULL,
+        CONSTRAINT config_id_fk FOREIGN KEY (config_id)
+        REFERENCES custom_activity_config (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+    )`;
+
         try {
             const result = await client.query(query);
             console.log(`table ${this.TABLE_NAME} created`);
-            const result2 = await client.query(query2);
+            const result2 = await client.query(creatStepQuery);
             console.log(`table custom_activity_step created`);
+            const result3 = await client.query(creatSplitQuery);
+            console.log(`table custom_activity_split created`);
         } catch (e) {
             console.log(`error while creating table ${this.TABLE_NAME} : ${e}`);
         }
@@ -77,7 +89,6 @@ class CustomActivityModel {
             console.log('args.splits: ' + args.steps);
             // insert related data            
             if (args.steps) {
-                // VALUES (value1,value2),(value1,value2)
                 var values = '';
                 args.steps.forEach(function (step) {
                     console.log(step);
@@ -88,14 +99,66 @@ class CustomActivityModel {
                     config_id, label, key)
                     VALUES ${values}`;
                 var result2 = await client.query(insertStepsQuery);
-                console.log('result2: ' + JSON.stringify(result2));
-            }
-            //console.log('result: ' + result);
 
+                //console.log('result2: ' + JSON.stringify(result2));
+            }
+            if (args.splits) {
+                var values = '';
+                args.splits.forEach(function (split) {
+                    console.log(split);
+                    values += `(${id}, '${split.label}', '${split.value}'),`;
+                });
+                values = values.slice(0, -1);
+                const insertSplitsQuery = `INSERT INTO custom_activity_split(
+                    config_id, label, value)
+                    VALUES ${values}`;
+                var result2 = await client.query(insertSplitsQuery);
+            }
         }
         await client.end();
         //console.log(rows);
         return rows[0];
+    }
+
+    async updateConfig(config) {
+        const client = getConnection();
+        var updateQuery = `UPDATE public.custom_activity_config
+        SET name='${config.name}', key='${config.key}', config_on_drop=${config.config_on_drop}, is_configured=${config.is_configured}, use_jwt=${config.use_jwt}, 
+            description='${config.description}', big_image_url='${config.big_image_url}', small_image_url='${config.small_image_url}', type='${config.type}', 
+            edit_height=${config.edit_height}, edit_width=${config.edit_width}, edit_url='${config.edit_url}', endpoint_url='${config.endpoint_url}'
+        WHERE id =${config.id}`;
+        // update steps
+        console.log('updateQuery: ' + updateQuery);
+        var result = await client.query(updateQuery);
+        await client.query(`DELETE FROM custom_activity_step WHERE config_id =${config.id}`);
+        if (config.steps) {
+            var values = '';
+            config.steps.forEach(function (step) {
+                console.log(step);
+                values += `(${config.id}, '${step.label}', '${step.key}'),`;
+            });
+            values = values.slice(0, -1);
+            const insertStepsQuery = `INSERT INTO custom_activity_step(
+                config_id, label, key)
+                VALUES ${values}`;
+            var result2 = await client.query(insertStepsQuery);
+        }
+        // update splits
+        await client.query(`DELETE FROM custom_activity_split WHERE config_id =${config.id}`);
+        if (config.splits) {
+            var values = '';
+            config.splits.forEach(function (split) {
+                console.log(split);
+                values += `(${config.id}, '${split.label}', '${split.value}'),`;
+            });
+            values = values.slice(0, -1);
+            const insertSplitsQuery = `INSERT INTO custom_activity_split(
+                config_id, label, value)
+                VALUES ${values}`;
+            var result2 = await client.query(insertSplitsQuery);
+        }
+        await client.end();
+
     }
 
     async getConfigs() {
@@ -130,6 +193,17 @@ class CustomActivityModel {
         const {
             rows
         } = await client.query(`SELECT * FROM custom_activity_step WHERE config_id = ${configId}`);
+        await client.end();
+
+        return rows;
+    }
+
+    async getConfigSplits(configId) {
+        const client = getConnection();
+
+        const {
+            rows
+        } = await client.query(`SELECT * FROM custom_activity_split WHERE config_id = ${configId}`);
         await client.end();
 
         return rows;
@@ -221,7 +295,6 @@ class CustomActivityModel {
                 label: `${step.label}`,
                 key: `${step.key}`
             });
-            //values += `(${id}, '${step.label}', '${step.key}'),`;
         });
         json.wizardSteps = jsonArr;
         console.log('jsonArr: ' + JSON.stringify(jsonArr));

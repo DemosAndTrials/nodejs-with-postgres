@@ -5,7 +5,7 @@ import CustomActivityConfig from '../../models/custom-activity/customActivityCon
 import customActivityModel from '../../models/custom-activity/customActivityModel';
 
 /**
- * 
+ * Index page
  */
 const indexPage = (req, res) => {
     res.render('pages/custom-activity/index', {
@@ -14,7 +14,7 @@ const indexPage = (req, res) => {
 }
 
 /**
- * 
+ * Setup page
  */
 const setupPage = (req, res) => {
     res.render('pages/custom-activity/setup', {
@@ -23,7 +23,7 @@ const setupPage = (req, res) => {
 }
 
 /**
- * 
+ * List of configs page 
  */
 const listPage = async (req, res) => {
     const configs = await customActivityModel.getConfigs();
@@ -34,7 +34,7 @@ const listPage = async (req, res) => {
 }
 
 /**
- * 
+ * Create config page
  */
 const createPage = (req, res) => {
     const host = req.headers.host;
@@ -47,7 +47,7 @@ const createPage = (req, res) => {
 }
 
 /**
- * 
+ * Edit config page
  */
 const editPage = async (req, res) => {
     const id = req.params.id;
@@ -58,9 +58,9 @@ const editPage = async (req, res) => {
     var steps = await customActivityModel.getConfigSteps(id);
     config.steps = steps;
 
-    console.log('config: ' + config);
-    //console.log('steps: ' + steps);
-    // TODO temporary solution
+    var splits = await customActivityModel.getConfigSplits(id);
+    config.splits = splits;
+
     if (!config.steps)
         config.steps = [];
     if (!config.splits)
@@ -74,13 +74,11 @@ const editPage = async (req, res) => {
     });
 }
 
-
 /**
  * Validate and save configuration
  */
 const createConfig = async (req, res) => {
     const config = req.body.config;
-    console.log(req.body);
     // do validation
     req.check("config.name", "Name is required").notEmpty();
     req.check("config.key", "Key is required").notEmpty();
@@ -98,8 +96,10 @@ const createConfig = async (req, res) => {
         });
     }
     // save record
-    const record = await customActivityModel.createConfig(config);
-    console.log(record);
+    if (!config.id)
+        await customActivityModel.createConfig(config);
+    else
+        await customActivityModel.updateConfig(config);
     return res.redirect('/ca/list');
 }
 
@@ -119,12 +119,9 @@ const deleteConfig = async (req, res) => {
  */
 const getJson = async (req, res) => {
     const id = req.params.id;
-    console.log("get config.json: " + id);
-    //console.log(req);
     if (!id)
         return res.status(400).json(false);
     const config = await customActivityModel.getJson(id);
-    console.log(config);
     return res.status(200).json(config);
 }
 

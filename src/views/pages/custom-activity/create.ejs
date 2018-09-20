@@ -37,7 +37,7 @@
                 <div class="slds-form slds-form_compound">
                     <fieldset class="slds-form-element">
                         <div class="slds-form-element__group">
-                            <input type="hidden" id="input-00" name="id">
+                            <input type="hidden" id="input-00" name="config[id]" value="<%= config.id %>">
                             <div class="slds-form-element__row">
                                 <div class="slds-form-element slds-size_1-of-1">
                                     <label class="slds-form-element__label" for="input-10">Key - Must match your
@@ -51,17 +51,17 @@
                                     <%}%>
                                 </div>
                             </div>
-                            <input type="hidden" name="config[endpoint_url]" value="<%= config.endpointUrl %>">
+                            <input type="hidden" name="config[endpoint_url]" value="<%= config.endpoint_url %>">
                             <% if(!config.id){ %>
                             <div class="slds-form-element__row" th:if="${config.Id != null}">
                                 <div class="slds-form-element slds-size_1-of-1">
                                     <label class="slds-form-element__label" for="input-11">EndpointUrl - Endpoint used
                                         to execute the journey. (Populated automatically)</label>
                                     <input type="text" disabled="" id="input-11" name="config[endpoint_url]" class="slds-input"
-                                        placeholder="https://" value="<%= config.endpointUrl %>">
-                                    <% if(errors.find(o => o.param === 'config.endpointUrl')){ %>
+                                        placeholder="https://" value="<%= config.endpoint_url %>">
+                                    <% if(errors.find(o => o.param === 'config.endpoint_url')){ %>
                                     <div class="slds-text-color_error">
-                                        <%= errors.find(o => o.param === 'config.endpointUrl').msg %>
+                                        <%= errors.find(o => o.param === 'config.endpoint_url').msg %>
                                     </div>
                                     <%}%>
                                 </div>
@@ -91,10 +91,10 @@
                                         Using a JWT</label>
                                     <div class="slds-select_container">
                                         <select class="slds-select" id="useJwtSelect" name="config[use_jwt]">
-                                            <option value="false" <%=(config.useJwtSelect=='false' )?' selected':'' %>>
+                                            <option value="false" <%=(config.use_jwt=='false' )?' selected':'' %>>
                                                 FALSE
                                             </option>
-                                            <option value="true" <%=(config.useJwtSelect=='true' )?' selected':'' %>>
+                                            <option value="true" <%=(config.use_jwt=='true' )?' selected':'' %>>
                                                 TRUE
                                             </option>
                                         </select>
@@ -135,7 +135,7 @@
                                     <label class="slds-form-element__label" for="input-23">Small Icon(15px) - String
                                         representing the small display icon for this activity.</label>
                                     <input type="text" id="input-23" name="config[small_image_url]" class="slds-input"
-                                        maxlength="255" placeholder="https://" value="<%= config.smallImageUrl %>">
+                                        maxlength="255" placeholder="https://" value="<%= config.small_image_url %>">
                                 </div>
                             </div>
                             <div class="slds-form-element__row">
@@ -143,7 +143,7 @@
                                     <label class="slds-form-element__label" for="input-24">Icon(40px) - String
                                         representing the icon for this activity.</label>
                                     <input type="text" id="input-24" name="config[big_image_url]" class="slds-input"
-                                        maxlength="255" placeholder="https://" value="<%= config.bigImageUrl %>">
+                                        maxlength="255" placeholder="https://" value="<%= config.big_image_url %>">
                                 </div>
                             </div>
                             <div class="slds-form-element__row">
@@ -154,10 +154,10 @@
                                         activation)</label>
                                     <div class="slds-select_container">
                                         <select class="slds-select" id="isConfigured" name="config[is_configured]">
-                                            <option value="false" <%=(config.isConfigured=='false' )?' selected':'' %>>
+                                            <option value="false" <%=(config.is_configured=='false' )?' selected':'' %>>
                                                 FALSE
                                             </option>
-                                            <option value="true" <%=(config.isConfigured=='true' )?' selected':'' %>>
+                                            <option value="true" <%=(config.is_configured=='true' )?' selected':'' %>>
                                                 TRUE
                                             </option>
                                         </select>
@@ -171,10 +171,10 @@
                                         activity configuration opens when the activity is dropped on the canvas.</label>
                                     <div class="slds-select_container">
                                         <select class="slds-select" id="configOnDrop" name="config[config_on_drop]">
-                                            <option value="false" <%=(config.configOnDrop=='false' )?' selected':'' %>>
+                                            <option value="false" <%=(config.config_on_drop=='false' )?' selected':'' %>>
                                                 FALSE
                                             </option>
-                                            <option value="true" <%=(config.configOnDrop=='true' )?' selected':'' %>>
+                                            <option value="true" <%=(config.config_on_drop=='true' )?' selected':'' %>>
                                                 TRUE
                                             </option>
                                         </select>
@@ -244,10 +244,10 @@
                                         UI
                                         displayed to marketers while configuring this activity.</label>
                                     <input type="text" id="input-41" name="config[edit_url]" class="slds-input"
-                                        maxlength="255" placeholder="https://" value="<%= config.editUrl %>">
-                                    <% if(errors.find(o => o.param === 'config.editUrl')){ %>
+                                        maxlength="255" placeholder="https://" value="<%= config.edit_url %>">
+                                    <% if(errors.find(o => o.param === 'config.edit_url')){ %>
                                     <div class="slds-text-color_error">
-                                        <%= errors.find(o => o.param === 'config.editUrl').msg %>
+                                        <%= errors.find(o => o.param === 'config.edit_url').msg %>
                                     </div>
                                     <%}%>
                                 </div>
@@ -305,10 +305,10 @@
                                     <label class="slds-form-element__label" for="input-43">Height - Property that
                                         defines the height of the iframe containing the configuration UI.</label>
                                     <input type="text" id="input-43" name="config[edit_height]" class="slds-input"
-                                        maxlength="5" value="<%= config.editHeight %>">
-                                    <% if(errors.find(o => o.param === 'config.editHeight')){ %>
+                                        maxlength="5" value="<%= config.edit_height %>">
+                                    <% if(errors.find(o => o.param === 'config.edit_height')){ %>
                                     <div class="slds-text-color_error">
-                                        <%= errors.find(o => o.param === 'config.editHeight').msg %>
+                                        <%= errors.find(o => o.param === 'config.edit_height').msg %>
                                     </div>
                                     <%}%>
                                 </div>
@@ -317,10 +317,10 @@
                                         defines
                                         the width of the iframe containing the configuration UI.</label>
                                     <input type="text" id="input-44" name="config[edit_width]" class="slds-input"
-                                        maxlength="5" value="<%= config.editWidth %>">
-                                    <% if(errors.find(o => o.param === 'config.editWidth')){ %>
+                                        maxlength="5" value="<%= config.edit_width %>">
+                                    <% if(errors.find(o => o.param === 'config.edit_width')){ %>
                                     <div class="slds-text-color_error">
-                                        <%= errors.find(o => o.param === 'config.editWidth').msg %>
+                                        <%= errors.find(o => o.param === 'config.edit_width').msg %>
                                     </div>
                                     <%}%>
                                 </div>

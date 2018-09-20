@@ -1,7 +1,6 @@
 import {
   v4 as uuid
 } from 'uuid';
-import { getConnection } from '../../utils/postgresUtils';
 
 export default class CustomActivityConfig {
 
@@ -11,15 +10,11 @@ export default class CustomActivityConfig {
     this.key = uuid();
     this.type = '';
     this.description = '';
-    //this.smallImageUrl = '';
-    //this.bigImageUrl = '';
-    this.isConfigured = false;
-    this.configOnDrop = false;
-    //this.editUrl = '';
-    this.editHeight = 600;
-    this.editWidth = 800;
-    //this.endpointUrl = '';
-    this.useJwt = false;
+    this.is_configured = false;
+    this.config_on_drop = false;
+    this.edit_height = 600;
+    this.edit_width = 800;
+    this.use_jwt = false;
     this.steps = [{
       label: 'Step 1',
       key: 'step_1'
@@ -27,45 +22,9 @@ export default class CustomActivityConfig {
     this.splits = [];
     this.schemaArgs = [];
 
-    this.endpointUrl = host + '/ca';
-    this.editUrl = host + '/ca/ui';
-    this.bigImageUrl = host + '/images/ca/icon.png';
-    this.smallImageUrl = host + '/images/ca/icon_small.png';
+    this.endpoint_url = host + '/ca';
+    this.edit_url = host + '/ca/ui';
+    this.big_image_url = host + '/images/ca/icon.png';
+    this.small_image_url = host + '/images/ca/icon_small.png';
   }
-
-  // set id(id) {
-  //   this._id = id;
-  // }
-
-  // get id() {
-  //   return this._id;
-  // }
-
-  // set key(value) {
-  //   this._key = value;
-  // }
-
-  // get key() {
-  //   return this._key;
-  // }
-
-  // set name(value) {
-  //   this._name = value;
-  // }
-
-  // get name() {
-  //   return this._name;
-  // }
-
-  // set type(value) {
-  //   this._type = value;
-  // }
-
-  // get type() {
-  //   return this._type;
-  // }
-
-  // sayHello() {
-  //   console.log('Hello, my name is ' + this.name + ', I have ID: ' + this.id);
-  // }
 }
