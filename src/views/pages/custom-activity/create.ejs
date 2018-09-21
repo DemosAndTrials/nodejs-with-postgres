@@ -1,0 +1,574 @@
+<html>
+
+<head>
+    <title>Create config</title>
+    <% include ../../partials/head %>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <% include ../../partials/header %>
+    </header>
+    <!-- Title -->
+    <div class="slds-shrink-none">
+        <div class="slds-page-header">
+            <div class="slds-grid slds-grid_vertical-align-center slds-grid_align-spread">
+                <div class="slds-col">
+                    <h2 class="slds-text-heading--medium">Create configuration</h2>
+                </div>
+                <div class="slds-col">
+                    <a href="/ca/list" class="slds-button slds-button_brand">
+                        <span class="slds-text-not-selected">
+                            <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/slds/icons/utility-sprite/svg/symbols.svg#list"></use>
+                            </svg>List</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Body -->
+    <form method="post" name="config">
+        <!-- Stage Main -->
+        <div id="step1" class="step slds-grid slds-wrap slds-container--medium slds-container--center slds-order-1 slds-medium-order--2 slds-p-vertical--large">
+            <div class="slds-col--padded slds-col-rule--right slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--9-of-12 slds-p-bottom--x-large">
+
+                <div class="slds-form slds-form_compound">
+                    <fieldset class="slds-form-element">
+                        <div class="slds-form-element__group">
+                            <input type="hidden" id="input-00" name="config[id]" value="<%= config.id %>">
+                            <div class="slds-form-element__row">
+                                <div class="slds-form-element slds-size_1-of-1">
+                                    <label class="slds-form-element__label" for="input-10">Key - Must match your
+                                        activity key as defined when created in App Center.</label>
+                                    <input type="text" id="input-10" name="config[key]" class="slds-input" maxlength="100"
+                                        value="<%= config.key %>">
+                                    <% if(errors.find(o => o.param === 'config.key')){ %>
+                                    <div class="slds-text-color_error">
+                                        <%= errors.find(o => o.param === 'config.key').msg %>
+                                    </div>
+                                    <%}%>
+                                </div>
+                            </div>
+                            <input type="hidden" name="config[endpoint_url]" value="<%= config.endpoint_url %>">
+                            <% if(!config.id){ %>
+                            <div class="slds-form-element__row">
+                                <div class="slds-form-element slds-size_1-of-1">
+                                    <label class="slds-form-element__label" for="input-11">EndpointUrl - Endpoint used
+                                        to execute the journey. (Populated automatically)</label>
+                                    <input type="text" disabled="" id="input-11" name="config[endpoint_url]" class="slds-input"
+                                        placeholder="https://" value="<%= config.endpoint_url %>">
+                                    <% if(errors.find(o => o.param === 'config.endpoint_url')){ %>
+                                    <div class="slds-text-color_error">
+                                        <%= errors.find(o => o.param === 'config.endpoint_url').msg %>
+                                    </div>
+                                    <%}%>
+                                </div>
+                            </div>
+                            <%}%>
+                            <div class="slds-form-element__row">
+                                <div class="slds-form-element slds-size_1-of-1">
+                                    <label class="slds-form-element__label" for="typeSelect">Type - String property
+                                        representing the type of activity. This value must include one of the Marketing
+                                        Cloud-provided types.</label>
+                                    <div class="slds-select_container">
+                                        <select class="slds-select" id="typeSelect" name="config[type]">
+                                            <option value="REST" <%=(config.type=='REST' )?' selected':'' %>>
+                                                REST
+                                            </option>
+                                            <option value="RESTDECISION" <%=(config.type=='RESTDECISION'
+                                                )?'selected':'' %>>
+                                                RESTDECISION
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-form-element__row">
+                                <div class="slds-form-element slds-size_1-of-1">
+                                    <label class="slds-form-element__label" for="typeSelect">Encode Custom Activities
+                                        Using a JWT</label>
+                                    <div class="slds-select_container">
+                                        <select class="slds-select" id="useJwtSelect" name="config[use_jwt]">
+                                            <option value="false" <%=(config.use_jwt==false )?' selected':'' %>>
+                                                FALSE
+                                            </option>
+                                            <option value="true" <%=(config.use_jwt==true )?' selected':'' %>>
+                                                TRUE
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!--General-->
+                    <fieldset class="slds-form-element">
+                        <legend class="slds-form-element__label slds-text-title_caps slds-badge">General</legend>
+                        <div class="slds-form-element__group">
+                            <div class="slds-form-element__row">
+                                <div class="slds-form-element slds-size_1-of-1">
+                                    <label class="slds-form-element__label" for="input-21">Name - Type of activity
+                                        (i.e.
+                                        'Send Email', 'SMS', 'Create Salesforce Lead'), as shown in the activity
+                                        list.</label>
+                                    <input type="text" id="input-21" name="config[name]" class="slds-input" maxlength="100"
+                                        value="<%= config.name %>">
+                                    <% if(errors.find(o => o.param === 'config.name')){ %>
+                                    <div class="slds-text-color_error">
+                                        <%= errors.find(o => o.param === 'config.name').msg %>
+                                    </div>
+                                    <%}%>
+                                </div>
+                            </div>
+                            <div class="slds-form-element__row">
+                                <div class="slds-form-element slds-size_1-of-1">
+                                    <label class="slds-form-element__label" for="input-22">Description - Description of
+                                        what the activity does and what purpose it fulfills.</label>
+                                    <input type="text" id="input-22" name="config[description]" class="slds-input"
+                                        maxlength="255" value="<%= config.description %>">
+                                </div>
+                            </div>
+                            <div class="slds-form-element__row">
+                                <div class="slds-form-element slds-size_1-of-1">
+                                    <label class="slds-form-element__label" for="input-23">Small Icon(15px) - String
+                                        representing the small display icon for this activity.</label>
+                                    <input type="text" id="input-23" name="config[small_image_url]" class="slds-input"
+                                        maxlength="255" placeholder="https://" value="<%= config.small_image_url %>">
+                                </div>
+                            </div>
+                            <div class="slds-form-element__row">
+                                <div class="slds-form-element slds-size_1-of-1">
+                                    <label class="slds-form-element__label" for="input-24">Icon(40px) - String
+                                        representing the icon for this activity.</label>
+                                    <input type="text" id="input-24" name="config[big_image_url]" class="slds-input"
+                                        maxlength="255" placeholder="https://" value="<%= config.big_image_url %>">
+                                </div>
+                            </div>
+                            <div class="slds-form-element__row">
+                                <div class="slds-form-element slds-size_1-of-1">
+                                    <label class="slds-form-element__label" for="typeSelect">IsConfigured - If true,
+                                        the
+                                        activity is marked as configured when it is dropped on the canvas (required for
+                                        activation)</label>
+                                    <div class="slds-select_container">
+                                        <select class="slds-select" id="isConfigured" name="config[is_configured]">
+                                            <option value="false" <%=(config.is_configured==false )?' selected':'' %>>
+                                                FALSE
+                                            </option>
+                                            <option value="true" <%=(config.is_configured==true )?' selected':'' %>>
+                                                TRUE
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-form-element__row">
+                                <div class="slds-form-element slds-size_1-of-1">
+                                    <label class="slds-form-element__label" for="typeSelect">ConfigOnDrop - If true,
+                                        the
+                                        activity configuration opens when the activity is dropped on the canvas.</label>
+                                    <div class="slds-select_container">
+                                        <select class="slds-select" id="configOnDrop" name="config[config_on_drop]">
+                                            <option value="false" <%=(config.config_on_drop==false )?' selected':'' %>>
+                                                FALSE
+                                            </option>
+                                            <option value="true" <%=(config.config_on_drop==true )?' selected':'' %>>
+                                                TRUE
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!--Split Configuration-->
+                    <fieldset id="splitPanel" class="slds-form-element slds-hide">
+                        <legend class="slds-form-element__label slds-text-title_caps slds-badge">Custom Split Setup
+                        </legend>
+
+                        <div id="splitsGroup" class="slds-form-element__group">
+
+                            <div class="slds-form-element__row slds-m-bottom_none slds-p-around_none">
+                                <div class="slds-form-element slds-size_1-of-2">
+                                    <label class="slds-form-element__label">Label - text that is
+                                        displayed in the Journey Builder UI</label>
+                                </div>
+                                <div class="slds-form-element slds-size_1-of-2">
+                                    <label class="slds-form-element__label">Value(Key) - the result
+                                        of activity outcome</label>
+                                </div>
+                            </div>
+                            <% for (var i = 0 ; i < config.splits.length ; i++) { %>
+                            <div class="slds-form-element__row">
+                                <div class="slds-form-element slds-size_1-of-2">
+                                    <input type="text" name="config[splits][<%= i %>][label]" value="<%= config.splits[i].label %>"
+                                        class="slds-input" maxlength="50" placeholder="label">
+                                </div>
+                                <div class="slds-form-element slds-size_1-of-2">
+                                    <input type="text" name="config[splits][<%= i %>][value]" value="<%= config.splits[i].value %>"
+                                        class="slds-input" maxlength="50" placeholder="value">
+                                </div>
+                            </div>
+                            <%}%>
+                            <span id="splitPlaceholder"></span>
+                            <% if(errors.find(o => o.param === 'config.splits')){ %>
+                            <div class="slds-text-color_error">
+                                <%= errors.find(o => o.param === 'config.splits').msg %>
+                            </div>
+                            <%}%>
+                            <a class="slds-button slds-button_stateful slds-button_neutral slds-not-selected slds-m-bottom_medium"
+                                aria-live="assertive" id="addSplitBtn">
+                                <span class="slds-text-not-selected">
+                                    <svg class="slds-button__icon_stateful slds-button__icon_left" aria-hidden="true">
+                                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/slds/icons/utility-sprite/svg/symbols.svg#add"></use>
+                                    </svg>Add</span>
+                            </a>
+                            <a class="slds-button slds-button_stateful slds-button_neutral slds-not-selected slds-m-bottom_medium"
+                                aria-live="assertive" id="removeSplitBtn" disabled="">
+                                <span class="slds-text-not-selected">
+                                    <svg class="slds-button__icon_stateful slds-button__icon_left" aria-hidden="true">
+                                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/slds/icons/action-sprite/svg/symbols.svg#remove"></use>
+                                    </svg>Remove</span>
+                            </a>
+                        </div>
+                    </fieldset>
+                    <!--User Interface-->
+                    <fieldset class="slds-form-element">
+                        <legend class="slds-form-element__label slds-text-title_caps slds-badge">User Interface</legend>
+                        <div class="slds-form-element__group">
+                            <div class="slds-form-element__row">
+                                <div class="slds-form-element slds-size_1-of-1">
+                                    <label class="slds-form-element__label" for="input-41">EditUrl - Endpoint for the
+                                        UI
+                                        displayed to marketers while configuring this activity.</label>
+                                    <input type="text" id="input-41" name="config[edit_url]" class="slds-input"
+                                        maxlength="255" placeholder="https://" value="<%= config.edit_url %>">
+                                    <% if(errors.find(o => o.param === 'config.edit_url')){ %>
+                                    <div class="slds-text-color_error">
+                                        <%= errors.find(o => o.param === 'config.edit_url').msg %>
+                                    </div>
+                                    <%}%>
+                                </div>
+                            </div>
+
+                            <div id="stepsGroup" class="slds-form-element__group">
+                                <div class="slds-form-element__row slds-m-bottom_none slds-p-around_none">
+                                    <div class="slds-form-element slds-size_1-of-2">
+                                        <label class="slds-form-element__label">Label - the text displayed in the steps
+                                            wizard</label>
+                                    </div>
+                                    <div class="slds-form-element slds-size_1-of-2">
+                                        <label class="slds-form-element__label">Key - a unique identifier for the
+                                            step</label>
+                                    </div>
+                                </div>
+
+                                <% for (var i = 0 ; i < config.steps.length ; i++) { %>
+                                <div class="slds-form-element__row">
+                                    <div class="slds-form-element slds-size_1-of-2">
+                                        <input type="text" name="config[steps][<%= i %>][label]" value="<%= config.steps[i].label %>"
+                                            class="slds-input" maxlength="50" placeholder="label">
+                                    </div>
+                                    <div class="slds-form-element slds-size_1-of-2">
+                                        <input type="text" name="config[steps][<%= i %>][key]" value="<%= config.steps[i].key %>"
+                                            class="slds-input" maxlength="50" placeholder="value">
+                                    </div>
+                                </div>
+                                <%}%>
+
+                                <span id="stepPlaceholder"></span>
+                                <% if(errors.find(o => o.param === 'config.steps')){ %>
+                                <div class="slds-text-color_error">
+                                    <%= errors.find(o => o.param === 'config.steps').msg %>
+                                </div>
+                                <%}%>
+                                <a class="slds-button slds-button_stateful slds-button_neutral slds-not-selected slds-m-bottom_medium"
+                                    aria-live="assertive" id="addStepBtn">
+                                    <span class="slds-text-not-selected">
+                                        <svg class="slds-button__icon_stateful slds-button__icon_left" aria-hidden="true">
+                                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/slds/icons/utility-sprite/svg/symbols.svg#add"></use>
+                                        </svg>Add</span>
+                                </a>
+                                <a class="slds-button slds-button_stateful slds-button_neutral slds-not-selected slds-m-bottom_medium"
+                                    aria-live="assertive" id="removeStepBtn" disabled="">
+                                    <span class="slds-text-not-selected">
+                                        <svg class="slds-button__icon_stateful slds-button__icon_left" aria-hidden="true">
+                                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/slds/icons/action-sprite/svg/symbols.svg#remove"></use>
+                                        </svg>Remove</span>
+                                </a>
+                            </div>
+
+                            <div class="slds-form-element__row">
+                                <div class="slds-form-element slds-size_1-of-2">
+                                    <label class="slds-form-element__label" for="input-43">Height - Property that
+                                        defines the height of the iframe containing the configuration UI.</label>
+                                    <input type="text" id="input-43" name="config[edit_height]" class="slds-input"
+                                        maxlength="5" value="<%= config.edit_height %>">
+                                    <% if(errors.find(o => o.param === 'config.edit_height')){ %>
+                                    <div class="slds-text-color_error">
+                                        <%= errors.find(o => o.param === 'config.edit_height').msg %>
+                                    </div>
+                                    <%}%>
+                                </div>
+                                <div class="slds-form-element slds-size_1-of-2">
+                                    <label class="slds-form-element__label" for="input-44">Width - Property that
+                                        defines
+                                        the width of the iframe containing the configuration UI.</label>
+                                    <input type="text" id="input-44" name="config[edit_width]" class="slds-input"
+                                        maxlength="5" value="<%= config.edit_width %>">
+                                    <% if(errors.find(o => o.param === 'config.edit_width')){ %>
+                                    <div class="slds-text-color_error">
+                                        <%= errors.find(o => o.param === 'config.edit_width').msg %>
+                                    </div>
+                                    <%}%>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!--Schema-->
+                    <fieldset id="schemaPanel" class="slds-form-element">
+                        <legend class="slds-form-element__label slds-text-title_caps slds-badge">Schema
+                        </legend>
+
+                        <div id="schemaArgsGroup" class="slds-form-element__group">
+                            <div class="slds-form-element__row slds-p-around_none">
+                                <label class="slds-form-element__label">Object mirrors the activity configuration from
+                                    the top level of the config.json file and specifies schema information about in and
+                                    out arguments.</label>
+                            </div>
+                            <% for (var i = 0 ; i < config.schemaArgs.length ; i++) { %>
+                            <div name="config[schemaArgs]">
+
+                                <div class="slds-form-element__row slds-border_top">
+                                    <div class="slds-size_1-of-2">
+                                        <label class="slds-form-element__label">Name</label>
+                                        <input type="text" name="config[schemaArgs][<%= i %>][name]" value="<%= config.schemaArgs[i].name %>"
+                                            class="slds-input" maxlength="50" placeholder="value">
+                                    </div>
+                                </div>
+                                <div class="slds-form-element__row">
+                                    <div class="slds-form-element slds-size_1-of-2">
+                                        <label class="slds-form-element__label">DataType</label>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-select_container">
+                                                <select class="slds-select" id="dataTypeSelect" name="config[schemaArgs][<%= i %>][data_type]">
+                                                    <option value="Text" <%=(config.schemaArgs[i].data_type=='Text')?' selected':'' %>>
+                                                        Text
+                                                    </option>
+                                                    <option value="Number" <%=(config.schemaArgs[i].data_type=='Number')?' selected':'' %>>
+                                                        Number
+                                                    </option>
+                                                    <option value="Date" <%=(config.schemaArgs[i].data_type=='Date')?' selected':'' %>>
+                                                        Date
+                                                    </option>
+                                                    <option value="Boolean" <%=(config.schemaArgs[i].data_type=='Boolean')?' selected':'' %>>
+                                                        Boolean
+                                                    </option>
+                                                    <option value="Decimal" <%=(config.schemaArgs[i].data_type=='Decimal')?' selected':'' %>>
+                                                        Decimal
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element slds-size_1-of-2">
+                                        <label class="slds-form-element__label">IsNullable</label>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-select_container">
+                                                <select class="slds-select" id="isNullableSelect" name="config[schemaArgs][<%= i %>][is_nullable]">
+                                                    <option value="false" <%=(config.schemaArgs[i].is_nullable==false)?' selected':'' %>>
+                                                        False
+                                                    </option>
+                                                    <option value="true" <%=(config.schemaArgs[i].is_nullable==true)?' selected':'' %>>
+                                                        True
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="slds-form-element__row">
+                                    <div class="slds-form-element slds-size_1-of-2">
+                                        <label class="slds-form-element__label">Direction</label>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-select_container">
+                                                <select class="slds-select" id="directionSelect" name="config[schemaArgs][<%= i %>][direction]">
+                                                    <option value="in" <%=(config.schemaArgs[i].direction=='in')?' selected':'' %>>
+                                                        In
+                                                    </option>
+                                                    <option value="out" <%=(config.schemaArgs[i].direction=='out')?' selected':'' %>>
+                                                        Out
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element slds-size_1-of-2">
+                                        <label class="slds-form-element__label">Access</label>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-select_container">
+                                                <select class="slds-select" id="accessSelect" name="config[schemaArgs][<%= i %>][access]">
+                                                    <option value="visible" <%=(config.schemaArgs[i].access=='visible')?' selected':'' %>>
+                                                        Visible
+                                                    </option>
+                                                    <option value="hidden" <%=(config.schemaArgs[i].access=='hidden')?' selected':'' %>>
+                                                        Hidden
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <%}%>
+
+                            <span id="schemaArgsPlaceholder"></span>
+                            <% if(errors.find(o => o.param === 'config.schemaArgs')){ %>
+                            <div class="slds-text-color_error">
+                                <%= errors.find(o => o.param === 'config.schemaArgs').msg %>
+                            </div>
+                            <%}%>
+                            <a class="slds-button slds-button_stateful slds-button_neutral slds-not-selected slds-m-bottom_medium"
+                                aria-live="assertive" id="addSchemaArgBtn">
+                                <span class="slds-text-not-selected">
+                                    <svg class="slds-button__icon_stateful slds-button__icon_left" aria-hidden="true">
+                                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/slds/icons/utility-sprite/svg/symbols.svg#add"></use>
+                                    </svg>Add</span>
+                            </a>
+                            <a class="slds-button slds-button_stateful slds-button_neutral slds-not-selected slds-m-bottom_medium"
+                                aria-live="assertive" id="removeSchemaArgBtn">
+                                <span class="slds-text-not-selected">
+                                    <svg class="slds-button__icon_stateful slds-button__icon_left" aria-hidden="true">
+                                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/slds/icons/action-sprite/svg/symbols.svg#remove"></use>
+                                    </svg>Remove</span>
+                            </a>
+                        </div>
+                    </fieldset>
+                </div>
+                <!--Action buttons-->
+                <div class="slds-form-element">
+                    <br>
+                    <div class="slds-button-group" role="group">
+                        <button id="saveBtn" class="slds-button slds-button_brand" value="save">Submit
+                        </button>
+                        <button class="slds-button slds-button_destructive" value="cancel">Cancel</button>
+                    </div>
+                </div>
+
+                </article>
+            </div>
+
+            <div class="slds-col--padded slds-size--1-of-1 slds-small-size--1-of-2 slds-m-bottom--large">
+                <div class="slds-box">
+                    <h2 class="slds-text-heading--label">Notes:</h2>
+                    <p><a href="/ca/setup">How to setup custom activity</a></p>
+                    <p><a target="_blank" href="https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-app-development.meta/mc-app-development/creating-activities.htm">Marketing
+                            Cloud App Development - Create Custom Activities</a>
+                    </p>
+                    <p><a href="/ca/list">Browse existing configurations</a></p>
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+    <!-- Footer -->
+    <footer>
+        <% include ../../partials/footer %>
+    </footer>
+
+    <!--TEMPLATES-->
+    <div id="templateInputsRow" style="display: none">
+        <div id="tempRow" class="slds-form-element__row">
+            <div class="slds-form-element slds-size_1-of-2">
+                <input class="slds-input" placeholder="label" type="text" id="tempLabel" maxlength="50" name="config[splits][1][label]">
+            </div>
+            <div class="slds-form-element slds-size_1-of-2">
+                <input class="slds-input" placeholder="value" type="text" id="tempValue" maxlength="50" name="config[splits][1][value]">
+            </div>
+        </div>
+    </div>
+
+    <!--Schema Arguments Templates-->
+    <div id="templateSchemaArgs" style="display: none">
+        <div class="template">
+
+            <div class="slds-form-element__row slds-border_top">
+                <div class="slds-size_1-of-2">
+                    <label class="slds-form-element__label">Name</label>
+                    <input type="text" id="tempArgName" class="slds-input" maxlength="50" placeholder="value">
+                </div>
+            </div>
+            <div class="slds-form-element__row">
+                <div class="slds-form-element slds-size_1-of-2">
+                    <label class="slds-form-element__label">DataType</label>
+                    <div class="slds-form-element__control">
+                        <div class="slds-select_container">
+                            <select id="tempArgDataType" class="slds-select">
+                                <option value="Text">Text</option>
+                                <option value="Number">Number</option>
+                                <option value="Date">Date</option>
+                                <option value="Boolean">Boolean</option>
+                                <option value="Decimal">Decimal</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-form-element slds-size_1-of-2">
+                    <label class="slds-form-element__label">IsNullable</label>
+                    <div class="slds-form-element__control">
+                        <div class="slds-select_container">
+                            <select id="tempArgIsNullable" class="slds-select">
+                                <option value="false">false</option>
+                                <option value="true">true</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slds-form-element__row">
+                <div class="slds-form-element slds-size_1-of-2">
+                    <label class="slds-form-element__label">Direction</label>
+                    <div class="slds-form-element__control">
+                        <div class="slds-select_container">
+                            <select id="tempArgDirection" class="slds-select">
+                                <option value="in">in</option>
+                                <option value="out">out</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-form-element slds-size_1-of-2">
+                    <label class="slds-form-element__label">Access</label>
+                    <div class="slds-form-element__control">
+                        <div class="slds-select_container">
+                            <select id="tempArgAccess" class="slds-select">
+                                <option value="visible">visible</option>
+                                <option value="hidden">hidden</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <input type="hidden" id="numOfSplits" name="numOfSplits" value="<%= config.splits.length %>" />
+    <input type="hidden" id="numOfSteps" name="numOfSteps" value="<%= config.steps.length %>" />
+    <input type="hidden" id="numOfSchemaArgs" name="numOfSchemaArgs" value="<%= config.schemaArgs.length %>" />
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script src="/js/custom-activity/ca-create.js"></script>
+    <script type="text/javascript">
+        
+    </script>
+</body>
+
+</html>

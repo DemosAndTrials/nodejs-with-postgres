@@ -25,9 +25,53 @@
                     <a href="/" class="slds-context-bar__label-action" title="Home">
                         <span class="slds-truncate" title="Home">Home</span>
                     </a>
+                </li>           
+                <!--CUSTOM ACTIVITY-->
+                <li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_hover slds-context-bar__item_divider-right">
+                    <a href="/ca" class="slds-context-bar__label-action" title="Custom Activity">
+                        <span class="slds-truncate" title="Menu Item">Custom Activity</span>
+                    </a>
+                    <div class="slds-context-bar__icon-action slds-p-left_none slds-context-bar__item_divider-right">
+                        <button class="slds-button slds-button_icon slds-button_icon slds-context-bar__button"
+                                aria-haspopup="true" title="Open submenu">
+                            <svg class="slds-button__icon" aria-hidden="true">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink"
+                                     xlink:href="/slds/icons/utility-sprite/svg/symbols.svg#chevrondown"></use>
+                            </svg>
+                            <span class="slds-assistive-text">Open submenu</span>
+                        </button>
+                    </div>
+                    <div class="slds-dropdown slds-dropdown_right slds-context-bar__item_divider-right">
+                        <ul class="slds-dropdown__list" role="menu">
+                            <!--Index-->
+                            <li class="slds-dropdown__item slds-context-bar__item_divider-right" role="presentation">
+                                <a href="/ca/index" role="menuitem" tabindex="-1">
+                                    <span class="slds-truncate" title="Getting Started">Getting Started</span>
+                                </a>
+                            </li>
+                            <!--Setup-->
+                            <li class="slds-dropdown__item slds-context-bar__item_divider-right" role="presentation">
+                                <a href="/ca/setup" role="menuitem" tabindex="-1">
+                                    <span class="slds-truncate" title="Getting Started">Setup Activity</span>
+                                </a>
+                            </li>
+                            <!--List of configurations-->
+                            <li class="slds-dropdown__item slds-context-bar__item_divider-right" role="presentation">
+                                <a href="/ca/list" role="menuitem" tabindex="-1">
+                                    <span class="slds-truncate" title="Saved configurations">Saved configurations</span>
+                                </a>
+                            </li>
+                            <!--create configuration-->
+                            <li class="slds-dropdown__item slds-context-bar__item_divider-right" role="presentation">
+                                <a href="/ca/create" role="menuitem" tabindex="-1">
+                                    <span class="slds-truncate" title="Create configuration">Create configuration</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
-                <!-- ABOUT -->
-                <li class="slds-context-bar__item slds-context-bar__item_divider-right">
+                  <!-- ABOUT -->
+                  <li class="slds-context-bar__item slds-context-bar__item_divider-right">
                     <a href="/about" class="slds-context-bar__label-action" title="Menu Item 0">
                         <span class="slds-truncate" title="Menu Item">About</span>
                     </a>
