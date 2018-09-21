@@ -219,11 +219,11 @@ function createSchemaArgTemplate() {
 
     var argDataType = temp.find('#tempArgDataType');
     //argDataType.attr("id", "schemaArgs" + numOfSchemaArgs + ".dataType");
-    argDataType.attr("name", "config[schemaArgs][" + numOfSchemaArgs + "][dataType]");
+    argDataType.attr("name", "config[schemaArgs][" + numOfSchemaArgs + "][data_type]");
 
     var argIsNullable = temp.find('#tempArgIsNullable');
     //argIsNullable.attr("id", "schemaArgs" + numOfSchemaArgs + ".isNullable");
-    argIsNullable.attr("name", "config[schemaArgs][" + numOfSchemaArgs + "][isNullable]");
+    argIsNullable.attr("name", "config[schemaArgs][" + numOfSchemaArgs + "][is_nullable]");
 
     var argDirection = temp.find('#tempArgDirection');
     //argIsNullable.attr("id", "schemaArgs" + numOfSchemaArgs + ".direction");

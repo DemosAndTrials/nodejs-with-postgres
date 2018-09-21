@@ -129,7 +129,6 @@
                         </div>
                     </td>
                     <td data-label="Delete">
-                        <!--  <form action="#" th:action="@{'/ca/delete/' + ${config.Id}}" th:object="${config}" method="post">-->
                         <button id="deleteBtn_<%= config.id %>" name="<%= config.id %>" class="slds-button slds-button_icon slds-button_icon-border slds-button_icon-error"
                             aria-pressed="false" title="Delete">
                             <svg class="slds-button__icon" aria-hidden="true">
@@ -137,7 +136,6 @@
                             </svg>
                             <span class="slds-assistive-text">Delete</span>
                         </button>
-                        <!--  </form>-->
                     </td>
                 </tr>
                 <%}%>

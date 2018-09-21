@@ -48,6 +48,19 @@ class CustomActivityModel {
         ON DELETE CASCADE
     )`;
 
+        const creatSchemaQuery = `CREATE TABLE "custom_activity_schema_arg"(
+        config_id integer NOT NULL,
+        name VARCHAR(100) NOT NULL,
+        access VARCHAR(10) NOT NULL,
+        data_type VARCHAR(15) NOT NULL,
+        direction VARCHAR(5) NOT NULL,
+        is_nullable boolean NOT NULL,
+        CONSTRAINT config_id_fk FOREIGN KEY (config_id)
+        REFERENCES custom_activity_config (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+    )`;
+
         try {
             const result = await client.query(query);
             console.log(`table ${this.TABLE_NAME} created`);
@@ -55,6 +68,8 @@ class CustomActivityModel {
             console.log(`table custom_activity_step created`);
             const result3 = await client.query(creatSplitQuery);
             console.log(`table custom_activity_split created`);
+            const result4 = await client.query(creatSchemaQuery);
+            console.log(`table custom_activity_schema_arg created`);
         } catch (e) {
             console.log(`error while creating table ${this.TABLE_NAME} : ${e}`);
         }
@@ -72,26 +87,21 @@ class CustomActivityModel {
         const {
             rows
         } = await client.query(query);
-        //console.log('before: ' + args);
         if (!args.id) {
             const id = rows[0].id;
             console.log('new config: ' + id);
             args.endpoint_url = args.endpoint_url + '/' + id;
             if (args.edit_url.includes('ca/ui'))
                 args.edit_url = args.endpoint_url + '/ui/edit';
-            //console.log('after: ' + args);
 
             const updateConfigQuery = `UPDATE ${this.TABLE_NAME}
                            SET edit_url = '${args.edit_url}', endpoint_url = '${args.endpoint_url}'
                            WHERE id = ${id}`;
-            //console.log('updateConfigQuery: ' + updateConfigQuery);
             var result = await client.query(updateConfigQuery);
-            console.log('args.splits: ' + args.steps);
             // insert related data            
             if (args.steps) {
                 var values = '';
                 args.steps.forEach(function (step) {
-                    console.log(step);
                     values += `(${id}, '${step.label}', '${step.key}'),`;
                 });
                 values = values.slice(0, -1);
@@ -99,13 +109,10 @@ class CustomActivityModel {
                     config_id, label, key)
                     VALUES ${values}`;
                 var result2 = await client.query(insertStepsQuery);
-
-                //console.log('result2: ' + JSON.stringify(result2));
             }
             if (args.splits) {
                 var values = '';
                 args.splits.forEach(function (split) {
-                    console.log(split);
                     values += `(${id}, '${split.label}', '${split.value}'),`;
                 });
                 values = values.slice(0, -1);
@@ -113,6 +120,17 @@ class CustomActivityModel {
                     config_id, label, value)
                     VALUES ${values}`;
                 var result2 = await client.query(insertSplitsQuery);
+            }
+            if (args.schemaArgs) {
+                var values = '';
+                args.schemaArgs.forEach(function (schema) {
+                    values += `(${id}, '${schema.name}', '${schema.access}', '${schema.data_type}', '${schema.is_nullable}', '${schema.direction}'),`;
+                });
+                values = values.slice(0, -1);
+                const insertSchemaQuery = `INSERT INTO custom_activity_schema_arg(
+                    config_id, name, access, data_type, is_nullable, direction)
+                    VALUES ${values}`;
+                var result2 = await client.query(insertSchemaQuery);
             }
         }
         await client.end();
@@ -127,14 +145,12 @@ class CustomActivityModel {
             description='${config.description}', big_image_url='${config.big_image_url}', small_image_url='${config.small_image_url}', type='${config.type}', 
             edit_height=${config.edit_height}, edit_width=${config.edit_width}, edit_url='${config.edit_url}', endpoint_url='${config.endpoint_url}'
         WHERE id =${config.id}`;
-        // update steps
-        console.log('updateQuery: ' + updateQuery);
         var result = await client.query(updateQuery);
+        // update steps
         await client.query(`DELETE FROM custom_activity_step WHERE config_id =${config.id}`);
         if (config.steps) {
             var values = '';
             config.steps.forEach(function (step) {
-                console.log(step);
                 values += `(${config.id}, '${step.label}', '${step.key}'),`;
             });
             values = values.slice(0, -1);
@@ -148,7 +164,6 @@ class CustomActivityModel {
         if (config.splits) {
             var values = '';
             config.splits.forEach(function (split) {
-                console.log(split);
                 values += `(${config.id}, '${split.label}', '${split.value}'),`;
             });
             values = values.slice(0, -1);
@@ -157,8 +172,20 @@ class CustomActivityModel {
                 VALUES ${values}`;
             var result2 = await client.query(insertSplitsQuery);
         }
+        await client.query(`DELETE FROM custom_activity_schema_arg WHERE config_id =${config.id}`);
+        if (config.schemaArgs) {
+            var values = '';
+            config.schemaArgs.forEach(function (schema) {
+                values += `(${config.id}, '${schema.name}', '${schema.access}', '${schema.data_type}', '${schema.is_nullable}', '${schema.direction}'),`;
+            });
+            values = values.slice(0, -1);
+            const insertSchemaQuery = `INSERT INTO custom_activity_schema_arg(
+                config_id, name, access, data_type, is_nullable, direction)
+                VALUES ${values}`;
+            var result2 = await client.query(insertSchemaQuery);
+            //console.log(values);
+        }
         await client.end();
-
     }
 
     async getConfigs() {
@@ -204,6 +231,17 @@ class CustomActivityModel {
         const {
             rows
         } = await client.query(`SELECT * FROM custom_activity_split WHERE config_id = ${configId}`);
+        await client.end();
+
+        return rows;
+    }
+
+    async getConfigSchemaArgs(configId) {
+        const client = getConnection();
+
+        const {
+            rows
+        } = await client.query(`SELECT * FROM custom_activity_schema_arg WHERE config_id = ${configId}`);
         await client.end();
 
         return rows;
@@ -265,11 +303,12 @@ class CustomActivityModel {
                     useJwt: config.use_jwt
                 }
             },
-            wizardSteps: [], // TODO
+            wizardSteps: [],
             userInterfaces: {
                 configModal: {
                     height: config.edit_height,
                     width: config.edit_width,
+                    fullscreen : true,
                     url: config.endpoint_url + '?numSteps=' //num of steps
                 },
                 runningModal: {
@@ -277,13 +316,6 @@ class CustomActivityModel {
                 },
                 runningHover: {
                     url: config.endpoint_url + '/ui/hover'
-                }
-            },
-            schema: {
-                arguments: {
-                    execute: {},
-                    inArguments: [],
-                    outArguments: []
                 }
             }
         };
@@ -297,10 +329,49 @@ class CustomActivityModel {
             });
         });
         json.wizardSteps = jsonArr;
-        console.log('jsonArr: ' + JSON.stringify(jsonArr));
-
-
-        //console.log(json);
+        // splits
+        var splits = await this.getConfigSplits(id);
+        if (splits.length > 0) {
+            var jsonArr = [];
+            splits.forEach(function (split) {
+                jsonArr.push({
+                    arguments: {
+                        branchResult: split.value
+                    },
+                    metaData: {
+                        label: split.label
+                    }
+                });
+            });
+            json.outcomes = jsonArr;
+        }
+        // schemaArgs TODO
+        var schemaArgs = await this.getConfigSchemaArgs(id);
+        var inArguments = [];
+        var outArguments = [];
+        if (schemaArgs.length > 0) {
+            schemaArgs.forEach(function (schema) {
+                var arg = {};
+                arg[schema.name] = {
+                    dataType: `${schema.data_type}`,
+                    isNullable: `${schema.is_nullable}`,
+                    direction: `${schema.direction}`
+                };
+                if (schema.direction === 'in') {
+                    inArguments.push(arg);
+                } else { // out
+                    outArguments.push(arg);
+                }
+            });
+        }
+        json.schema = {
+            arguments: {
+                execute: {
+                    inArguments: inArguments,
+                    outArguments: outArguments
+                }
+            }
+        };
         return json;
     }
 
@@ -311,7 +382,6 @@ class CustomActivityModel {
         const client = getConnection();
         const result = await client.query(`DELETE FROM ${this.TABLE_NAME} WHERE id =${id}`);
         await client.end();
-        console.log(result);
         return result.rowCount === 1;
     }
 }

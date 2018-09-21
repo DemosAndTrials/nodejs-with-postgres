@@ -57,9 +57,12 @@ const editPage = async (req, res) => {
     // get steps
     var steps = await customActivityModel.getConfigSteps(id);
     config.steps = steps;
-
+    // get splits
     var splits = await customActivityModel.getConfigSplits(id);
     config.splits = splits;
+    // get schema args
+    var schemaArgs = await customActivityModel.getConfigSchemaArgs(id);
+    config.schemaArgs = schemaArgs;
 
     if (!config.steps)
         config.steps = [];

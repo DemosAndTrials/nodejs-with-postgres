@@ -53,7 +53,7 @@
                             </div>
                             <input type="hidden" name="config[endpoint_url]" value="<%= config.endpoint_url %>">
                             <% if(!config.id){ %>
-                            <div class="slds-form-element__row" th:if="${config.Id != null}">
+                            <div class="slds-form-element__row">
                                 <div class="slds-form-element slds-size_1-of-1">
                                     <label class="slds-form-element__label" for="input-11">EndpointUrl - Endpoint used
                                         to execute the journey. (Populated automatically)</label>
@@ -91,10 +91,10 @@
                                         Using a JWT</label>
                                     <div class="slds-select_container">
                                         <select class="slds-select" id="useJwtSelect" name="config[use_jwt]">
-                                            <option value="false" <%=(config.use_jwt=='false' )?' selected':'' %>>
+                                            <option value="false" <%=(config.use_jwt==false )?' selected':'' %>>
                                                 FALSE
                                             </option>
-                                            <option value="true" <%=(config.use_jwt=='true' )?' selected':'' %>>
+                                            <option value="true" <%=(config.use_jwt==true )?' selected':'' %>>
                                                 TRUE
                                             </option>
                                         </select>
@@ -154,10 +154,10 @@
                                         activation)</label>
                                     <div class="slds-select_container">
                                         <select class="slds-select" id="isConfigured" name="config[is_configured]">
-                                            <option value="false" <%=(config.is_configured=='false' )?' selected':'' %>>
+                                            <option value="false" <%=(config.is_configured==false )?' selected':'' %>>
                                                 FALSE
                                             </option>
-                                            <option value="true" <%=(config.is_configured=='true' )?' selected':'' %>>
+                                            <option value="true" <%=(config.is_configured==true )?' selected':'' %>>
                                                 TRUE
                                             </option>
                                         </select>
@@ -171,10 +171,10 @@
                                         activity configuration opens when the activity is dropped on the canvas.</label>
                                     <div class="slds-select_container">
                                         <select class="slds-select" id="configOnDrop" name="config[config_on_drop]">
-                                            <option value="false" <%=(config.config_on_drop=='false' )?' selected':'' %>>
+                                            <option value="false" <%=(config.config_on_drop==false )?' selected':'' %>>
                                                 FALSE
                                             </option>
-                                            <option value="true" <%=(config.config_on_drop=='true' )?' selected':'' %>>
+                                            <option value="true" <%=(config.config_on_drop==true )?' selected':'' %>>
                                                 TRUE
                                             </option>
                                         </select>
@@ -201,7 +201,7 @@
                                 </div>
                             </div>
                             <% for (var i = 0 ; i < config.splits.length ; i++) { %>
-                            <div th:each="split,status : ${config.splits}" class="slds-form-element__row">
+                            <div class="slds-form-element__row">
                                 <div class="slds-form-element slds-size_1-of-2">
                                     <input type="text" name="config[splits][<%= i %>][label]" value="<%= config.splits[i].label %>"
                                         class="slds-input" maxlength="50" placeholder="label">
@@ -266,7 +266,7 @@
                                 </div>
 
                                 <% for (var i = 0 ; i < config.steps.length ; i++) { %>
-                                <div th:each="step,status : ${config.steps}" class="slds-form-element__row">
+                                <div class="slds-form-element__row">
                                     <div class="slds-form-element slds-size_1-of-2">
                                         <input type="text" name="config[steps][<%= i %>][label]" value="<%= config.steps[i].label %>"
                                             class="slds-input" maxlength="50" placeholder="label">
@@ -353,12 +353,22 @@
                                         <label class="slds-form-element__label">DataType</label>
                                         <div class="slds-form-element__control">
                                             <div class="slds-select_container">
-                                                <select class="slds-select" id="dataTypeSelect" name="config[schemaArgs][<%= i %>][dataType]">
-                                                    <option value="Text">Text</option>
-                                                    <option value="Number">Number</option>
-                                                    <option value="Date">Date</option>
-                                                    <option value="Boolean">Boolean</option>
-                                                    <option value="Decimal">Decimal</option>
+                                                <select class="slds-select" id="dataTypeSelect" name="config[schemaArgs][<%= i %>][data_type]">
+                                                    <option value="Text" <%=(config.schemaArgs[i].data_type=='Text')?' selected':'' %>>
+                                                        Text
+                                                    </option>
+                                                    <option value="Number" <%=(config.schemaArgs[i].data_type=='Number')?' selected':'' %>>
+                                                        Number
+                                                    </option>
+                                                    <option value="Date" <%=(config.schemaArgs[i].data_type=='Date')?' selected':'' %>>
+                                                        Date
+                                                    </option>
+                                                    <option value="Boolean" <%=(config.schemaArgs[i].data_type=='Boolean')?' selected':'' %>>
+                                                        Boolean
+                                                    </option>
+                                                    <option value="Decimal" <%=(config.schemaArgs[i].data_type=='Decimal')?' selected':'' %>>
+                                                        Decimal
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -367,9 +377,13 @@
                                         <label class="slds-form-element__label">IsNullable</label>
                                         <div class="slds-form-element__control">
                                             <div class="slds-select_container">
-                                                <select class="slds-select" id="isNullableSelect" name="config[schemaArgs][<%= i %>][dataType][isNullable]">
-                                                    <option value="false">false</option>
-                                                    <option value="true">true</option>
+                                                <select class="slds-select" id="isNullableSelect" name="config[schemaArgs][<%= i %>][is_nullable]">
+                                                    <option value="false" <%=(config.schemaArgs[i].is_nullable==false)?' selected':'' %>>
+                                                        False
+                                                    </option>
+                                                    <option value="true" <%=(config.schemaArgs[i].is_nullable==true)?' selected':'' %>>
+                                                        True
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -381,9 +395,13 @@
                                         <label class="slds-form-element__label">Direction</label>
                                         <div class="slds-form-element__control">
                                             <div class="slds-select_container">
-                                                <select class="slds-select" id="directionSelect" name="config[schemaArgs][<%= i %>][dataType][direction]">
-                                                    <option value="in">in</option>
-                                                    <option value="out">out</option>
+                                                <select class="slds-select" id="directionSelect" name="config[schemaArgs][<%= i %>][direction]">
+                                                    <option value="in" <%=(config.schemaArgs[i].direction=='in')?' selected':'' %>>
+                                                        In
+                                                    </option>
+                                                    <option value="out" <%=(config.schemaArgs[i].direction=='out')?' selected':'' %>>
+                                                        Out
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -393,8 +411,12 @@
                                         <div class="slds-form-element__control">
                                             <div class="slds-select_container">
                                                 <select class="slds-select" id="accessSelect" name="config[schemaArgs][<%= i %>][access]">
-                                                    <option value="visible">visible</option>
-                                                    <option value="hidden">hidden</option>
+                                                    <option value="visible" <%=(config.schemaArgs[i].access=='visible')?' selected':'' %>>
+                                                        Visible
+                                                    </option>
+                                                    <option value="hidden" <%=(config.schemaArgs[i].access=='hidden')?' selected':'' %>>
+                                                        Hidden
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -487,11 +509,11 @@
                     <div class="slds-form-element__control">
                         <div class="slds-select_container">
                             <select id="tempArgDataType" class="slds-select">
-                                <option th:value="Text">Text</option>
-                                <option th:value="Number">Number</option>
-                                <option th:value="Date">Date</option>
-                                <option th:value="Boolean">Boolean</option>
-                                <option th:value="Decimal">Decimal</option>
+                                <option value="Text">Text</option>
+                                <option value="Number">Number</option>
+                                <option value="Date">Date</option>
+                                <option value="Boolean">Boolean</option>
+                                <option value="Decimal">Decimal</option>
                             </select>
                         </div>
                     </div>
@@ -501,8 +523,8 @@
                     <div class="slds-form-element__control">
                         <div class="slds-select_container">
                             <select id="tempArgIsNullable" class="slds-select">
-                                <option th:value="false">false</option>
-                                <option th:value="true">true</option>
+                                <option value="false">false</option>
+                                <option value="true">true</option>
                             </select>
                         </div>
                     </div>
@@ -515,8 +537,8 @@
                     <div class="slds-form-element__control">
                         <div class="slds-select_container">
                             <select id="tempArgDirection" class="slds-select">
-                                <option th:value="in">in</option>
-                                <option th:value="out">out</option>
+                                <option value="in">in</option>
+                                <option value="out">out</option>
                             </select>
                         </div>
                     </div>
@@ -526,8 +548,8 @@
                     <div class="slds-form-element__control">
                         <div class="slds-select_container">
                             <select id="tempArgAccess" class="slds-select">
-                                <option th:value="visible">visible</option>
-                                <option th:value="hidden">hidden</option>
+                                <option value="visible">visible</option>
+                                <option value="hidden">hidden</option>
                             </select>
                         </div>
                     </div>
@@ -541,28 +563,11 @@
     <input type="hidden" id="numOfSteps" name="numOfSteps" value="<%= config.steps.length %>" />
     <input type="hidden" id="numOfSchemaArgs" name="numOfSchemaArgs" value="<%= config.schemaArgs.length %>" />
 
-    <!-- <script src="/webjars/jquery/1.9.1/jquery.min.js"></script> -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
     <script src="/js/custom-activity/ca-create.js"></script>
-    <script type="text/javascript" th:inline="javascript">
-        /*<![CDATA[*/
-        // var numOfSplits = [
-        //     [$ {
-        //         config.splits.size()
-        //     }]
-        // ];
-        // var numOfSteps = [
-        //     [$ {
-        //         config.steps.size()
-        //     }]
-        // ];
-        // var numOfShemaArgs = [
-        //     [$ {
-        //         config.schemaArgs.size()
-        //     }]
-        // ];
-        /*]]>*/
+    <script type="text/javascript">
+        
     </script>
 </body>
 

@@ -21,7 +21,6 @@ export default class CustomActivityConfig {
     }];
     this.splits = [];
     this.schemaArgs = [];
-
     this.endpoint_url = host + '/ca';
     this.edit_url = host + '/ca/ui';
     this.big_image_url = host + '/images/ca/icon.png';
