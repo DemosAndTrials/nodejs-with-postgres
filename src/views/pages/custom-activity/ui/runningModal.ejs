@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Custom Activity Demo</title>
+    <link rel="icon" href="/fav.ico" type="image/x-icon"/>
+    <script data-main="/js/custom-activity/modalMain.js" src="/js/require.js"></script>
+    <link rel="stylesheet" type="text/css" href="/slds/styles/salesforce-lightning-design-system.min.css"/>
+    <style>
+    </style>
+</head>
+<body>
+<div class="slds-shrink-none">
+    <div class="slds-page-header"><h2 class="slds-text-heading--label" th:text="*{config.Name}">Custom Activity</h2></div>
+    <div class="slds-box">
+        <div class="slds-grid slds-wrap slds-container--medium slds-container--center slds-order-1 slds-medium-order--2 slds-p-vertical--none">
+            <div class="slds-col--padded slds-col-rule--right slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--8-of-12 slds-p-bottom--medium">
+                <article class="slds-text-longform">
+                    <p th:text="*{config.Description}">
+                        Detailed description here
+                    </p>
+                    <ul class="slds-list_dotted">
+                        <li>
+                            Additional information here.
+                        </li>
+                        <li>
+                            Additional information here.
+                        </li>
+                    </ul>
+                    <p>
+                        Note: some note.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

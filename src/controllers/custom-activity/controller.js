@@ -128,6 +128,34 @@ const getJson = async (req, res) => {
     return res.status(200).json(config);
 }
 
+/**
+* Custom Activity UI
+* Endpoint for the UI displayed to marketers while configuring this activity.
+ */
+const editModalPage = (req, res) => {
+    res.render('pages/custom-activity/ui/editModal', {
+        userData: req.user
+    });
+}
+
+/**
+ * Running hover
+ */
+const runningHoverPage = (req, res) => {
+    res.render('pages/custom-activity/ui/runningHover', {
+        userData: req.user
+    });
+}
+
+/**
+ * Running modal
+ */
+const runningModalPage = (req, res) => {
+    res.render('pages/custom-activity/ui/runningModal', {
+        userData: req.user
+    });
+}
+
 export {
     indexPage,
     setupPage,
@@ -136,5 +164,8 @@ export {
     deleteConfig,
     listPage,
     createConfig,
-    getJson
+    getJson,
+    editModalPage,
+    runningHoverPage,
+    runningModalPage
 }
