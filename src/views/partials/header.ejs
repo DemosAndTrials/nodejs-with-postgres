@@ -25,7 +25,51 @@
                     <a href="/" class="slds-context-bar__label-action" title="Home">
                         <span class="slds-truncate" title="Home">Home</span>
                     </a>
-                </li>           
+                </li>
+                <!--API-->
+                <li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_hover slds-context-bar__item_divider-right">
+                        <a href="/api" class="slds-context-bar__label-action" title="Demo">
+                            <span class="slds-truncate" title="Menu Item">API</span>
+                        </a>
+                        <div class="slds-context-bar__icon-action slds-p-left_none slds-context-bar__item_divider-right">
+                            <button class="slds-button slds-button_icon slds-button_icon slds-context-bar__button"
+                                    aria-haspopup="true" title="Open submenu">
+                                <svg class="slds-button__icon" aria-hidden="true">
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink"
+                                         xlink:href="/slds/icons/utility-sprite/svg/symbols.svg#chevrondown"></use>
+                                </svg>
+                                <span class="slds-assistive-text">Open submenu</span>
+                            </button>
+                        </div>
+                        <div class="slds-dropdown slds-dropdown_right slds-context-bar__item_divider-right">
+                            <ul class="slds-dropdown__list" role="menu">
+                                <!--Index-->
+                                <li class="slds-dropdown__item slds-context-bar__item_divider-right" role="presentation">
+                                    <a href="/api" role="menuitem" tabindex="-1">
+                                        <span class="slds-truncate" title="Getting Started">Getting Started</span>
+                                    </a>
+                                </li>
+                                <!--SDK-->
+                                <li class="slds-dropdown__item slds-context-bar__item_divider-right" role="presentation">
+                                    <a href="/api/sdk" role="menuitem" tabindex="-1">
+                                        <span class="slds-truncate" title="SDK">SDK</span>
+                                    </a>
+                                </li>
+                                <!--REST-->
+                                <li class="slds-dropdown__item slds-context-bar__item_divider-right" role="presentation">
+                                    <a href="/api/rest" role="menuitem" tabindex="-1">
+                                        <span class="slds-truncate" title="REST API">REST API</span>
+                                    </a>
+                                </li>
+                                <!--SOAP-->
+                                <li class="slds-dropdown__item slds-context-bar__item_divider-right" role="presentation">
+                                    <a href="/api/soap" role="menuitem" tabindex="-1">
+                                        <span class="slds-truncate" title="SOAP API">SOAP API</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>        
                 <!--CUSTOM ACTIVITY-->
                 <li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_hover slds-context-bar__item_divider-right">
                     <a href="/ca" class="slds-context-bar__label-action" title="Custom Activity">

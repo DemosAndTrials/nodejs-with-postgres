@@ -2,8 +2,7 @@ import express from 'express';
 import path from 'path';
 import { createTables } from './config/postgres';
 import middlewaresConfig from './config/middleware';;
-import ApiRoutes from './controllers';
-import HomeRoutes from './controllers';
+import Routes from './controllers';
 
 const app = express();
 
@@ -24,8 +23,8 @@ app.set('view engine', 'ejs');
 // serve static files
 app.use(express.static(path.join(__dirname, "static")));
 // controllers
-app.use('/', HomeRoutes);
-app.use('/api', ApiRoutes);
+app.use('/', Routes);
+//app.use('/api', ApiRoutes);
 // errors
 // $ curl http://localhost:3000/notfound
 // $ curl http://localhost:3000/notfound -H "Accept: application/json"
@@ -57,7 +56,6 @@ app.use(function (req, res, next) {
 (async () => {
     await createTables();
 })();
-
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, (err) => {
