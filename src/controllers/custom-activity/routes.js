@@ -14,4 +14,9 @@ routes.post('/delete/:id', CustomActivityController.deleteConfig);
 routes.get('/list', CustomActivityController.listPage);
 routes.post('/:id/config.json', CustomActivityController.getJson);
 
+routes.get('/:id/ui/edit', CustomActivityController.editModalPage);
+routes.get('/:id/ui', CustomActivityController.editModalPage);
+routes.get('/:id/ui/hover', CustomActivityController.runningHoverPage);
+routes.get('/:id/ui/modal', CustomActivityController.runningModalPage);
+
 export default routes;

@@ -89,7 +89,6 @@ class CustomActivityModel {
         } = await client.query(query);
         if (!args.id) {
             const id = rows[0].id;
-            console.log('new config: ' + id);
             args.endpoint_url = args.endpoint_url + '/' + id;
             if (args.edit_url.includes('ca/ui'))
                 args.edit_url = args.endpoint_url + '/ui/edit';
