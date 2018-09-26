@@ -9,5 +9,6 @@ routes.get('/rest', ApiController.restPage);
 routes.get('/soap', ApiController.soapPage);
 
 routes.get('/sdk/de', ApiController.deFoldersPage);
+routes.get('/sdk/de-folder/:id', ApiController.deFolderPage);
 
 export default routes;

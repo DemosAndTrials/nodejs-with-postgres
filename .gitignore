@@ -6,4 +6,5 @@ package-lock.json
 src/config/key.pem
 stats.json
 .vscode
+.env
 dist/

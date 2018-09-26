@@ -28,7 +28,7 @@
                                aria-pressed="false" title="New">
                                 <svg class="slds-button__icon slds-icon-text-default" aria-hidden="true">
                                     <use xmlns:xlink="http://www.w3.org/1999/xlink"
-                                         xlink:href="/styles/slds/icons/action-sprite/svg/symbols.svg#new"></use>
+                                         xlink:href="/slds/icons/action-sprite/svg/symbols.svg#new"></use>
                                 </svg>
                                 <span class="slds-assistive-text">New</span>
                             </a>
@@ -36,26 +36,28 @@
                     </div>
 
                     <ul id="deFolders">
-                        <li th:each="folder : ${data_folders}" th:id="@{'folder_' + ${folder.Id}}"
-                            th:class="'slds-nav-vertical__item ' + ((${folder.getId()} == ${selectedFolderId}) ? 'slds-is-active' : '')">
+                        <% data_folders.forEach(function(folder) { %>
+                        <li id="folder_<%= folder.ID %>" class="slds-nav-vertical__item <%=(folder.ID===selectedFolderId)?'slds-is-active':''%>">
                             <a class="slds-nav-vertical__action" aria-describedby="entity-header"
-                               th:href="@{'/api/sdk/de-folder/' + ${folder.getId()}}">
+                               href="/api/sdk/de-folder/<%= folder.ID %>">
                                  <span class="slds-icon_container slds-icon-utility-open_folder slds-line-height_reset"
                                        title="Description of icon when needed">
                                     <svg class="slds-icon slds-icon-text-default slds-icon_x-small slds-m-right_x-small"
                                          aria-hidden="true">
-                                        <use th:if="${folder.getId() == selectedFolderId}"
-                                             xmlns:xlink="http://www.w3.org/1999/xlink"
-                                             xlink:href="/styles/slds/icons/utility-sprite/svg/symbols.svg#opened_folder"/>
-                                        <use th:if="${folder.getId() != selectedFolderId}"
-                                             xmlns:xlink="http://www.w3.org/1999/xlink"
-                                             xlink:href="/styles/slds/icons/utility-sprite/svg/symbols.svg#open_folder"/>
+                                         <% if(folder.ID === selectedFolderId){ %>
+                                        <use xmlns:xlink="http://www.w3.org/1999/xlink"
+                                             xlink:href="/slds/icons/utility-sprite/svg/symbols.svg#opened_folder"/>
+                                        <%} else {%>
+                                        <use xmlns:xlink="http://www.w3.org/1999/xlink"
+                                             xlink:href="/slds/icons/utility-sprite/svg/symbols.svg#open_folder"/>
+                                        <%}%>
                                     </svg>
                                     <span class="slds-assistive-text">Folder</span>
                                     </span>
-                                <span th:text="${folder.getName()}">Name</span>
+                                <span><%= folder.Name %></span>
                             </a>
                         </li>
+                        <% }); %>
                     </ul>
                 </div>
             </nav>
