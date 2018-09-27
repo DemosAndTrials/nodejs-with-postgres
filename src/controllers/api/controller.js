@@ -1,4 +1,4 @@
-import SDKClient from '../../utils/sdkClient'
+import FuelSdkService from '../../services/FuelSdkService';
 
 /**
  * Index page
@@ -40,66 +40,23 @@ const soapPage = (req, res) => {
  * Data extensions general page
  * - Folders and list of data extensions
  */
-const deFoldersPage = (req, res) => {
+const deFoldersPage = async (req, res) => {
 
-    var options = {
-        props: ["ParentFolder.ID", "ID", "Name", "ContentType"], //required
-        filter: { //remove filter for all.
-            leftOperand: 'ContentType',
-            operator: 'equals',
-            rightOperand: 'dataextension' //email
-        }
-    };
-    var folder = SDKClient.folder(options);
+    var data_folders = await FuelSdkService.getFolders();
 
-    folder.get(function (err, response) {
-        if (err) {
-            console.log('err: ' + err);
-            //res.status(500).send(err);
-            res.redirect('500');
-        } else {
-            var statusCode = response && response.res && response.res.statusCode ? response.res.statusCode : 200;
-            console.log('statusCode: ' + statusCode);
-            var result = response && response.body ? response.body : response;
-
-            //console.log('result: ' + result.Results);
-            var data_folders = result.Results
-            //response && res.status(statusCode).send(result.Results);
-            res.render('pages/api/sdk/de-folders', {
-                userData: req.user,
-                data_folders: data_folders,
-                selectedFolderId: '',
-                parentFolderId: ''
-            });
-        }
+    var parentFolder = data_folders.find(function (folder) {
+        return folder.ParentFolder.ID == '0';
     });
-    console.log('efsadf');
 
-    // res.render('pages/404', {
-    //     userData: req.user,
-    //     data_folders: data_folders,
-    //     selectedFolderId: ''
-    // });
-}
+    var data_extensions = await FuelSdkService.getDataExtensions(parentFolder.ID);
 
-async function get(folder) {
-    return new Promise(function (resolve, reject) {
-        folder.get(function (err, response) {
-            if (err) {
-                console.log('err: ' + err);
-                //res.status(500).send(err);
-                //res.redirect('500');
-                reject(err);
-            } else {
-                var statusCode = response && response.res && response.res.statusCode ? response.res.statusCode : 200;
-                console.log('statusCode: ' + statusCode);
-                var result = response && response.body ? response.body : response;
-
-                var data_folders = result.Results
-                resolve(data_folders);
-            }
-        });
-    })
+    res.render('pages/api/sdk/de-folders', {
+        userData: req.user,
+        data_folders: data_folders,
+        data_extensions: data_extensions,
+        selectedFolderId: parentFolder.ID,
+        parentFolderId: ''
+    });
 }
 
 /**
@@ -107,22 +64,16 @@ async function get(folder) {
  */
 const deFolderPage = async (req, res) => {
     const folderId = req.params.id;
-    console.log('folderId: ' + folderId);
-    var options = {
-        props: ["ParentFolder.ID", "ID", "Name", "ContentType"], //required
-        filter: { //remove filter for all.
-            leftOperand: 'ContentType',
-            operator: 'equals',
-            rightOperand: 'dataextension' //email
-        }
-    };
+
     try {
-        var folder = SDKClient.get(options);
-        var data_folders = await operation(folder);
-        console.log('data_folders: ' + JSON.stringify(data_folders));
+
+        var data_folders = await FuelSdkService.getFolders();
+        var data_extensions = await FuelSdkService.getDataExtensions(folderId);
+
         res.render('pages/api/sdk/de-folders', {
             userData: req.user,
             data_folders: data_folders,
+            data_extensions: data_extensions,
             selectedFolderId: folderId,
             parentFolderId: ''
         });
@@ -130,50 +81,43 @@ const deFolderPage = async (req, res) => {
         console.log('err: ' + err);
         res.redirect('/500');
     }
-
-
-
-    // res.render('pages/api/sdk/de-folders', {
-    //     userData: req.user,
-    //     data_folders: data_folders,
-    //     selectedFolderId: folderId,
-    //     parentFolderId: ''
-    // });
-
-    // folder.get(function (err, response) {
-    //     if (err) {
-    //         console.log('err: ' + err);
-    //         //res.status(500).send(err);
-    //         res.redirect('500');
-    //     } else {
-    //         var statusCode = response && response.res && response.res.statusCode ? response.res.statusCode : 200;
-    //         console.log('statusCode: ' + statusCode);
-    //         var result = response && response.body ? response.body : response;
-
-    //         //console.log('result: ' + result.Results);
-    //         var data_folders = result.Results
-    //         //response && res.status(statusCode).send(result.Results);
-    //         res.render('pages/api/sdk/de-folders', {
-    //             userData: req.user,
-    //             data_folders: data_folders,
-    //             selectedFolderId: folderId,
-    //             parentFolderId: ''
-    //         });
-    //     }
-    // });
-
-    // res.render('pages/api/sdk/de-folders', {
-    //     userData: req.user,
-
-    // });
 }
 
 /**
  * Get data extensions for specific folder
  */
-const deListPage = (req, res) => {
-    res.render('pages/api/sdk/de-list', {
-        userData: req.user
+const deleteDE = async (req, res) => {
+    const deId = req.params.id;
+    //console.log('deId: ' + deId);
+    var result = await FuelSdkService.deleteDataExtension(deId);
+    return res.status(200).json({
+        success: true,
+        result
+    });
+}
+
+/**
+ * Create data extensions
+ */
+const createDEPage = async (req, res) => {
+    const folderId = req.params.id;
+    //console.log('deId: ' + deId);
+    res.render('pages/api/sdk/de-create', {
+        userData: req.user,
+        folderId: folderId
+    });
+}
+
+/**
+ * Create data extension folder
+ */
+const createFolder = async (req, res) => {
+    const folder = req.body;
+    console.log('body: ' + JSON.stringify(folder));
+    var result = await FuelSdkService.createFolder(folder);
+    return res.status(200).json({
+        success: true,
+        result
     });
 }
 
@@ -183,5 +127,8 @@ export {
     restPage,
     soapPage,
     deFoldersPage,
-    deFolderPage
+    deFolderPage,
+    deleteDE,
+    createFolder,
+    createDEPage
 }

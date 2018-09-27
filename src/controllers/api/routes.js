@@ -10,5 +10,8 @@ routes.get('/soap', ApiController.soapPage);
 
 routes.get('/sdk/de', ApiController.deFoldersPage);
 routes.get('/sdk/de-folder/:id', ApiController.deFolderPage);
+routes.post('/sdk/de-delete/:id', ApiController.deleteDE);
+routes.post('/sdk/de-folder/', ApiController.createFolder);
+routes.get('/sdk/de-create/:id', ApiController.createDEPage);
 
 export default routes;
