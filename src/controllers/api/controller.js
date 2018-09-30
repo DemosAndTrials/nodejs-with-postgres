@@ -84,11 +84,30 @@ const deFolderPage = async (req, res) => {
 }
 
 /**
+ * Data extensions details
+ */
+const detailsDEPage = async (req, res) => {
+    const objectID = req.params.id;
+    var de = await FuelSdkService.getDataExtension(objectID);
+    var cols = await FuelSdkService.getDataExtensionColumns(de.CustomerKey)
+    var canDeleteRow = cols.filter(c => c.IsPrimaryKey === 'true').length > 0;
+    var colNames = cols.map(a => a.Name);
+    var rows = await FuelSdkService.getDataExtensionRows(de.CustomerKey, colNames);
+
+    res.render('pages/api/sdk/de-details', {
+        userData: req.user,
+        de: de,
+        rows: rows ? rows : [], // ???
+        cols: cols,
+        canDeleteRow : canDeleteRow
+    });
+}
+
+/**
  * Get data extensions for specific folder
  */
 const deleteDE = async (req, res) => {
     const deId = req.params.id;
-    //console.log('deId: ' + deId);
     var result = await FuelSdkService.deleteDataExtension(deId);
     return res.status(200).json({
         success: true,
@@ -101,7 +120,6 @@ const deleteDE = async (req, res) => {
  */
 const createDEPage = async (req, res) => {
     const folderId = req.params.id;
-    //console.log('deId: ' + deId);
     res.render('pages/api/sdk/de-create', {
         userData: req.user,
         folderId: folderId
@@ -121,6 +139,21 @@ const createFolder = async (req, res) => {
     });
 }
 
+/**
+ * Get data extensions for specific folder
+ */
+const deleteDERow = async (req, res) => {
+    const name = req.params.name;
+    const body = req.body;
+    console.log('name: ' + name);
+    console.log('body: ' + JSON.stringify(body));
+    var result = await FuelSdkService.deleteDataExtensionRow(name, body);
+    return res.status(200).json({
+        success: true,
+        result
+    });
+}
+
 export {
     indexPage,
     sdkPage,
@@ -128,7 +161,9 @@ export {
     soapPage,
     deFoldersPage,
     deFolderPage,
+    detailsDEPage,
     deleteDE,
     createFolder,
-    createDEPage
+    createDEPage,
+    deleteDERow
 }

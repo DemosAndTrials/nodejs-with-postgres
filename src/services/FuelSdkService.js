@@ -52,6 +52,104 @@ class FuelSdkService {
     }
 
     /**
+     * Get Data Extension by CustomerKey
+     */
+    async getDataExtension(key) {
+        var options = {
+            props: ['ObjectID', 'Name', 'CustomerKey', 'Description', 'isSendable', 'isTestable', 'CreatedDate', 'ModifiedDate'] //required
+                ,
+            filter: { // remove filter for all.
+                leftOperand: 'ObjectID',
+                operator: 'equals',
+                rightOperand: key
+            }
+        };
+        var de = SDKClient.dataExtension(options);
+        try {
+            var result = await this.get(de);
+            //console.log('result: ' + JSON.stringify(result));
+            return result[0];
+        } catch (err) {
+            console.log('err: ' + err);
+        }
+        return;
+    }
+
+    /**
+     * Get Data Extension Columns by CustomerKey
+     */
+    async getDataExtensionColumns(key) {
+        var options = {
+            props: ['ObjectID', 'PartnerKey', 'Name', 'DefaultValue', 'MaxLength', 'IsRequired', 'Ordinal', 'IsPrimaryKey', 'FieldType', 'CreatedDate', 'ModifiedDate', 'Scale', 'Client.ID', 'CustomerKey'] //required	
+                ///*
+                ,
+            filter: { //remove filter for all.
+                leftOperand: 'DataExtension.CustomerKey',
+                operator: 'equals',
+                rightOperand: key
+            }
+            //*/	
+        };
+        var deColumn = SDKClient.dataExtensionColumn(options);
+        try {
+            var result = await this.get(deColumn);
+            if (result && result.length > 1) // sort columns
+                result.sort((a, b) => (a.Ordinal > b.Ordinal) ? 1 : ((b.Ordinal > a.Ordinal) ? -1 : 0));
+            //console.log('result: ' + JSON.stringify(result));
+            return result;
+        } catch (err) {
+            console.log('err: ' + err);
+        }
+        return;
+    }
+
+    /**
+     * Get Data Extension Rows by CustomerKey
+     */
+    async getDataExtensionRows(key, cols) {
+        var options = {
+            Name: key //required
+                ,
+            props: cols //['Key'] //required
+            /*
+            ,filter: {						//remove filter for all.
+                leftOperand: 'Value',
+                operator: 'equals',
+                rightOperand: 'Some random text for the value field'
+               }
+               */
+        };
+        var deRow = SDKClient.dataExtensionRow(options);
+        try {
+            var result = await this.get(deRow);
+            //console.log('result: ' + JSON.stringify(result));
+            return result;
+        } catch (err) {
+            console.log('err: ' + err);
+        }
+        return;
+    }
+
+    /**
+     * Delete Data Extension Row by key
+     */
+    async deleteDataExtensionRow(name, row) {
+        console.log('name: ' + name);
+        var options = {
+            Name: name,
+            props: row	
+        };
+        var deRow = SDKClient.dataExtensionRow(options)
+        try {
+            var result = await this.delete(deRow);
+            return result;
+        } catch (err) {
+            console.log('err: ' + err);
+        }
+        return;
+    }
+
+    /**
      * Delete Data Extensions by key
      */
     async deleteDataExtension(key) {
@@ -103,6 +201,10 @@ class FuelSdkService {
         return;
     }
 
+    //****************************************************************************************
+    //								Helpers
+    //****************************************************************************************
+
     /**
      * Get
      */
@@ -115,7 +217,7 @@ class FuelSdkService {
                     //res.redirect('500');
                     reject(err);
                 } else {
-                    var statusCode = response && response.res && response.res.statusCode ? response.res.statusCode : 200;
+                    //var statusCode = response && response.res && response.res.statusCode ? response.res.statusCode : 200;
                     var result = response && response.body ? response.body : response;
                     var items = result.Results
                     resolve(items);
