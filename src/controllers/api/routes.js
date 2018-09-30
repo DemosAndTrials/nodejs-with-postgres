@@ -15,5 +15,6 @@ routes.post('/sdk/de-folder/', ApiController.createFolder);
 routes.get('/sdk/de-create/:id', ApiController.createDEPage);
 routes.get('/sdk/de-details/:id', ApiController.detailsDEPage);
 routes.post('/sdk/row-delete/:name', ApiController.deleteDERow);
+routes.post('/sdk/row-create/:name', ApiController.createDERow);
 
 export default routes;

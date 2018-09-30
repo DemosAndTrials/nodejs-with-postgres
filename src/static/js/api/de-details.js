@@ -47,13 +47,14 @@ j$('#deRecords').on('click', '#saveRowBtn', function () {
     console.log("saveRowBtn");
     // get de key
     var key = j$('#deKey').text().trim();
+    var name = j$('#deName').text().trim();
     // get columns
     var dataObject = new Map();
     j$("#extNewRow :input.slds-input").each(function (index, element) {
         dataObject[j$(this).attr('name')] = j$(this).val();
     });
     // post data
-    ajaxCall("/api/sdk/row-create/" + key, dataObject, function (response) {
+    ajaxCall("/api/sdk/row-create/" + name, dataObject, function (response) {
         if (response != null) {
             console.log("it works! " + JSON.stringify(response));
             // remove template row
@@ -64,7 +65,8 @@ j$('#deRecords').on('click', '#saveRowBtn', function () {
             view.attr("id", "extViewRow");
             j$(view).prependTo("table#deRecords > tbody");
             j$("#extViewRow div.slds-truncate").each(function (index, element) {
-                j$(this).text(response[j$(this).attr('name')]);
+                console.log("index: " + index);
+                j$(this).text(response.result[index].Value);
             });
             j$("#extViewRow").removeAttr("id");
         }
@@ -146,6 +148,7 @@ j$('#deRecords').on('click', '[id^=editBtn_]', function () {
     var row = j$(this).closest("tr");
 console.log('row: ' + row.html());
     j$(row).find('.slds-truncate, .slds-input, .slds-required, .slds-button').each(function (index, element) {
+        console.log('node: ' + this.nodeName);
         if (this.nodeName == 'SPAN') {
             j$(this).hide();
         }

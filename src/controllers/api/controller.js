@@ -140,7 +140,7 @@ const createFolder = async (req, res) => {
 }
 
 /**
- * Get data extensions for specific folder
+ * Delete data extensions row
  */
 const deleteDERow = async (req, res) => {
     const name = req.params.name;
@@ -148,6 +148,22 @@ const deleteDERow = async (req, res) => {
     console.log('name: ' + name);
     console.log('body: ' + JSON.stringify(body));
     var result = await FuelSdkService.deleteDataExtensionRow(name, body);
+    return res.status(200).json({
+        success: true,
+        result
+    });
+}
+
+/**
+ * Create data extensions row
+ */
+const createDERow = async (req, res) => {
+    const name = req.params.name;
+    const body = req.body;
+    //console.log('name: ' + name);
+    //console.log('body: ' + JSON.stringify(body));
+    var result = await FuelSdkService.createDataExtensionRow(name, body);
+    console.log('result: ' + result);
     return res.status(200).json({
         success: true,
         result
@@ -165,5 +181,6 @@ export {
     deleteDE,
     createFolder,
     createDEPage,
-    deleteDERow
+    deleteDERow,
+    createDERow
 }

@@ -131,6 +131,27 @@ class FuelSdkService {
     }
 
     /**
+     * Create Data Extension Row by key
+     */
+    async createDataExtensionRow(name, row) {
+        console.log('name: ' + name);
+        var options = {
+            Name: name,
+            props: row	
+        };
+        var deRow = SDKClient.dataExtensionRow(options)
+        try {
+            var result = await this.post(deRow);
+            var arr = result.Results[0].Object.Properties.Property;
+            //console.log('arr: ' + JSON.stringify(arr));
+            return arr;
+        } catch (err) {
+            console.log('err: ' + err);
+        }
+        return;
+    }
+
+    /**
      * Delete Data Extension Row by key
      */
     async deleteDataExtensionRow(name, row) {
