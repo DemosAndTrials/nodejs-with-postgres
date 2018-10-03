@@ -119,9 +119,9 @@
                 </td>
                 <% }); %>
                 <!--actions-->
-                <td data-label="Actions" class="">
+                <td data-label="Actions" class="slds-cell-shrink">
                     <% if(canDeleteRow === true){ %>
-                    <span th:if="${canDeleteRow}">
+                    <span>
                         <button id="editBtn_<%= index %>" name="<%= index %>" class="slds-button slds-button_icon slds-button_icon-border slds-button_icon-default"
                             aria-pressed="false" title="Edit">
                             <svg class="slds-button__icon" aria-hidden="true">
@@ -136,15 +136,15 @@
                             </svg>
                             <span class="slds-assistive-text">Delete</span>
                         </button>
-                        <button id="okBtn_<%= index %>" aria-pressed="false" class="slds-button slds-button_icon slds-button_icon-border slds-button_icon-default"
-                            title="Save" name="<%= index %>" style="display: none">
+                        <button id="okBtn_<%= index %>" aria-pressed="false" class="slds-button slds-button_icon slds-button_icon-border slds-button_icon-default slds-hide edit"
+                            title="Save" name="<%= index %>">
                             <svg aria-hidden="true" class="slds-button__icon">
                                 <use xlink:href="/slds/icons/action-sprite/svg/symbols.svg#approval" xmlns:xlink="http://www.w3.org/1999/xlink"></use>
                             </svg>
                             <span class="slds-assistive-text">Save</span>
                         </button>
-                        <button id="cancelBtn_<%= index %>" aria-pressed="false" class="slds-button slds-button_icon slds-button_icon-border slds-button_icon-error"
-                            title="Cancel" name="<%= index %>" style="display: none">
+                        <button id="cancelBtn_<%= index %>" aria-pressed="false" class="slds-button slds-button_icon slds-button_icon-border slds-button_icon-error slds-hide edit"
+                            title="Cancel" name="<%= index %>">
                             <svg aria-hidden="true" class="slds-button__icon">
                                 <use xlink:href="/slds/icons/action-sprite/svg/symbols.svg#remove" xmlns:xlink="http://www.w3.org/1999/xlink"></use>
                             </svg>
@@ -176,17 +176,17 @@
                 </td>
                 <% }); %>
                 <!--actions-->
-                <td data-label="Actions">
-                    <button aria-pressed="false" class="slds-button slds-button_icon" title="Save" id="saveRowTempBtn" name="0">
-                        <svg aria-hidden="true" class="slds-button__icon slds-icon-text-default">
+                <td data-label="Actions" class="slds-cell-shrink">
+                    <button aria-pressed="false" class="slds-button slds-button_icon slds-button_icon-border slds-button_icon-default" title="Save" id="saveRowTempBtn" name="0">
+                        <svg aria-hidden="true" class="slds-button__icon">
                             <use xlink:href="/slds/icons/action-sprite/svg/symbols.svg#approval"
                                  xmlns:xlink="http://www.w3.org/1999/xlink"></use>
                         </svg>
                         <span class="slds-assistive-text">Save</span>
                     </button>
-                    <button aria-pressed="false" class="slds-button slds-button_icon" title="Cancel" id="cancelRowTempBtn"
+                    <button aria-pressed="false" class="slds-button slds-button_icon slds-button_icon-border slds-button_icon-error" title="Cancel" id="cancelRowTempBtn"
                             name="0">
-                        <svg aria-hidden="true" class="slds-button__icon slds-icon-text-error">
+                        <svg aria-hidden="true" class="slds-button__icon">
                             <use xlink:href="/slds/icons/action-sprite/svg/symbols.svg#remove"
                                  xmlns:xlink="http://www.w3.org/1999/xlink"></use>
                         </svg>
@@ -205,7 +205,7 @@
                 </td>
                 <% }); %>
                 <!--actions-->
-                <td data-label="Actions" class="">
+                <td data-label="Actions" class="slds-cell-shrink">
         
                     <button class="slds-button slds-button_icon slds-button_icon-border slds-button_icon-default" id="editBtn_"
                             aria-pressed="false" title="Edit">

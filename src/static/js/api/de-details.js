@@ -146,20 +146,20 @@ j$('#deRecords').on('click', '[id^=editBtn_]', function () {
     j$('#addRecordBtn').attr("disabled", "");
     // store selected row
     var row = j$(this).closest("tr");
-console.log('row: ' + row.html());
     j$(row).find('.slds-truncate, .slds-input, .slds-required, .slds-button').each(function (index, element) {
         console.log('node: ' + this.nodeName);
         if (this.nodeName == 'SPAN') {
-            j$(this).hide();
+            j$(this).addClass("slds-hide");//j$(this).hide();
         }
         else if (this.nodeName == "INPUT" || this.nodeName == "ABBR") {
-            j$(this).show();
+            //j$(this).show();
+            j$(this).removeClass("slds-hide");
         }
         else {// BUTTON
             if (!this.classList.contains("edit")) //
-                j$(this).hide();
+            j$(this).addClass("slds-hide");//j$(this).hide();
             else
-                j$(this).show();
+            j$(this).removeClass("slds-hide");//j$(this).show();
         }
     });
 });
@@ -171,16 +171,16 @@ j$('#deRecords').on('click', '[id^=cancelBtn_]', function () {
     var row = j$(this).closest("tr");
     j$(row).find('.slds-truncate, .slds-input, .slds-required, .slds-button').each(function (index, element) {
         if (this.nodeName == 'SPAN') {
-            j$(this).show();
+            j$(this).removeClass("slds-hide");
         }
         else if (this.nodeName == "INPUT" || this.nodeName == "ABBR") {
-            j$(this).hide();
+            j$(this).addClass("slds-hide");
         }
         else {// BUTTON
             if (this.classList.contains("edit")) //
-                j$(this).hide();
+                j$(this).addClass("slds-hide");
             else
-                j$(this).show();
+            j$(this).removeClass("slds-hide");
         }
     });
     // show add record button
@@ -193,6 +193,7 @@ j$('#deRecords').on('click', '[id^=cancelBtn_]', function () {
 j$('#deRecords').on('click', '[id^=okBtn_]', function () {
     // get de key
     var key = j$('#deKey').text().trim();
+    var name = j$('#deName').text().trim();
     // get current row
     var row = j$(this).closest("tr");
     // get columns
@@ -201,23 +202,26 @@ j$('#deRecords').on('click', '[id^=okBtn_]', function () {
         dataObject[j$(this).attr('name')] = j$(this).val();
     });
 
-    ajaxCall("/api/sdk/row-update/" + key, dataObject, function (response) {
+    ajaxCall("/api/sdk/row-update/" + name, dataObject, function (response) {
         console.log("it works! " + JSON.stringify(response));
         if (response != null) {
             j$(row).find('.slds-truncate, .slds-input, .slds-required, .slds-button').each(function (index, element) {
-
+                console.log(index);
                 if (this.nodeName == 'SPAN') {
-                    j$(this).text(response[j$(this).attr('name')]);
-                    j$(this).show();
+                    console.log(element);
+                    var val = response.result[index];
+                    if(val)
+                        j$(this).text(val.Value);// response[j$(this).attr('name')]
+                    j$(this).removeClass("slds-hide");//j$(this).show();
                 }
                 else if (this.nodeName == "INPUT" || this.nodeName == "ABBR") {
-                    j$(this).hide();
+                    j$(this).addClass("slds-hide");
                 }
                 else {// BUTTON
                     if (this.classList.contains("edit")) //
-                        j$(this).hide();
+                        j$(this).addClass("slds-hide");//j$(this).hide();
                     else
-                        j$(this).show();
+                        j$(this).removeClass("slds-hide");//j$(this).show();
                 }
             });
             // show add record button

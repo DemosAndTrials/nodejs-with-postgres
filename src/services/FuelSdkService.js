@@ -152,10 +152,29 @@ class FuelSdkService {
     }
 
     /**
+     * Update Data Extension Row by key
+     */
+    async updateDataExtensionRow(name, row) {
+        var options = {
+            Name: name,
+            props: row	
+        };
+        var deRow = SDKClient.dataExtensionRow(options)
+        try {
+            var result = await this.patch(deRow);
+            var arr = result.Results[0].Object.Properties.Property;
+            //console.log('arr: ' + JSON.stringify(arr));
+            return arr;
+        } catch (err) {
+            console.log('err: ' + err);
+        }
+        return;
+    }
+
+    /**
      * Delete Data Extension Row by key
      */
     async deleteDataExtensionRow(name, row) {
-        console.log('name: ' + name);
         var options = {
             Name: name,
             props: row	
@@ -267,11 +286,30 @@ class FuelSdkService {
     }
 
     /**
-     * Delete Data Extension
+     * Delete
      */
     async delete(etObject) {
         return new Promise(function (resolve, reject) {
             etObject.delete(function (err, response) {
+                if (err) {
+                    console.log('err: ' + err);
+                    reject(err);
+                } else {
+                    //var statusCode = response && response.res && response.res.statusCode ? response.res.statusCode : 200;
+                    var result = response && response.body ? response.body : response;
+                    console.log('result: ' + JSON.stringify(result));
+                    resolve(result);
+                }
+            });
+        })
+    }
+
+    /**
+     * Patch
+     */
+    async patch(etObject) {
+        return new Promise(function (resolve, reject) {
+            etObject.patch(function (err, response) {
                 if (err) {
                     console.log('err: ' + err);
                     reject(err);

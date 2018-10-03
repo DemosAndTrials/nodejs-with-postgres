@@ -131,7 +131,6 @@ const createDEPage = async (req, res) => {
  */
 const createFolder = async (req, res) => {
     const folder = req.body;
-    console.log('body: ' + JSON.stringify(folder));
     var result = await FuelSdkService.createFolder(folder);
     return res.status(200).json({
         success: true,
@@ -145,8 +144,6 @@ const createFolder = async (req, res) => {
 const deleteDERow = async (req, res) => {
     const name = req.params.name;
     const body = req.body;
-    console.log('name: ' + name);
-    console.log('body: ' + JSON.stringify(body));
     var result = await FuelSdkService.deleteDataExtensionRow(name, body);
     return res.status(200).json({
         success: true,
@@ -160,10 +157,20 @@ const deleteDERow = async (req, res) => {
 const createDERow = async (req, res) => {
     const name = req.params.name;
     const body = req.body;
-    //console.log('name: ' + name);
-    //console.log('body: ' + JSON.stringify(body));
     var result = await FuelSdkService.createDataExtensionRow(name, body);
-    console.log('result: ' + result);
+    return res.status(200).json({
+        success: true,
+        result
+    });
+}
+
+/**
+ * Update data extensions row
+ */
+const updateDERow = async (req, res) => {
+    const name = req.params.name;
+    const body = req.body;
+    var result = await FuelSdkService.updateDataExtensionRow(name, body);
     return res.status(200).json({
         success: true,
         result
@@ -182,5 +189,6 @@ export {
     createFolder,
     createDEPage,
     deleteDERow,
-    createDERow
+    createDERow,
+    updateDERow
 }
