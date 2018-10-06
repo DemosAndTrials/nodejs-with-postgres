@@ -17,12 +17,365 @@
         </div>
     </div>
     <!-- Body -->
+    <div id="tab-default-1" class="slds-tabs_default__content slds-show slds-m-right_medium slds-m-left_medium" role="tabpanel"
+        aria-labelledby="tab-default-1__item">
+        <form id="deForm" action="#" th:action="/api/sdk/de-create/<%= folderId %>" method="post"
+            name="de">
+            <div class="slds-tabs_scoped">
+                <ul class="slds-tabs_scoped__nav" role="tablist">
+                    <li id="step1" class="slds-tabs_scoped__item slds-is-active" title="Properties" role="presentation">
+                        <a class="slds-tabs_scoped__link" href="javascript:void(0);" role="tab" tabindex="0"
+                            aria-selected="true" aria-controls="tab-scoped-1" id="tab-scoped-1__item">1 Properties</a>
+                    </li>
+                    <li id="step2" class="slds-tabs_scoped__item" title="Retention" role="presentation"><a class="slds-tabs_scoped__link"
+                            href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-scoped-2"
+                            id="tab-scoped-2__item">2 Data Retention
+                            Policy</a></li>
+                    <li id="step3" class="slds-tabs_scoped__item" title="Attributes" role="presentation"><a class="slds-tabs_scoped__link"
+                            href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-scoped-3"
+                            id="tab-scoped-3__item">3 Attributes</a>
+                    </li>
+                </ul>
+                <!--STEP 1-->
+                <div id="tab-scoped-1" class="slds-tabs_scoped__content slds-show" role="tabpanel" aria-labelledby="tab-scoped-1__item">
+                    <div class="slds-form slds-form_stacked">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="input-id-011">Name</label>
+                            <div class="slds-form-element__control">
+                                <input type="text" id="input-id-011" class="slds-input" placeholder=""
+                                    maxlength="50" value="<%= de.name %>"/>
+                            </div>
+                            <% if(errors.find(o => o.param === 'de.name')){ %>
+                            <div class="slds-text-color_error">
+                                <%= errors.find(o => o.param === 'de.name').msg %>
+                            </div>
+                            <%}%>
+                        </div>
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="input-id-012">Key</label>
+                            <div class="slds-form-element__control">
+                                <input type="text" id="input-id-012" class="slds-input" placeholder=""
+                                    maxlength="50" value="<%= de.customerKey %>"/>
+                            </div>
+                        </div>
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="input-id-013">Description</label>
+                            <div class="slds-form-element__control">
+                                <textarea id="input-id-013" class="slds-textarea" placeholder=""
+                                    maxlength="250" value="<%= de.description %>"></textarea>
+                            </div>
+                        </div>
+                        <fieldset class="slds-form-element">
+                            <div class="slds-form-element__control">
+                                <span class="slds-checkbox">
+                                    <input type="checkbox" name="isSendable" id="isSendable" <%=(de.isSendable===true )?' checked':'' %>/>
+                                    <label class="slds-checkbox__label" for="isSendable">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label">Is Sendable?</span>
+                                    </label>
+                                </span>
+                                <input type="hidden" value="<%= de.isSendable %>"/>
+                                <span class="slds-checkbox">
+                                    <input type="checkbox" name="isTestable" id="isTestable" <%=(de.isTestable===true )?' checked':'' %>/>
+                                    <label class="slds-checkbox__label" for="isTestable">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label">Is Testable?</span>
+                                    </label>
+                                </span>
+                                <input type="hidden" value="<%= de.isTestable %>"/>
+                            </div>
+                        </fieldset>
+                        <div class="slds-form-element">
+                            <br>
+                            <button id="nextBtnStep1" class="slds-button slds-button_brand" type="button" name="action"
+                                value="next">
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!--STEP 2-->
+                <div id="tab-scoped-2" class="slds-tabs_scoped__content slds-hide" role="tabpanel" aria-labelledby="tab-scoped-2__item">
+                    <div class="slds-form slds-form_stacked">
+                        <div class="slds-form-element">
+                            <label class="slds-checkbox_toggle slds-grid">
+                                <span class="slds-form-element__label slds-m-bottom_none">Retention Setting</span>
+                                <input type="checkbox" name="checkbox1" aria-describedby="toggle-desc" value="on" />
+                                <span id="toggle-desc" class="slds-checkbox_faux_container" aria-live="assertive">
+                                    <span class="slds-checkbox_faux"></span>
+                                    <span class="slds-checkbox_on">On</span>
+                                    <span class="slds-checkbox_off">Off</span>
+                                </span>
+                            </label>
+                            <input type="hidden" name="checkbox1" />
+                        </div>
+                        <fieldset class="slds-form-element">
+                            <legend class="slds-form-element__legend slds-form-element__label">Delete:
+                            </legend>
+                            <div class="slds-form-element__control">
+                                <span class="slds-radio">
+                                    <input type="radio" id="radio-1" name="options" value="on" />
+                                    <label class="slds-radio__label" for="radio-1">
+                                        <span class="slds-radio_faux"></span>
+                                        <span class="slds-form-element__label">Individual Records</span>
+                                    </label>
+                                </span>
+                                <span class="slds-radio">
+                                    <input type="radio" id="radio-2" name="options" value="on" />
+                                    <label class="slds-radio__label" for="radio-2">
+                                        <span class="slds-radio_faux"></span>
+                                        <span class="slds-form-element__label">All records and data extensions</span>
+                                    </label>
+                                </span>
+                                <span class="slds-radio">
+                                    <input type="radio" id="radio-3" name="options" value="on" />
+                                    <label class="slds-radio__label" for="radio-3">
+                                        <span class="slds-radio_faux"></span>
+                                        <span class="slds-form-element__label">All records</span>
+                                    </label>
+                                </span>
+                            </div>
+                        </fieldset>
+                        <fieldset class="slds-form-element">
+                            <legend class="slds-form-element__legend slds-form-element__label">Period:
+                            </legend>
+                            <div class="slds-form-element__control">
+                                <span class="slds-radio">
+                                    <input type="radio" id="radio-4" name="options" value="on" />
+                                    <label class="slds-radio__label" for="radio-4">
+                                        <span class="slds-radio_faux"></span>
+                                        <span class="slds-form-element__label">After</span>
+                                    </label>
+                                </span>
+                                <span class="slds-checkbox">
+                                    <input type="checkbox" name="options" id="checkbox-2" value="on" />
+                                    <label class="slds-checkbox__label" for="checkbox-2">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label">Reset period on import</span>
+                                    </label>
+                                </span>
+                                <input type="hidden" th:field="*{isTestable}" />
+                                <span class="slds-radio">
+                                    <input type="radio" id="radio-5" name="options" value="on" />
+                                    <label class="slds-radio__label" for="radio-5">
+                                        <span class="slds-radio_faux"></span>
+                                        <span class="slds-form-element__label">On</span>
+                                    </label>
+                                </span>
+                            </div>
+                        </fieldset>
 
+                        <div class="slds-form-element">
+                            <br>
+                            <button id="backBtnStep2" class="slds-button slds-button_brand" type="button" name="action"
+                                value="back">
+                                Back
+                            </button>
+                            <button id="nextBtnStep2" class="slds-button slds-button_brand" type="button" name="action"
+                                value="next">
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!--STEP 3-->
+                <div id="tab-scoped-3" class="slds-tabs_scoped__content slds-hide" role="tabpanel" aria-labelledby="tab-scoped-3__item">
+                    <div class="slds-form slds-form_stacked">
+                        <table id="deColumns" class="slds-table slds-table_bordered slds-table_cell-buffer">
+                            <thead>
+                                <tr class="slds-text-title_caps">
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="Name">Name</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="Data Type">Data Type</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="Length">Length</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="Primary Key">Primary Key</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="Nullable">Nullable</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="Default Value">Default Value</div>
+                                    </th>
+                                    <th scope="col">
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr th:each="col,status : ${de.getColumns()}" class="slds-form-element__row">
+                                    <th scope="row" data-label="Name">
+                                        <input type="text" class="slds-input" th:field="*{columns[__${status.index}__].name}"
+                                            th:value="${col.name}" maxlength="50">
+                                    </th>
+                                    <td data-label="Data Type">
+                                        <div class="slds-select_container">
+                                            <select class="slds-select" th:field="*{columns[__${status.index}__].type}">
+                                                <option th:value="TEXT">Text</option>
+                                                <option th:value="NUMBER">Number</option>
+                                                <option th:value="DATE">Date</option>
+                                                <option th:value="BOOLEAN">Boolean</option>
+                                                <option th:value="EMAIL_ADDRESS">Email</option>
+                                                <option th:value="PHONE">Phone</option>
+                                                <option th:value="DECIMAL">Decimal</option>
+                                                <option th:value="LOCALE">Locale</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td data-label="Length">
+                                        <input type="text" class="slds-input" th:field="*{columns[__${status.index}__].length}"
+                                            th:value="${col.length}" maxlength="5">
+                                    </td>
+                                    <td data-label="Primary Key">
+                                        <div class="slds-th__action slds-th__action_form">
+                                            <span class="slds-checkbox">
+                                                <input type="checkbox" name="options" th:id="@{'checkboxPK_' + ${status.index}}"
+                                                    th:name="@{'columns['+${status.index}+'].isPrimaryKey'}" tabindex="-1"
+                                                    value="on" />
+                                                <label class="slds-checkbox__label" th:for="@{'checkboxPK_' + ${status.index}}">
+                                                    <span class="slds-checkbox_faux"></span>
+                                                </label>
+                                            </span>
+                                            <input type="hidden" th:field="*{columns[__${status.index}__].isPrimaryKey}"
+                                                th:value="${col.isPrimaryKey}" />
+                                        </div>
+                                    </td>
+                                    <td data-label="Nullable">
+                                        <div class="slds-th__action slds-th__action_form">
+                                            <span class="slds-checkbox">
+                                                <input type="checkbox" name="options" th:id="@{'checkboxNull_' + ${status.index}}"
+                                                    th:name="@{'columns['+${status.index}+'].isRequired'}" tabindex="-1"
+                                                    value="on" />
+                                                <label class="slds-checkbox__label" th:for="@{'checkboxNull_' + ${status.index}}">
+                                                    <span class="slds-checkbox_faux"></span>
+                                                </label>
+                                            </span>
+                                            <input type="hidden" th:field="*{columns[__${status.index}__].isRequired}"
+                                                th:value="${col.isRequired}" />
+                                        </div>
+                                    </td>
+                                    <td data-label="Default Value">
+                                        <input type="text" th:value="${col.defaultValue}" class="slds-input" maxlength="5">
+                                    </td>
+                                    <td data-label="Delete">
+                                        <button name="deleteColumnBtn" class="slds-button slds-button_icon" type="button"
+                                            aria-pressed="false" title="Delete">
+                                            <svg class="slds-button__icon slds-icon-text-error" aria-hidden="true">
+                                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/slds/icons/utility-sprite/svg/symbols.svg#delete"></use>
+                                            </svg>
+                                            <span class="slds-assistive-text">Delete</span>
+                                        </button>
+                                    </td>
+                                </tr>
+
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="7">
+                                        <a class="slds-button slds-button_stateful slds-button_neutral slds-not-selected slds-float_right"
+                                            aria-live="assertive" id="addRowBtn">
+                                            <span class="slds-text-not-selected">
+                                                <svg class="slds-button__icon_stateful slds-button__icon_left"
+                                                    aria-hidden="true">
+                                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/slds/icons/utility-sprite/svg/symbols.svg#add"></use>
+                                                </svg>Add</span>
+                                        </a>
+                                    </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div class="slds-form-element">
+                            <br>
+                            <button id="backBtnStep3" class="slds-button slds-button_brand" type="button" name="action"
+                                value="back">
+                                Back
+                            </button>
+                            <button id="nextBtnStep3" class="slds-button slds-button_brand" name="action" value="save">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
     <!-- Footer -->
     <footer>
         <% include ../../../partials/footer %>
     </footer>
+    <!-- Templates -->
+    <table id="templateDeColumn" style="display: none">
+        <tr class="row">
+            <!--th:field="*{EditHeight}"-->
+            <th scope="row" data-label="Name">
+                <input type="text" id="colName" class="slds-input" maxlength="50">
+            </th>
+            <td data-label="Data Type">
+                <div class="slds-select_container">
+                    <select class="slds-select" id="colType">
+                        <option th:value="TEXT">Text</option>
+                        <option th:value="NUMBER">Number</option>
+                        <option th:value="DATE">Date</option>
+                        <option th:value="BOOLEAN">Boolean</option>
+                        <option th:value="EMAIL_ADDRESS">Email</option>
+                        <option th:value="PHONE">Phone</option>
+                        <option th:value="DECIMAL">Decimal</option>
+                        <option th:value="LOCALE">Locale</option>
+                    </select>
+                </div>
+            </td>
+            <td data-label="Length">
+                <input type="text" id="colLength" class="slds-input" maxlength="5">
+            </td>
+            <td data-label="Primary Key">
+                <div class="slds-th__action slds-th__action_form">
+                     <span class="slds-checkbox">
+                         <input type="checkbox" name="options" id="colIsPrimaryKey" tabindex="-1" value="on"/>
+                         <label class="slds-checkbox__label" id="forIsPrimaryKey" for="colIsPrimaryKey">
+                            <span class="slds-checkbox_faux"></span>
+                            <!--<span class="slds-form-element__label slds-assistive-text">Select All</span>-->
+                         </label>
+                     </span>
+                    <input type="hidden" value="false" id="colHiddenIsPrimaryKey">
+                </div>
+            </td>
+            <td data-label="Nullable">
+                <div class="slds-th__action slds-th__action_form">
+                    <span class="slds-checkbox">
+                        <input type="checkbox" name="options" id="colIsRequired" tabindex="-1" value="on"/>
+                        <label class="slds-checkbox__label" id="forIsRequired" for="colIsRequired">
+                            <span class="slds-checkbox_faux"></span>
+                            <!--<span class="slds-form-element__label slds-assistive-text">Select All</span>-->
+                         </label>
+                    </span>
+                    <input type="hidden" value="false" id=colHiddenIsRequired">
+                </div>
+            </td>
+            <td data-label="Default Value">
+                <input type="text" id="colDefault" class="slds-input" maxlength="5">
+            </td>
+            <td data-label="Delete">
+                <button id="deleteColumnBtn" class="slds-button slds-button_icon" type="button"
+                        aria-pressed="false" title="Delete">
+                    <svg class="slds-button__icon slds-icon-text-error" aria-hidden="true">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink"
+                             xlink:href="/slds/icons/utility-sprite/svg/symbols.svg#delete"></use>
+                    </svg>
+                    <span class="slds-assistive-text">Delete</span>
+                </button>
+            </td>
+        </tr>
+    </table>
     <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script src="/js/api/de-create.js"></script>
     <script type="text/javascript">
     </script>
 </body>

@@ -189,6 +189,30 @@ class FuelSdkService {
         return;
     }
 
+     /**
+     * Create Data Extension
+     */
+    async createDataExtension(folderId, de) {
+        console.log('folderId: ' + folderId);
+        console.log('de: ' + de);
+        var options = {
+            props: {"Name" : "SDKDataExtension", "Description": "SDK Created Data Extension"}
+            ,columns: [	{"Name" : "Key", "FieldType" : "Text", "IsPrimaryKey" : "true", "MaxLength" : "100", "IsRequired" : "true"}
+                        ,{"Name" : "Value", "FieldType" : "Text"}
+                    ]
+        };		
+        var de = SDKClient.dataExtension(options);	
+        try {
+            var result = await this.post(de);
+            var arr = result.Results[0].Object.Properties.Property;
+            console.log('arr: ' + JSON.stringify(arr));
+            return arr;
+        } catch (err) {
+            console.log('err: ' + err);
+        }
+        return;
+    }
+
     /**
      * Delete Data Extensions by key
      */
