@@ -9,13 +9,11 @@ j$('.slds-tabs_scoped__item').click(function () {
     active.removeClass("slds-is-active");
     var activeId = active.find("a").attr("aria-controls");
     console.log(activeId);
-    //j$('#' + activeId).hide();
     j$('#' + activeId).addClass("slds-hide");
     // show
     j$(this).addClass("slds-is-active");
     var newId = j$(this).find("a").attr("aria-controls");
     console.log(newId);
-    //j$('#' + newId).show();
     j$('#' + newId).removeClass("slds-hide");
 });
 
@@ -39,15 +37,14 @@ j$('button.slds-button_brand').click(function () {
         activeLi.removeClass("slds-is-active");
         var activeId = activeLi.find("a").attr("aria-controls");
         console.log("activeId: " + activeId);
-        j$('#' + activeId).hide();
-
+        j$('#' + activeId).addClass("slds-hide");
         // show next item
         var nextLi = action == "next" ? activeLi.next() : activeLi.prev();
         var nextId = nextLi.find("a").attr("aria-controls");
         console.log("nextId: " + nextId);
         nextLi.addClass("slds-is-active");
         var newId = nextLi.find("a").attr("aria-controls");
-        j$('#' + newId).show();
+        j$('#' + newId).removeClass("slds-hide");
     }
 });
 
@@ -55,7 +52,7 @@ j$('button.slds-button_brand').click(function () {
  * Handle SLDS checkbox
  */
 j$('#deForm').on('click', 'input[type=checkbox]', function () {
-    var id = j$(this).attr("name");
+    var id = j$(this).attr("id");
     console.log(id + " click: " + this.checked);
     var hidden = j$("input:hidden[name='" + id + "']");
     hidden.val(this.checked);
@@ -92,32 +89,36 @@ function createRowTemplate() {
     temp.attr("id", "newColumn" + rowCount);
 
     var name = temp.find('#colName');
-    name.attr("id", "columns"+ rowCount + ".name");
-    name.attr("name", "columns["+ rowCount + "].name");
+    name.attr("id", "Columns"+ rowCount + ".Name");
+    name.attr("name", "de[Columns]["+ rowCount + "][Name]");
     var type = temp.find('#colType');
-    type.attr("id", "columns"+ rowCount + ".type");
-    type.attr("name", "columns["+ rowCount + "].type");
+    type.attr("id", "columns"+ rowCount + ".FieldType");
+    type.attr("name", "de[Columns]["+ rowCount + "][FieldType]");
     var length = temp.find('#collength');
-    length.attr("id", "columns"+ rowCount + ".length");
-    length.attr("name", "columns["+ rowCount + "].length");
+    length.attr("id", "columns"+ rowCount + ".MaxLength");
+    length.attr("name", "de[Columns]["+ rowCount + "][MaxLength]");
 
     var isPrimaryKey = temp.find('#colIsPrimaryKey');
-    isPrimaryKey.attr("id", "columns"+ rowCount + ".isPrimaryKey");
-    isPrimaryKey.attr("name", "columns["+ rowCount + "].isPrimaryKey");
+    isPrimaryKey.attr("id", "de[Columns]["+ rowCount + "][IsPrimaryKey]");
+    //isPrimaryKey.attr("name", "de[Columns]["+ rowCount + "][isPrimaryKey]");
     var forIsPrimaryKey = temp.find('#forIsPrimaryKey');
-    forIsPrimaryKey.attr("for", "columns"+ rowCount + ".isPrimaryKey");
+    forIsPrimaryKey.attr("for", "de[Columns]["+ rowCount + "][IsPrimaryKey]");
     var hiddenIsPrimaryKey = temp.find('#colHiddenIsPrimaryKey');
-    hiddenIsPrimaryKey.attr("id", "columns"+ rowCount + ".isPrimaryKey");
-    hiddenIsPrimaryKey.attr("name", "columns["+ rowCount + "].isPrimaryKey");
+    hiddenIsPrimaryKey.attr("id", "de[Columns]["+ rowCount + "][IsPrimaryKey]");
+    hiddenIsPrimaryKey.attr("name", "de[Columns]["+ rowCount + "][IsPrimaryKey]");
 
     var isRequired = temp.find('#colIsRequired');
-    isRequired.attr("id", "columns"+ rowCount + ".isRequired");
-    isRequired.attr("name", "columns["+ rowCount + "].isRequired");
+    isRequired.attr("id", "de[Columns]["+ rowCount + "][IsRequired]");
+    //isRequired.attr("name", "de[Columns]["+ rowCount + "][IsRequired]");
     var hiddenIsRequired = temp.find('#colHiddenIsRequired');
-    hiddenIsRequired.attr("id", "columns"+ rowCount + ".isRequired");
-    hiddenIsRequired.attr("name", "columns["+ rowCount + "].isRequired");
+    hiddenIsRequired.attr("id", "de[Columns]["+ rowCount + "][IsRequired]");
+    hiddenIsRequired.attr("name", "de[Columns]["+ rowCount + "][IsRequired]");
     var forIsPrimaryKey = temp.find('#forIsRequired');
-    forIsPrimaryKey.attr("for", "columns"+ rowCount + ".isRequired");
+    forIsPrimaryKey.attr("for", "de[Columns]["+ rowCount + "][IsRequired]");
+
+    var name = temp.find('#colDefault');
+    name.attr("id", "columns"+ rowCount + ".DefaultValue");
+    name.attr("name", "de[Columns]["+ rowCount + "][DefaultValue]");
 
     var btnDelete = temp.find('#deleteColumnBtn');
     btnDelete.attr("id", "deleteColumnBtn" + rowCount);

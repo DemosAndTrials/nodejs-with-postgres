@@ -1,19 +1,20 @@
 export default class DataExtension {
 
   constructor() {
-    this.id = '';
-    this.name = '';
-    this.key = '';
-    this.description = '';
+    this.Id = '';
+    this.Name = '';
+    this.Key = '';
+    this.Description = '';
+    this.IsSendable = false;
+    this.IsTestable = false;
 
-    this.isSendable = false;
-    this.isTestable = false;
-
-    this.steps = [{
-      label: 'Step 1',
-      key: 'step_1'
+    this.Columns = [{
+      Name : '',
+      FieldType : 'TEXT',
+      MaxLength : 50,
+      IsPrimaryKey : false,
+      IsRequired : false,
+      DefaultValue : ''
     }];
-    this.splits = [];
-    this.schemaArgs = [];
   }
 }

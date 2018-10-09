@@ -135,11 +135,14 @@ const createDEPage = async (req, res) => {
  */
 const createDE = async (req, res) => {
     const folderId = req.params.folderId;
-    const body = req.body;
-    var result = await FuelSdkService.createDataExtension(folderId, body);
-    return res.status(200).json({
-        success: true,
-        result
+    var de = req.body.de;
+    de.CategoryID = folderId;
+    var result = await FuelSdkService.createDataExtension(de);
+    res.render('pages/api/sdk/de-create', {
+        userData: req.user,
+        folderId: folderId,
+        de: de,
+        errors: []
     });
 }
 
