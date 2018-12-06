@@ -308,7 +308,7 @@ class CustomActivityModel {
                     height: config.edit_height,
                     width: config.edit_width,
                     fullscreen : true,
-                    url: config.endpoint_url + '?numSteps=' //num of steps
+                    url: config.endpoint_url + '/ui?numSteps=' //num of steps
                 },
                 runningModal: {
                     url: config.endpoint_url + '/ui/modal'
