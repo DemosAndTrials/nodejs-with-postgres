@@ -37,7 +37,7 @@ const listPage = async (req, res) => {
  * Create config page
  */
 const createPage = (req, res) => {
-    var host = req.protocol + '://' + req.headers.host;
+    var host = 'https://' + req.headers.host;
     var config = new CustomActivityConfig(host);
     res.render('pages/custom-activity/create', {
         userData: req.user,
