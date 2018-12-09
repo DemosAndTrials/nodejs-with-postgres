@@ -13,7 +13,7 @@ routes.post('/create/:id', CustomActivityController.createConfig);
 routes.post('/delete/:id', CustomActivityController.deleteConfig);
 routes.get('/list', CustomActivityController.listPage);
 routes.post('/:id/config.json', CustomActivityController.getJson);
-
+routes.get('/:id/config.json', CustomActivityController.getJson);
 routes.get('/:id/ui/edit', CustomActivityController.editModalPage);
 routes.get('/:id/ui', CustomActivityController.editModalPage);
 routes.get('/:id/ui/hover', CustomActivityController.runningHoverPage);

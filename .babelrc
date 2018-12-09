@@ -8,5 +8,8 @@
           "polyfill": false,
           "regenerator": true
         }]
+    ],
+    "ignore": [
+        "./src/static"
     ]
 }
