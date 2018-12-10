@@ -137,7 +137,7 @@ class FuelSdkService {
         console.log('name: ' + name);
         var options = {
             Name: name,
-            props: row	
+            props: row
         };
         var deRow = SDKClient.dataExtensionRow(options)
         try {
@@ -157,7 +157,7 @@ class FuelSdkService {
     async updateDataExtensionRow(name, row) {
         var options = {
             Name: name,
-            props: row	
+            props: row
         };
         var deRow = SDKClient.dataExtensionRow(options)
         try {
@@ -177,12 +177,43 @@ class FuelSdkService {
     async deleteDataExtensionRow(name, row) {
         var options = {
             Name: name,
-            props: row	
+            props: row
         };
         var deRow = SDKClient.dataExtensionRow(options)
         try {
             var result = await this.delete(deRow);
             return result;
+        } catch (err) {
+            console.log('err: ' + err);
+        }
+        return;
+    }
+
+    /**
+     * Create Data Extension
+     */
+    async createDataExtension(de) {
+        console.log('de: ' + JSON.stringify(de));
+        var options = {
+            props: {
+                "Name": de.Name,
+                "CategoryID": de.CategoryID,
+                "Description": de.Description,
+                "IsSendable" : de.IsSendable,
+                "IsTestable" : de.IsTestable
+            },
+            columns: de.Columns
+            // columns: [	{"Name" : "node_de_01", "FieldType" : "Text", "IsPrimaryKey" : "true", "MaxLength" : "50", "IsRequired" : "true","DefaultValue":"node_01"}
+            // ,{"Name" : "Value", "FieldType" : "Text"}
+        //]
+        };		
+
+        var de = SDKClient.dataExtension(options);
+        try {
+            var result = await this.post(de);
+            console.log('result: ' + JSON.stringify(result));
+            var object = result.Results[0].Object;
+            return object;
         } catch (err) {
             console.log('err: ' + err);
         }

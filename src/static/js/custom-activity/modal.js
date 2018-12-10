@@ -9,14 +9,10 @@ requirejs.config({
 define(['postmonger'], function (Postmonger) {
     'use strict';
 
-    console.log('*** ' + window.location.href + ' ***');
-
     var connection = new Postmonger.Session();
-    var inArgPayload = {};
-
 
     $(window).ready(function () {
-        console.log("modal ready");
+        console.log("*** MODAL READ ONLY ***");
         connection.trigger('ready');
     });
 
@@ -26,12 +22,48 @@ define(['postmonger'], function (Postmonger) {
     // - When the activity is dragged from the activity list initially (meaning that it has no existing data),
     //   the default activity structure is pulled from the custom application's config.json.
     //   If the activity is a configured activity, the existing saved JSON structure of the activity is passed.
-    connection.on('initActivity', function (payload) {
-        console.log('initActivity');
-        if (payload) {
-            inArgPayload = payload;
+    connection.on('initActivityRunningHover', function (payload) {
+        console.log('initActivityRunningHover');
+        console.log('payload', JSON.stringify(payload));
 
-            console.log('payload', JSON.stringify(payload));
+        if (payload) {
+            var jsonPayload = payload['arguments'].execute.inArguments;
+
+            if (typeof jsonPayload != "undefined" && jsonPayload.length > 0) {
+
+                // saved inputs always first element
+                var content = jsonPayload[0];
+                Object.keys(content).forEach(function(key) {
+                    console.log('Key : ' + key + ', Value : ' + content[key])
+                    var selector = '#' + key;
+                    var value = content[key];
+                    $(selector).val(value);
+                })
+            }
         }
+
     });
+
+    connection.on('initActivityRunningModal', function (payload) {
+        console.log('initActivityRunningModal');
+        console.log('payload', JSON.stringify(payload));
+
+        if (payload) {
+            var jsonPayload = payload['arguments'].execute.inArguments;
+
+            if (typeof jsonPayload != "undefined" && jsonPayload.length > 0) {
+
+                // saved inputs always first element
+                var content = jsonPayload[0];
+                Object.keys(content).forEach(function(key) {
+                    console.log('Key : ' + key + ', Value : ' + content[key])
+                    var selector = '#' + key;
+                    var value = content[key];
+                    $(selector).val(value);
+                })
+            }
+        }
+
+    });
+
 });

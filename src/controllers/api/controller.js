@@ -1,4 +1,5 @@
 import FuelSdkService from '../../services/FuelSdkService';
+import DataExtension from '../../models/api/dataExtension';
 
 /**
  * Index page
@@ -99,7 +100,7 @@ const detailsDEPage = async (req, res) => {
         de: de,
         rows: rows ? rows : [], // ???
         cols: cols,
-        canDeleteRow : canDeleteRow
+        canDeleteRow: canDeleteRow
     });
 }
 
@@ -120,9 +121,28 @@ const deleteDE = async (req, res) => {
  */
 const createDEPage = async (req, res) => {
     const folderId = req.params.id;
+    var de = new DataExtension();
     res.render('pages/api/sdk/de-create', {
         userData: req.user,
-        folderId: folderId
+        folderId: folderId,
+        de: de,
+        errors: []
+    });
+}
+
+/**
+ * Create data extensions
+ */
+const createDE = async (req, res) => {
+    const folderId = req.params.folderId;
+    var de = req.body.de;
+    de.CategoryID = folderId;
+    var result = await FuelSdkService.createDataExtension(de);
+    res.render('pages/api/sdk/de-create', {
+        userData: req.user,
+        folderId: folderId,
+        de: de,
+        errors: []
     });
 }
 
@@ -188,6 +208,7 @@ export {
     deleteDE,
     createFolder,
     createDEPage,
+    createDE,
     deleteDERow,
     createDERow,
     updateDERow
